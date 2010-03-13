@@ -1,26 +1,28 @@
 # Django settings for tomeofwow project.
 
 import os.path
-import socket.gethostname
+import socket
 from settings_auth import *
 
-DEVELOPMENT_MODE = (socket.gethostname() == "marco-pc")
+DEVELOPMENT_MODE = (socket.gethostname() == "Marco-PC")
 
 if DEVELOPMENT_MODE:
     DEBUG = TEMPLATE_DEBUG = True
     PREPEND_WWW = False
-    # CACHE_BACKEND = "dummy:///"
+    USE_ETAGS = False
+    CACHE_BACKEND = "dummy:///"
 else:
     DEBUG = TEMPLATE_DEBUG = False
     PREPEND_WWW = True
+    USE_ETAGS = True
     # CACHE_BACKEND = "memcached://127.0.0.1:11211/"
 
 PROJECT_ROOT = os.path.dirname(__file__)
 
-DEFAULT_FROM_EMAIL = 'marco.chomut@gmail.com'
+DEFAULT_FROM_EMAIL = 'webmaster@marcosmodernlife.com'
 
 ADMINS = (
-    ('Marco Chomut', 'marco.chomut@gmail.com'),
+    ('Marco Chomut', 'marco.chomut+modernlife@gmail.com'),
     # ('Your Name', 'your_email@domain.com'),
 )
 
@@ -28,6 +30,7 @@ MANAGERS = ADMINS
 
 # Note that sensitive information, such as username/password/secretkey,
 # are all stored in a separate settings file that is not tracked in git
+# Replace with DATABASES dictionary in 1.2
 DATABASE_ENGINE = 'postgresql_psycopg2'
 
 # Local time zone for this installation. Choices can be found here:
@@ -73,11 +76,19 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    # 'django.middleware.cache.UpdateCacheMiddleware', # Must be first
+    'django.middleware.gzip.GzipMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    # 'django.middleware.locale.LocaleMiddleware',
+    # 'django.contrib.FetchFromCacheMiddleware',
     'django.contrib.csrf.middleware.CsrfMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    # 'django.contrib.messages.middleware.MessageMiddleware',     # Requires 1.2
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
+    'django.middleware.doc.XViewMiddleware',
+    # 'django.middleware.transaction.TransactionMiddleware',    # Needed?
     # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
@@ -93,29 +104,28 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.comments',
     'django.contrib.contenttypes',
-    # 'django.contrib.databrowse',
+    'django.contrib.databrowse',
     'django.contrib.flatpages',
     'django.contrib.humanize',
     'django.contrib.markup',
+    # 'django.contrib.messages',    # Requires 1.2
+    'django.contrib.redirects',
     'django.contrib.sessions',
+    'django.contrib.sitemaps',
     'django.contrib.sites',
-    # 'django.contrib.sitemaps',
-    # 'django.contrib.syndication',
+    'django.contrib.syndication',
     'django.contrib.webdesign',
-    # 'registration',
-    # 'contact_form',
-    # 'profiles',
-    # 'forum',
-    # 'djapian',
 )
 
-AUTH_PROFILE_MODULE = 'profiles.UserProfile'
+# AUTH_PROFILE_MODULE = 'profiles.UserProfile'
 
 LOGIN_REDIRECT_URL = '/'
 
-ACCOUNT_ACTIVATION_DAYS = 7
+# ACCOUNT_ACTIVATION_DAYS = 7
 
-DEBUG_TOOLBAR_PANELS = (
-    'debug_toolbar.panels.version.VersionDebugPanel',
-    'debug_toolbar.panels.sql.SQLDebugPanel',
-)
+# COMMENTS_APP = 'my_comment_app'
+
+#DEBUG_TOOLBAR_PANELS = (
+#    'debug_toolbar.panels.version.VersionDebugPanel',
+#    'debug_toolbar.panels.sql.SQLDebugPanel',
+#)
