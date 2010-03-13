@@ -1,0 +1,51 @@
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> -->
+<!DOCTYPE html>
+{% load webdesign %}
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<title>{% block title %}{% endblock %}Marco's Modern Life</title>
+	{% block extrahead %}{% endblock %}
+</head>
+<body>
+	<header>
+		<aside id="logo">
+			<a href="/">Home</a>
+		</aside>
+		<aside id="user">
+			{% if user.is_authenticated %}
+            <a href="/profiles/{{ user.username }}">{{ user.username }}</a>
+            <a href="/accounts/logout">Logout</a>
+            {% else %}
+            <a href="/accounts/login">Login</a>
+            <a href="/accounts/register">Register</a>
+            {% endif %}
+		</aside>
+        <aside class="searchbar">
+            <input type="text" size="25" />
+            <input type="submit" value="Search" />
+        </aside>
+	</header>
+	
+	<nav>
+	</nav>
+	
+	<section id="main">
+        {% block path %}{% endblock %}
+        {% block content %}{% lorem %}{% endblock %}
+        <section class="push"></section>
+	</section>
+	
+	{% if debug %}
+	{% endif %}
+	
+	<footer>
+		&copy; 2010 Marco's Modern Life
+	</footer>
+	
+	<noscript>
+	</noscript>
+</body>
+</html>
