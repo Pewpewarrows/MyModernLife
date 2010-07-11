@@ -1,6 +1,10 @@
 My personal blog, with the intention of making it into a generic and custom 
 django CMS that I can use as a foundation for any new projects
 
+DEPENDENCIES:
+- PIL
+- BeautifulSoup
+
 TODO:
 0. Keep this list for internal reminders.  Big-ticket stuff on GitHub.
 1. Change automagically from HTML5 -> 4 if user is on a legacy browser.

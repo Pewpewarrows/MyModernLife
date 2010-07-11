@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}New Post | {% endblock %}
+
+{% block content %}
+
+<div id="content">
+    <h1>Create a New Post</h1>
+
+    <form action="." method="POST">
+        <table>
+            {{ post_form.as_table }}
+            <td></td>
+            <td>
+            	<input type="submit" value="Create">
+  				<a href="{{ blog.get_absolute_url }}">Cancel</a>
+            </td>
+        </table>
+    </form>
+</div>
+
+{% endblock %}

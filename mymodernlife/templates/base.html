@@ -1,49 +1,64 @@
-<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> -->
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 {% load webdesign %}
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
+	
+	<!--<link rel="stylesheet" type="text/css" href="/static/css/reset.css"/>-->
+	<link rel="stylesheet" type="text/css" href="/static/css/scaffold.css"/>
+	<link rel="stylesheet" type="text/css" href="/static/css/mymodernlife.css"/>
+	
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> 
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script> 
+	
 	<title>{% block title %}{% endblock %}Marco's Modern Life</title>
 	{% block extrahead %}{% endblock %}
 </head>
 <body>
-	<header>
-		<aside id="logo">
-			<a href="/">Home</a>
-		</aside>
-		<aside id="user">
+<div id="wrapper">
+	<div id="header">
+		<div id="logo">
+			<a href="/"><img src="/static/images/django.png" width="240" height="109" alt="Home"/></a> 
+		</div>
+		<div id="user-account">
 			{% if user.is_authenticated %}
-            <a href="/profiles/{{ user.username }}">{{ user.username }}</a>
-            <a href="/accounts/logout">Logout</a>
+            <a href="/profiles/{{ user.username }}/">{{ user.username }}</a>
+            <a href="/admin/">| Admin</a>
+            <a href="/accounts/logout/">| Logout</a>
             {% else %}
-            <a href="/accounts/login">Login</a>
-            <a href="/accounts/register">Register</a>
+            <a href="/accounts/login/">Login</a>
+            <a href="/accounts/register/">| Register</a>
             {% endif %}
-		</aside>
-        <aside class="searchbar">
+		</div>
+        <div id="searchbar">
             <input type="text" size="25" />
             <input type="submit" value="Search" />
-        </aside>
-	</header>
+        </div>
+        <div class="clear"></div> 
+	</div>
 	
-	<nav>
-	</nav>
+	<div id="nav">
+		<ul> 
+			<li><a href="/blog/">Blogs</a></li> 
+		</ul> 
+	</div>
 	
-	<section id="main">
+	<div id="main">
         {% block path %}{% endblock %}
         {% block content %}{% lorem %}{% endblock %}
-        <section class="push"></section>
-	</section>
+	</div>
 	
 	{% if debug %}
 	{% endif %}
 	
-	<footer>
+    <div class="push"></div>
+</div>
+	
+	<div id="footer">
 		&copy; 2010 Marco's Modern Life
-	</footer>
+	</div>
 	
 	<noscript>
 	</noscript>

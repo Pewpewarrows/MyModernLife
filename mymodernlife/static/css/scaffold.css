@@ -1,0 +1,212 @@
+/*
+ * Scaffolding
+ *
+ * This CSS file is meant to be a portable comapnion to a reset stylesheet.
+ * Drop this onto any new site after the reset, and you have a nice cross-
+ * browser implementation of all default types of HTML tags, along with a
+ * tidy library of utility classes and IDs as a baseline for any theme.
+ *
+ * Thus, at the end of the development cycle before minifying and condensing,
+ * you should have:
+ *		- reset.css
+ *		- scaffold.css (this)
+ *		- [site_name].css (all site-specific changes)
+ *		- [browser-version].css (for each browser you need tweaks in, commonly IE)
+ *
+ * General CSS rule declarations are as follows:
+ *		1. display &| floats
+ * 		2. size
+ *		3. position
+ *		4. margin &| padding
+ *		5. borders
+ *		6. backgrounds
+ *		7. font & text
+ */
+ 
+/*
+ * Default HTML Tags
+ */
+ 
+html {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	height: 100%;
+	margin: 0;
+	background-color: #FFF;
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 13px;
+	line-height: 18px;
+	color: #000;
+}
+
+pre {
+	padding: 10px;
+	background-color: #eee;
+	font-size: 12px;
+}
+
+a:link {
+	color: RoyalBlue;
+	text-decoration: none;
+}
+
+a:visited {
+	color: grey;
+}
+
+a:hover {
+	color: Crimson;
+}
+
+fieldset {
+	border: 1px solid #CCC;
+}
+
+td, th {
+	padding: 8px 12px;
+	border-bottom: 1px solid #EEE;
+	vertical-align: top;
+	text-align: left;
+}
+
+input[type=text], input[type=password] {
+	width: 20em;
+}
+
+input[type=submit] {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: #000;
+  display: inline-block;
+  font-size: 13px;
+  letter-spacing: normal;
+  line-height: normal;
+  padding: 2px 6px 2px 6px;
+  text-decoration: none;
+}
+
+textarea {
+	width: 610px;
+	height: 120px;
+}
+
+
+/*
+ * Utility Classes
+ */
+ 
+.left { float: left; }
+.right { float: right; }
+.clear { clear: both; }
+
+.push { height: 50px; } /* must be the same height as the footer */
+
+
+/*
+ * Extras for a Default "Theme"
+ */
+ 
+ body {
+	background-color: #092e20;
+	color: white;
+ }
+ 
+ a:link, a:visited {
+	color: #AB5603;
+ }
+ 
+ #wrapper {
+ 	width: 960px;
+ 	min-height: 100%;
+ 	height: auto !important;
+ 	height: 100%;
+ 	margin: 0 auto -50px;	/* the bottom margin is the negative of the footer's height */
+ }
+ 
+ #header {
+ 	height: 120px;
+ 	position: relative;
+ 	padding-top: 8px;
+ }
+ 
+ #logo {
+ 	padding: 2px;
+ }
+ 
+ #user-account {
+ 	position: absolute;
+ 	top: 8px;
+ 	right: 0;
+ }
+ 
+ #user-account a {
+ 	color: #FFC757;
+ }
+ 
+ #searchbar {
+ 	position: absolute;
+ 	bottom: 8px;
+ 	right: 0;
+ }
+ 
+ #searchbar input[type=text] {
+ 	width: 200px;
+ }
+ 
+ #nav {
+ 	border-top: 1px solid #CCC;
+ 	border-bottom: 1px solid #CCC;
+ 	background-color: #92cc47;
+ }
+ 
+ #nav ul {
+ 	display: block;
+ 	height: 40px;
+ 	margin: 0;
+ 	padding: 0;
+ 	list-style: none;
+ }
+ 
+ #nav li {
+	display: block;
+	float: left;
+ 	padding: 5px;
+ }
+ 
+ #nav li > a {
+	display: block;
+	float: left;
+	padding: 6px 20px 0;
+ 	color: white;
+ 	text-align: center;
+ 	font-size: 16px;
+ 	font-weight: bold;
+ }
+ 
+ #sidebar {
+ }
+ 
+ #main {
+ 	margin-top: 10px;
+ 	padding: 20px;
+ 	background-color: white;
+ 	color: #092E20;
+ }
+ 
+ #main a:hover {
+	background-color: #E0FFB8;
+	color: #222;
+ }
+ 
+ #content {
+ }
+ 
+ #footer {
+ 	width: 960px;
+ 	height: 50px;
+ 	margin: 0 auto;
+ }

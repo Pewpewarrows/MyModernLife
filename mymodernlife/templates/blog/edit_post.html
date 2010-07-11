@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Post | {% endblock %}
+
+{% block content %}
+
+<div id="content">
+    <h1>Editing: {{ post }}</h1>
+
+    <form action="." method="POST">
+        <table>
+            {{ post_form.as_table }}
+            <td></td>
+            <td>
+            	<input type="submit" value="Edit">
+  				<a href="{{ post.get_absolute_url }}">Cancel</a>
+            </td>
+        </table>
+    </form>
+</div>
+
+{% endblock %}

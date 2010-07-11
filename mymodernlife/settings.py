@@ -4,13 +4,13 @@ import os.path
 import socket
 from settings_auth import *
 
-DEVELOPMENT_MODE = (socket.gethostname() == "Marco-PC")
+DEVELOPMENT_MODE = (socket.gethostname() == 'BEAST')
 
 if DEVELOPMENT_MODE:
     DEBUG = TEMPLATE_DEBUG = True
     PREPEND_WWW = False
     USE_ETAGS = False
-    CACHE_BACKEND = "dummy:///"
+    CACHE_BACKEND = 'dummy:///'
 else:
     DEBUG = TEMPLATE_DEBUG = False
     PREPEND_WWW = True
@@ -66,7 +66,7 @@ MEDIA_URL = '/static/'
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/static/admin/'
+ADMIN_MEDIA_PREFIX = MEDIA_URL + 'admin/'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -115,6 +115,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.syndication',
     'django.contrib.webdesign',
+    # Prometheus
+    'blog',
 )
 
 # AUTH_PROFILE_MODULE = 'profiles.UserProfile'
