@@ -2,10 +2,9 @@
 
 {% block title %}Blog Index | {% endblock %}
 
-{% block content %}
+{% block h1 %}List of Blogs{% endblock %}
 
-<div id="content">
-    <h1>List of Blogs</h1>
+{% block content %}
 
 	<ul>
     {% for blog in blogs %}
@@ -16,6 +15,5 @@
     </ul>
     
     <a href="{% url create_blog %}">Start a New Blog</a>
-</div>
 
 {% endblock %}

@@ -2,10 +2,10 @@
 
 {% block title %}{{ blog.title }} | {% endblock %}
 
+{% block h1 %}{{ blog.title }}{% endblock %}
+
 {% block content %}
 
-<div id="content">
-    <h1>{{ blog.title }}</h1>
     {% if user.username == blog.owner.username %}
 	<a id="delete-blog" href="{% url delete_blog blog.slug %}">Delete</a>
 	<br/>
@@ -22,7 +22,10 @@
     <a href="{% url create_post blog.slug %}">Create a New Post</a>
 	<br/>
 	<a href="{% url blog_list %}">View other blogs</a>
-</div>
+
+{% endblock %}
+
+{% block extrascript %}
 
 <script type="text/javascript">
 $(function() {

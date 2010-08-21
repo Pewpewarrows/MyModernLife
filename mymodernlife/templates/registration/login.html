@@ -2,10 +2,9 @@
 
 {% block title %}Login | {% endblock %}
 
-{% block content %}
+{% block h1 %}Login{% endblock %}
 
-<div id="content">
-    <h1>Login</h1>
+{% block content %}
 
     {% if form.errors %}
     <ul>
@@ -21,6 +20,5 @@
         </table>
         <input type="hidden" name="next" value="{{ next }}" />
     </form>
-</div>
 
 {% endblock %}

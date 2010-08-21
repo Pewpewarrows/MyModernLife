@@ -1,0 +1,99 @@
+# Allow symbolic links to places beyond the web directory
+Options FollowSymLinks
+# Prevent 404s from folders that do not exist
+Options -MultiViews
+# Prevent folder browsing w/o a default document
+Options -Indexes
+
+# Turn on URL rewriting
+RewriteEngine On
+
+# ???
+# RewriteRule ^([^.]+)$ $1.html [QSA]
+
+# Rules for Versioned Static Files
+# http://particletree.com/notebook/automatically-version-your-css-and-javascript-files/
+RewriteRule ^(.+)\.(\d+)\.(js|css|jpg|gif|png)$ $1.$3 [L]
+
+# Allow any files that exist to be displayed directly
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Rewrite all other URLs to be passed to index.php
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Force the latest IE version, in various cases when it may fall back to IE7 mode
+#  github.com/rails/rails/commit/123eb25#commitcomment-118920
+# Use ChromeFrame if it's installed for a better experience for the poor IE folk
+<IfModule mod_setenvif.c>
+  <IfModule mod_headers.c>
+    BrowserMatch MSIE ie
+    Header set X-UA-Compatible "IE=Edge,chrome=1" env=ie
+  </IfModule>
+</IfModule>
+
+# gzip compression.
+<IfModule mod_deflate.c>
+
+# html, xml, css, and js:
+	AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/x-javascript text/javascript application/javascript application/json 
+
+# webfonts and svg:
+	<FilesMatch "\.(ttf|otf|eot|svg)$" >
+		SetOutputFilter DEFLATE
+  	</FilesMatch>
+</IfModule>
+
+# Prevent the rare cookie from appearing in a static request
+<IfModule mod_headers.c>
+	<FilesMatch "\.(js|css|png)$" >
+		RequestHeader unset Set-Cookie
+	</FilesMatch>
+</IfModule>
+
+<IfModule mod_expires.c>
+  Header set cache-control: public
+  ExpiresActive on
+
+# Perhaps better to whitelist expires rules? Perhaps.
+  ExpiresDefault                          "access plus 1 month"
+
+# cache.manifest needs re-reqeusts in FF 3.6 (thx Remy ~Introducing HTML5)
+  ExpiresByType text/cache-manifest       "access plus 0 seconds"
+
+# your document html 
+  ExpiresByType text/html                 "access"
+
+# rss feed
+  ExpiresByType application/rss+xml       "access plus 1 hour"
+
+# favicon (cannot be renamed)
+  ExpiresByType image/vnd.microsoft.icon  "access plus 1 week" 
+
+# media: images, video, audio
+  ExpiresByType image/png                 "access plus 1 year"
+  ExpiresByType image/jpg                 "access plus 1 year"
+  ExpiresByType image/jpeg                "access plus 1 year"
+  ExpiresByType video/ogg                 "access plus 1 year"
+  ExpiresByType audio/ogg                 "access plus 1 year"
+  ExpiresByType video/mp4                 "access plus 1 year"
+  
+# webfonts
+  ExpiresByType font/ttf                  "access plus 1 year"
+  ExpiresByType font/woff                 "access plus 1 year"
+  ExpiresByType image/svg+xml             "access plus 1 year"
+  
+# css and javascript
+  ExpiresByType text/css                  "access plus 1 year"
+  ExpiresByType application/javascript    "access plus 1 year"
+  ExpiresByType text/javascript           "access plus 1 year"
+</IfModule>
+
+# Since we're sending far-future expires, we don't need ETags for
+# static content.
+#   developer.yahoo.com/performance/rules.html#etags
+FileETag None
+
+# use utf-8 encoding for anything served text/plain or text/html
+AddDefaultCharset utf-8
+# force utf-8 for a number of file formats
+AddCharset utf-8 .html .css .js .xml .json .rss

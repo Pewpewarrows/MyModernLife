@@ -2,10 +2,9 @@
 
 {% block title %}New Post | {% endblock %}
 
-{% block content %}
+{% block h1 %}Create a New Post{% endblock %}
 
-<div id="content">
-    <h1>Create a New Post</h1>
+{% block content %}
 
     <form action="." method="POST">
         <table>
@@ -17,6 +16,5 @@
             </td>
         </table>
     </form>
-</div>
 
 {% endblock %}

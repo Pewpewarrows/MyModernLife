@@ -13,10 +13,11 @@ urlpatterns = patterns('',
     # (r'^mymodernlife/', include('mymodernlife.foo.urls')),
     # (r'^$', frontpage),
     (r'^$', direct_to_template, {'template': 'homepage.html'}),
-    
+    (r'^demo/$', direct_to_template, {'template': 'demo.html'}),
+
     # Apps
     (r'^blog/', include('apps.blog.urls')),
-    
+
     # Flatpages for tools, this should eventually not be direct_to_template
     # (r'^tools/sc2sim/', direct_to_template, {'template': 'tools/sc2sim.html'}),
 
@@ -26,10 +27,10 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
-    
+
     # (r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap',
     #     {'sitemaps': sitemaps})
-    
+
     # (r'^comments/', include('django.contrib.comments.urls')),
 
     (r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'template_name': 'registration/logout.html'}),

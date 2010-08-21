@@ -17,11 +17,14 @@ TODO:
     - Pass blog ownership to a new user
     - Feeds
     - Linkbacks/Pingbacks/Trackbacks?
+    - Multiple input formats (wsywig, markdown, rest, plaintext, etc)
+    - Import/export tools
+    - pygments for code highlighting
 """
 
 def index(request):
     blogs = Blog.objects.all()
-    
+
     context = {
         'blogs': blogs,
     }
@@ -34,19 +37,19 @@ def create_blog(request):
         if form.is_valid():
             blog = form.save(commit=False)
             slug = generate_slug(blog.title)
-            
+
             conflicts = Blog.objects.filter(slug__startswith=slug)
             if conflicts:
                 slug = get_unique_slug(slug, conflicts)
-            
+
             blog.slug = slug
             blog.owner = request.user
             blog.save()
-            
+
             return redirect('view_blog', blog.slug)
     else:
         form = BlogForm()
-        
+
     context = {
         'blog_form': form,
     }
@@ -55,10 +58,10 @@ def create_blog(request):
 def view_blog(request, slug):
     blog = Blog.objects.filter(slug=slug)
     posts = Post.objects.filter(blog=blog)
-    
+
     if not blog:
         raise Http404
-    
+
     context = {
         'blog': blog[0],
         'posts': posts,
@@ -68,48 +71,48 @@ def view_blog(request, slug):
 @login_required
 def delete_blog(request, slug):
     blog = Blog.objects.filter(slug=slug)
-    
+
     if not blog:
         raise Http404
-    
+
     blog = blog[0]
-    
+
     # Users are only allowed to delete a blog that they own
     if request.user.username != blog.owner.username:
         return redirect('view_blog', blog.slug)
 
     blog.delete()
-    
+
     return redirect(index)
 
 @login_required
 def create_post(request, slug):
     blog = Blog.objects.filter(slug=slug)
-    
+
     if not blog:
         raise Http404
-    
+
     blog = blog[0]
-    
+
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             slug = generate_slug(post.title)
-            
+
             conflicts = Post.objects.filter(slug__startswith=slug)
             if conflicts:
                 slug = get_unique_slug(slug, conflicts)
-            
+
             post.slug = slug
             post.author = request.user
             post.blog = blog
             post.save()
-            
+
             return redirect('view_post', post.created.year, post.get_formatted_month(), post.slug)
     else:
         form = PostForm()
-        
+
     context = {
         'blog': blog,
         'post_form': form,
@@ -119,9 +122,9 @@ def create_post(request, slug):
 def view_post(request, year, month, slug):
     post = Post.objects.filter(created__year=year, created__month=month, slug=slug)
     post = post[0]
-    
+
     blog = Blog.objects.get(id=post.blog.id)
-    
+
     context = {
         'post': post,
         'blog': blog,
@@ -132,13 +135,13 @@ def view_post(request, year, month, slug):
 def edit_post(request, year, month, slug):
     post = Post.objects.filter(created__year=year, created__month=month, slug=slug)
     post = post[0]
-    
+
     blog = Blog.objects.get(id=post.blog.id)
-    
+
     # Users are only allowed to edit their own blog posts
     if request.user.username != post.author.username:
         return redirect('view_post', post.created.year, post.get_formatted_month(), post.slug)
-    
+
     if request.method == 'POST':
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
@@ -146,7 +149,7 @@ def edit_post(request, year, month, slug):
             return redirect('view_post', post.created.year, post.get_formatted_month(), post.slug)
     else:
         form = PostForm(instance=post)
-    
+
     context = {
         'post': post,
         'post_form': form,
@@ -158,13 +161,16 @@ def edit_post(request, year, month, slug):
 def delete_post(request, year, month, slug):
     post = Post.objects.filter(created__year=year, created__month=month, slug=slug)
     post = post[0]
-    
+
     blog = Blog.objects.get(id=post.blog.id)
-    
+
     # Users are only allowed to delete their own blog posts
     if request.user.username != post.author.username:
         return redirect('view_post', post.created.year, post.get_formatted_month(), post.slug)
 
     post.delete()
-    
+
     return redirect('view_blog', blog.slug)
+
+def pingback(request):
+    pass

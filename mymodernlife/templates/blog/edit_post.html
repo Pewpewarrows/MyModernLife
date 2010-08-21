@@ -2,10 +2,9 @@
 
 {% block title %}Edit Post | {% endblock %}
 
-{% block content %}
+{% block h1 %}Editing: {{ post }}{% endblock %}
 
-<div id="content">
-    <h1>Editing: {{ post }}</h1>
+{% block content %}
 
     <form action="." method="POST">
         <table>
@@ -17,6 +16,5 @@
             </td>
         </table>
     </form>
-</div>
 
 {% endblock %}

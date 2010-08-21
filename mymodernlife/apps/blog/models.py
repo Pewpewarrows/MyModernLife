@@ -5,6 +5,8 @@ from django.contrib.auth.models import *
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
+from utils import *
+
 """
 TODO:
     - 'from datetime import datetime' wasn't allowing me to just use datetime.now
@@ -67,6 +69,23 @@ class Post(models.Model):
     
     def __unicode__(self):
         return self.title
+    
+    def save(self):
+        super(Post, self).save()
+        
+        from xmlrpclib import ServerProxy
+        
+        if self.trackback_urls:
+            ping_urls = get_ping_url(self.trackback_urls)
+            
+            if ping_urls:
+                link = self.get_absolute_url()
+                for ping_url in ping_urls:
+                    try:
+                        proxy = ServerProxy(ping_url['ping_url'])
+                        proxy.pingback.ping(link, ping_url['url'])
+                    except:
+                        continue
     
     @models.permalink
     def get_absolute_url(self):

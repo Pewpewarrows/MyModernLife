@@ -9,6 +9,7 @@ TODO:
 
 urlpatterns = patterns('blog.views',
     url(r'^$', 'index', name='blog_list'),
+    url(r'^xml-rpc/$', 'pingback', name='pingback'),
     url(r'^create/$', 'create_blog', name='create_blog'),
     url(r'^(?P<slug>[-\w]+)/$', 'view_blog', name='view_blog'),
     url(r'^(?P<slug>[-\w]+)/delete/$', 'delete_blog', name='delete_blog'),

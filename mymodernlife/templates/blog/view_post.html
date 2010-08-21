@@ -4,10 +4,10 @@
 
 {% block title %}{{ post.title }} | {% endblock %}
 
+{% block h1 %}<a href="{{ post.get_absolute_url }}">{{ post }}</a>{% endblock %}
+
 {% block content %}
 
-<div id="content">
-    <h1><a href="{{ post.get_absolute_url }}">{{ post }}</a></h1>
     By: <a href="/profile/{{ post.author.username }}/">{{ post.author.username }}</a>
     <br/>
     Posted On: {{ post.created|date:'F j, Y, g:i a' }}
@@ -24,7 +24,10 @@
 	
 	<br/>
 	<a href="{{ blog.get_absolute_url }}">View more posts in '{{ blog }}'</a>
-</div>
+
+{% endblock %}
+
+{% block extrascript %}
 
 <script type="text/javascript">
 $(function() {

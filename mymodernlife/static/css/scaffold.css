@@ -10,203 +10,350 @@
  * you should have:
  *		- reset.css
  *		- scaffold.css (this)
+ *		- base_theme.css (a nice default website layout)
  *		- [site_name].css (all site-specific changes)
- *		- [browser-version].css (for each browser you need tweaks in, commonly IE)
  *
  * General CSS rule declarations are as follows:
- *		1. display &| floats
+ *		1. zindex &| display &| visibility &| floats
  * 		2. size
- *		3. position
+ *		3. position &| top/left/right/bottom
  *		4. margin &| padding
  *		5. borders
  *		6. backgrounds
  *		7. font & text
  */
+
+
+/* -----------------------------------
+  			    Header
+ ----------------------------------- */
+
+
+/* -----------------------------------
+  			Page Structure
+ ----------------------------------- */
  
-/*
- * Default HTML Tags
- */
- 
+/* maxvoltar.com/archive/-webkit-font-smoothing */
 html {
 	width: 100%;
 	height: 100%;
+	-webkit-font-smoothing: antialiased;
 }
 
 body {
 	height: 100%;
 	margin: 0;
 	background-color: #FFF;
-	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 13px;
-	line-height: 18px;
-	color: #000;
+	
+	/*
+	 * Sans-serif is the most legible font family on screen, with arial/helvetica
+	 * being the go-to fallbacks in that family.
+	 * 
+	 * Beyond that, just pick your prefered specific font, be it
+	 * Tahoma, Verdana, or Trebuchet MS
+	 */
+	font-family: tahoma, arial, helvetica, sans-serif; /**/
+	/* font-family: verdana, arial, helvetica, sans-serif; /**/
+	/* font-family: "Trebuchet MS", arial, helvetica, sans-serif; /**/
+	
+	/*
+	 * By setting the font to 62.5% of the browser default 16px,
+	 * all further fonts specified in em can be divided by 10 to see in px.
+	 * 
+	 * Example: 1.2em == 12px
+	 */
+	font-size: 62.5%;
+	
+	/* http://meyerweb.com/eric/thoughts/2006/02/08/unitless-line-heights/ */
+	line-height: 1.6;
+	/* http://twitter.com/H_FJ/statuses/11800719859 */
+	color: #444;
 }
 
-pre {
-	padding: 10px;
-	background-color: #eee;
-	font-size: 12px;
+
+/* -----------------------------------
+  			   Headings
+ ----------------------------------- */
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: bold;
+	text-rendering: optimizeLegibility;
 }
 
-a:link {
-	color: RoyalBlue;
-	text-decoration: none;
+h1 { font-size: 250%; }
+h2 { font-size: 220%; }
+h3 { font-size: 190%; }
+h4 { font-size: 160%; }
+h5 { font-size: 130%; }
+h6 { font-size: 100%; }
+
+
+/* -----------------------------------
+  			  Text Styles
+ ----------------------------------- */
+
+p { padding: 2px 0; }
+
+pre, code, kbd, samp, tt {
+	font-family: Consolas, Menlo, Monaco, 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace, serif;
 }
 
-a:visited {
-	color: grey;
+a:hover, a:active { outline: none; }
+a:link, a:active { color: #607890; }
+a:visited { color: grey; }
+a:hover { color: #036; }
+
+/*  j.mp/webkit-tap-highlight-color */
+a:link { -webkit-tap-highlight-color: #FF5E99; } 
+
+small { font-size: 85%; }
+strong, th { font-weight: bold }
+
+sub { vertical-align: sub; font-size: smaller; }
+sup { vertical-align: super; font-size: smaller; }
+
+q:before, q:after {
+	content: '"';
 }
 
-a:hover {
-	color: Crimson;
-}
+ul { margin-left: 15px; }
+ol { margin-left: 15px; list-style-type: decimal; }
 
-fieldset {
-	border: 1px solid #CCC;
-}
-
-td, th {
-	padding: 8px 12px;
-	border-bottom: 1px solid #EEE;
-	vertical-align: top;
-	text-align: left;
-}
-
-input[type=text], input[type=password] {
-	width: 20em;
-}
-
-input[type=submit] {
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  color: #000;
-  display: inline-block;
-  font-size: 13px;
-  letter-spacing: normal;
-  line-height: normal;
-  padding: 2px 6px 2px 6px;
-  text-decoration: none;
-}
-
-textarea {
-	width: 610px;
-	height: 120px;
-}
-
+nav ul { margin: 0; }
 
 /*
- * Utility Classes
+ * Prevent horizontal scrollbars in pre blocks
+ * 
+ * http://www.pathf.com/blogs/2008/05/formatting-quoted-code-in-blog-posts-css21-white-space-pre-wrap/
  */
+pre {
+	white-space: pre; /* CSS2 */
+	white-space: -moz-pre-wrap; /* Mozilla, but let's make this comment really, really, really, really, really, really long to prove our point*/
+	white-space: -hp-pre-wrap; /* HP printers */
+	white-space: -o-pre-wrap; /* Opera 7 */
+	white-space: -pre-wrap; /* Opera 4-6 */
+	white-space: pre-wrap; /* CSS 2.1 */
+	/* Causes Webkit browsers to totally trash whitespace */
+	/* white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
+	word-wrap: break-word; /* IE */
+}
+
+blockquote {
+	display: block;
+	margin: 5px 10px;
+}
+
+/* 
+ * These selection declarations have to be separate.
+ * No text-shadow: twitter.com/miketaylr/status/12228805301 
+ */
+::-moz-selection { background: #3399ff; color:#fff; text-shadow: none; }
+::selection { background: #3399ff; color:#fff; text-shadow: none; } 
+
+
+/* -----------------------------------
+  			  Navigation
+ ----------------------------------- */
+
+
+/* -----------------------------------
+  			    Tables
+ ----------------------------------- */
+
+th, tfoot th, tfoot td { font-weight: bold; }
+
+th, td {
+	padding: 2px 6px;
+}
+
+thead th, thead td, tfoot th, tfoot td { text-align: center; }
+
+td, td img { vertical-align:top; text-align: left; }
+
+
+/* -----------------------------------
+  			    Forms
+ ----------------------------------- */
+
+fieldset {
+	display: inline-block;
+	padding: 5px 10px 10px;
+	border: 1px solid #ccc;
+}
+
+legend {
+	display: block;
+	padding: 0 2px;
+}
+
+/* 
+ * align checkboxes, radios, text inputs, etc with their label
+ * 
+ * tjkdesign.com/ez-css/css/base.css
+ */
+input[type="radio"] { vertical-align: text-bottom; }
+input[type="checkbox"] { vertical-align: bottom; *vertical-align: baseline; }
+input[type="button"], input[type="submit"] { vertical-align: baseline; }
+button { vertical-align: baseline; }
+
+/* hand cursor on clickable input elements */
+label, input[type=button], input[type=submit], button { cursor: pointer; }
+
+/* 
+ * stylish full-width input
+ * 
+ * note that the width % will have to be adjusted based on padding of container
+ */
+input.fill { display: block; width: 98%; }
+
+/* 
+ * make buttons play nice in IE
+ * 
+ * www.viget.com/inspire/styling-the-button-element-in-internet-explorer/ 
+ */
+button { width: auto; overflow: visible; }
+
+button, input[type="button"], input[type="submit"] {
+	display: inline-block;
+	height: 25px;
+	margin: 0;
+	padding: 2px 6px;
+	border: 1px solid #999;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	background-color: #f1f1f1; /* #d6d6d6 */
+}
+
+button:hover, input[type="button"]:hover, input[type="submit"]:hover {
+	border: 1px solid #3c7fb1;
+	background-color: #e8f6fd; /* #afdef8 */
+}
+
+button:active, input[type="button"]:active, input[type="submit"]:active {
+	border: 1px solid #3366cc;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e8f6fd', endColorstr='#afdef8'); /* for IE */
+	background: -webkit-gradient(linear, left top, left bottom, from(#e8f6fd), to(#afdef8)); /* for webkit browsers */
+	background: -moz-linear-gradient(top,  #e8f6fd,  #afdef8); /* for firefox 3.6+ */
+}
+
+input[type="text"], input[type="password"], textarea {
+	border: 1px solid #999;
+}
+
+input[type="text"]:not(:focus):hover, input[type="password"]:not(:focus):hover, textarea:not(:focus):hover {
+	border: 1px solid #3c7fb1;
+}
+
+
+/* -----------------------------------
+  			Utility Classes
+ ----------------------------------- */
  
 .left { float: left; }
 .right { float: right; }
 .clear { clear: both; }
+.hidden { display: none; visibility:hidden; }
 
-.push { height: 50px; } /* must be the same height as the footer */
+.push {
+	z-index: 50;
+	height: 50px; /* must be the same height as the footer */
+	position: relative;
+}
 
-
-/*
- * Extras for a Default "Theme"
- */
- 
- body {
-	background-color: #092e20;
-	color: white;
- }
- 
- a:link, a:visited {
-	color: #AB5603;
- }
- 
- #wrapper {
- 	width: 960px;
- 	min-height: 100%;
- 	height: auto !important;
- 	height: 100%;
- 	margin: 0 auto -50px;	/* the bottom margin is the negative of the footer's height */
- }
- 
- #header {
- 	height: 120px;
- 	position: relative;
- 	padding-top: 8px;
- }
- 
- #logo {
- 	padding: 2px;
- }
- 
- #user-account {
- 	position: absolute;
- 	top: 8px;
- 	right: 0;
- }
- 
- #user-account a {
- 	color: #FFC757;
- }
- 
- #searchbar {
- 	position: absolute;
- 	bottom: 8px;
- 	right: 0;
- }
- 
- #searchbar input[type=text] {
- 	width: 200px;
- }
- 
- #nav {
- 	border-top: 1px solid #CCC;
- 	border-bottom: 1px solid #CCC;
- 	background-color: #92cc47;
- }
- 
- #nav ul {
- 	display: block;
- 	height: 40px;
- 	margin: 0;
- 	padding: 0;
- 	list-style: none;
- }
- 
- #nav li {
+/* self-clearing fix */
+.clearfix:after {
+	content: ".";
 	display: block;
-	float: left;
- 	padding: 5px;
- }
- 
- #nav li > a {
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+.clearfix {
+	display: inline-block;
+}
+
+* html .clearfix { height: 1%; } /* Hides from IE-mac \*/
+.clearfix { display: block; }
+
+/* for image replacement */
+.ir {
 	display: block;
-	float: left;
-	padding: 6px 20px 0;
- 	color: white;
- 	text-align: center;
- 	font-size: 16px;
- 	font-weight: bold;
- }
- 
- #sidebar {
- }
- 
- #main {
- 	margin-top: 10px;
- 	padding: 20px;
- 	background-color: white;
- 	color: #092E20;
- }
- 
- #main a:hover {
-	background-color: #E0FFB8;
-	color: #222;
- }
- 
- #content {
- }
- 
- #footer {
- 	width: 960px;
- 	height: 50px;
- 	margin: 0 auto;
- }
+	text-indent: -9000px;
+	overflow: hidden;
+	background-repeat: no-repeat;
+}
+
+
+/* -----------------------------------
+  			 Browser Hacks
+ ----------------------------------- */
+
+/* Better Image Scaling for IE7+ */
+.ie img {
+	-ms-interpolation-mode: bicubic;
+}
+
+.ie .mod { zoom: 1; }
+
+.ie6 input { vertical-align: text-bottom; }
+.ie8 input[type="radio"] { vertical-align: bottom; }
+
+
+/* -----------------------------------
+  			   Printing
+ ----------------------------------- */
+
+@media print {
+	* { background: transparent !important; color: #444 !important; text-shadow: none; }
+	
+	a, a:visited { color: #444 !important; text-decoration: underline; }
+	
+	a:after { content: " (" attr(href) ")"; } 
+	
+	abbr:after { content: " (" attr(title) ")"; }
+	
+	.ir a:after { content: ""; }  /* Don't show links for images */
+	
+	pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
+	
+	img { page-break-inside: avoid; }
+	
+	@page { margin: 0.5cm; }
+	
+	p, h2, h3 { orphans: 3; widows: 3; }
+	
+	h2, h3 { page-break-after: avoid; }
+}
+
+
+/* -----------------------------------
+  			    Mobile
+ ----------------------------------- */
+
+@media all and (orientation:portrait) { 
+	/* Style adjustments for portrait mode goes here */
+}
+
+@media all and (orientation:landscape) { 
+	/* Style adjustments for landscape mode goes here */
+}
+
+/* 
+ * Grade-A Mobile Browsers (Opera Mobile, iPhone Safari, Android Chrome)
+ * 
+ * www.cloudfour.com/css-media-query-for-mobile-is-fools-gold/
+ */ 
+@media screen and (max-device-width: 480px) {
+	/* Prevent iOS, WinMobile from adjusting font size */
+	html { -webkit-text-size-adjust:none; -ms-text-size-adjust:none; } 
+}
+
+
+/* -----------------------------------
+  			      TV
+ ----------------------------------- */
+
+@media tv {
+}

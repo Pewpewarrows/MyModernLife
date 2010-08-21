@@ -2,21 +2,19 @@
 
 {% block title %}New Blog | {% endblock %}
 
+{% block h1 %}Create a New Blog{% endblock %}
+
 {% block content %}
 
-<div id="content">
-    <h1>Create a New Blog</h1>
-
-    <form action="." method="POST">
-        <table>
-            {{ blog_form.as_table }}
-            <td></td>
-            <td>
-            	<input type="submit" value="Create">
-  				<a href="{% url blog_list %}">Cancel</a>
-            </td>
-        </table>
-    </form>
-</div>
+	<form action="." method="POST">
+	    <table>
+	        {{ blog_form.as_table }}
+	        <td></td>
+	        <td>
+	        	<input type="submit" value="Create">
+			<a href="{% url blog_list %}">Cancel</a>
+	        </td>
+	    </table>
+	</form>
 
 {% endblock %}
