@@ -27,10 +27,9 @@ header {
 	background-color: gainsboro;
 }
 
-header h1 > a {
-	width: 128px;
-	height: 128px;
-	background-image: url('/static/images/php_elephant.png');
+header h1 a img {
+	height: 100px;
+	margin-top: 10px;
 }
 
 nav {
