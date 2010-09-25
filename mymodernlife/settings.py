@@ -1,21 +1,15 @@
-# Django settings for tomeofwow project.
+# Django settings for mymodernlife project.
 
 import os.path
 import socket
-from settings_auth import *
 
-DEVELOPMENT_MODE = (socket.gethostname() == 'BEAST')
-
-if DEVELOPMENT_MODE:
-    DEBUG = TEMPLATE_DEBUG = True
-    PREPEND_WWW = False
-    USE_ETAGS = False
-    CACHE_BACKEND = 'dummy:///'
-else:
-    DEBUG = TEMPLATE_DEBUG = False
-    PREPEND_WWW = True
-    USE_ETAGS = True
-    # CACHE_BACKEND = "memcached://127.0.0.1:11211/"
+# The only settings that ever need to be in a separate file are passwords
+# and Secret Key info. All other local/dev/staging/production logic can just
+# stay in this file.
+try:
+    from settings_auth import *
+except:
+    pass
 
 PROJECT_ROOT = os.path.dirname(__file__)
 
@@ -131,3 +125,24 @@ LOGIN_REDIRECT_URL = '/'
 #    'debug_toolbar.panels.version.VersionDebugPanel',
 #    'debug_toolbar.panels.sql.SQLDebugPanel',
 #)
+
+# Hostname lists for local/dev/staging/production machines
+SERVERS = (
+    # ('foo', 'DEV'),
+    # ('bar', 'STAGING'),
+    # ('baz', 'PROD'),
+)
+SERVER_TYPE = [v for k, v in SERVERS if socket.gethostname() == k]
+if not SERVER_TYPE:
+    SERVER_TYPE = 'LOCAL'
+
+if SERVER_TYPE == 'LOCAL':
+    DEBUG = TEMPLATE_DEBUG = True
+    PREPEND_WWW = False
+    USE_ETAGS = False
+    CACHE_BACKEND = 'dummy:///'
+else:
+    DEBUG = TEMPLATE_DEBUG = False
+    PREPEND_WWW = True
+    USE_ETAGS = True
+    # CACHE_BACKEND = "memcached://127.0.0.1:11211/"
