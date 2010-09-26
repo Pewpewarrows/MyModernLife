@@ -9,12 +9,12 @@ TODO:
     - don't strip out any tags whatsoever from <code> and/or <pre> tags so that
       blog posts can actually display code snippets (still htmlencode them though!)
     - in fact, don't strip any tags at all, this function should just decide what
-      tags to htmlencode or not
+      tags to htmlencode or not, only attrs should be stripped
 """
 
 register = template.Library()
 
-def sanitize(value, allowed_tags='p i strong b u a:href h1 h2 h3 blockquote pre code img:src:width:height br ul ol li'):
+def sanitize(value, allowed_tags='div:class span:class p i strong b u a:href h1 h2 h3 blockquote pre code img:src:width:height br ul ol li'):
     """
     Argument should be in form 'tag1:attr1:attr2 tag2:attr1 tag3', where tags
     are allowed HTML tags, and attrs are the allowed attributes for that tag.

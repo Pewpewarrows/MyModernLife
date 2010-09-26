@@ -1,9 +1,12 @@
 import datetime
 import re
+from markdown import markdown
+
 from django.db import models
 from django.contrib.auth.models import *
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
+from django.utils.html import escape
 
 from utils import *
 
@@ -16,10 +19,20 @@ TODO:
 
 # The types of microblog posts that can exist
 MICRO_TYPES = (
-    ('L', 'Link'),
+    ('L', 'link'),
     ('I', 'image'),
     ('V', 'video'),
     ('S', 'song'),
+)
+
+# The kinds of markup a post can have
+MARKUP_TYPES = (
+    ('B', 'bbcode'),
+    ('H', 'html'),
+    ('M', 'markdown'),
+    ('O', 'oembed'),
+    ('P', 'plaintext'),
+    ('R', 'ReST'),
 )
 
 """
@@ -62,7 +75,11 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique_for_date='created')
     content = models.TextField()
-    teaser = models.TextField(max_length=255, blank=True)
+    markup = models.CharField(max_length=1, choices=MARKUP_TYPES, default='P')
+    # I'd rather use disk space over CPU cycles for now...
+    content_html = models.TextField()
+    # ...but slicing is cheap, so I won't bother storing teasers.
+    trackback_urls = []
     
     class Meta:
         ordering = ('-created',)
@@ -71,6 +88,14 @@ class Post(models.Model):
         return self.title
     
     def save(self):
+        if self.markup == 'M':
+            # Should I have (force_linenos=True) ?
+            self.content_html = markdown(self.content, ['codehilite'], 'escape')
+        elif self.markup == 'P':
+            self.content_html = escape(self.content)
+        else:
+            self.content_html = self.content
+            
         super(Post, self).save()
         
         from xmlrpclib import ServerProxy
@@ -97,6 +122,11 @@ class Post(models.Model):
         
     def get_formatted_month(self):
         return '%02d' % self.created.month
+        
+    def teaser(self):
+        # TODO: actually figure out how to give a teaser of the first paragraph
+        # without breaking html tags or code blocks, etc
+        return self.content_html
 
 """
 MicroBlogging basically entails just a link to a generic URL, Video, Image,
@@ -115,17 +145,3 @@ class MicroPost(Post):
     type = models.CharField(max_length=1, choices=MICRO_TYPES)
     link = models.URLField()
     comment = models.TextField(max_length=255)
-
-
-def generate_slug(title):
-    slug = title.lower()
-    slug = re.sub(r'[^(a-z|\s)]', '', slug)
-    slug = re.sub(r'\s', '-', slug)
-    
-    if len(slug) > 20:
-        if slug[19] == '-':
-            slug = slug[:19]
-        else:
-            slug = slug[:20]
-    
-    return slug

@@ -15,30 +15,15 @@
     <br/>
 	<a href="{% url edit_post post.created.year post.get_formatted_month post.slug %}">Edit this post</a>
 	<br/>
-	<a id="delete-post" href="{% url delete_post post.created.year post.get_formatted_month post.slug %}">Delete</a>
+    <form action="{% url delete_post post.created.year post.get_formatted_month post.slug %}" method="post">
+	    <input type="submit" id="delete-post" value="Delete"/>
+	</form>
 	{% endif %}
-    <br/><br/>
+    <br/>
 
-	<div id="post-teaser">{{ post.teaser }}</div>
-	<div id="post-content">{{ post.content|sanitize|safe }}</div>
+	<div id="post-content">{{ post.content_html|sanitize|safe }}</div>
 	
 	<br/>
 	<a href="{{ blog.get_absolute_url }}">View more posts in '{{ blog }}'</a>
-
-{% endblock %}
-
-{% block extrascript %}
-
-<script type="text/javascript">
-$(function() {
-	$('#delete-post').click(function() {
-		if (confirm('Are you sure you want to delete this post?')) {
-			location.href = this.href;
-		} else {
-			return false;
-		}
-	});
-});
-</script>
 
 {% endblock %}

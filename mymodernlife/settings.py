@@ -17,7 +17,6 @@ DEFAULT_FROM_EMAIL = 'webmaster@marcosmodernlife.com'
 
 ADMINS = (
     ('Marco Chomut', 'marco.chomut+modernlife@gmail.com'),
-    # ('Your Name', 'your_email@domain.com'),
 )
 
 MANAGERS = ADMINS
@@ -78,7 +77,7 @@ MIDDLEWARE_CLASSES = (
     # 'django.contrib.FetchFromCacheMiddleware',
     'django.contrib.csrf.middleware.CsrfMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    # 'django.contrib.messages.middleware.MessageMiddleware',     # Requires 1.2
+    'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
     'django.middleware.doc.XViewMiddleware',
@@ -93,6 +92,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    # Included modules
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.auth',
@@ -102,13 +102,16 @@ INSTALLED_APPS = (
     'django.contrib.flatpages',
     'django.contrib.humanize',
     'django.contrib.markup',
-    # 'django.contrib.messages',    # Requires 1.2
+    'django.contrib.messages',
     'django.contrib.redirects',
     'django.contrib.sessions',
     'django.contrib.sitemaps',
     'django.contrib.sites',
     'django.contrib.syndication',
     'django.contrib.webdesign',
+    
+    # Third-Party
+    
     # Prometheus
     'blog',
 )

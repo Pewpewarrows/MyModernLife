@@ -15,6 +15,24 @@ def get_unique_slug(slug, conflicts):
         else:
             num += 1
 
+def generate_slug(title):
+    slug = title.lower()
+    slug = re.sub('[^\w\d\s]', '', slug)
+    slug = slug.strip()
+    slug = re.sub('\s+', '-', slug)
+    
+    # Slugs ending in a hyphen just look ugly
+    if len(slug) > 20:
+        if slug[19] == '-':
+            slug = slug[:19]
+        else:
+            slug = slug[:20]
+    # Account for possibly everything being stripped
+    elif len(slug) == 0:
+        slug = 'default' # Should there be a better filler text, or reject?
+        
+    return slug
+
 """
 http://tech.karolzielinski.com/pingback-pinging-other-sites-in-django
     
