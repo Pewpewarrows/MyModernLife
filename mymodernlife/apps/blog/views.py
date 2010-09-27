@@ -15,17 +15,22 @@ TODO:
     - Even better: have contributors be a group instead of users list?
     - Make this even more portable: stick templates as a parameter
     - Pass blog ownership to a new user
-    - Linkbacks/Pingbacks/Trackbacks?
+    - User-selectable default markup type for posts
+    - Linkbacks/Pingbacks/Trackbacks
     - Import/export tools
+    - Draft/Published status
+    - Publishing scheduler
+    - Support MetaWeblog API
+    - XML-RPC MT API (Movable Type)
+    - Discovery Pinging (Ping-o-matic, Google BlogSearch (in p-o-m))
+    - (looks like Technorati no longer accepts pings)
+    - Received Trackbacks: check that our link is in it to reduce spam
+    - Archive by day
+    - Next/Previous post names and links
+    - Author archive pages to see list of posts cross-blogs
+    - Group-restricted viewing privileges on specific blogs?
+    - Paginate lists?
 """
-
-def index(request):
-    blogs = Blog.objects.all()
-
-    context = {
-        'blogs': blogs,
-    }
-    return render_to_response('blog/index.html', context, RequestContext(request))
 
 @login_required
 def create_blog(request):
@@ -54,11 +59,9 @@ def create_blog(request):
 
 def view_blog(request, slug):
     blog = get_object_or_404(Blog, slug=slug)
-    posts = Post.objects.filter(blog=blog)
 
     context = {
         'blog': blog,
-        'posts': posts,
     }
     return render_to_response('blog/view_blog.html', context, RequestContext(request))
 
@@ -77,12 +80,7 @@ def delete_blog(request, slug):
 
 @login_required
 def create_post(request, slug):
-    blog = Blog.objects.filter(slug=slug)
-
-    if not blog:
-        raise Http404
-
-    blog = blog[0]
+    blog = get_object_or_404(Blog, slug=slug)
 
     if request.method == 'POST':
         form = PostForm(request.POST)
@@ -98,6 +96,9 @@ def create_post(request, slug):
             post.author = request.user
             post.blog = blog
             post.save()
+            
+            # Uncomment once the linkback functionality is finished
+            # post.send_pingbacks()
 
             return redirect('view_post', post.created.year, post.get_formatted_month(), post.slug)
     else:
@@ -110,23 +111,17 @@ def create_post(request, slug):
     return render_to_response('blog/create_post.html', context, RequestContext(request))
 
 def view_post(request, year, month, slug):
-    post = Post.objects.filter(created__year=year, created__month=month, slug=slug)
-    post = post[0]
-
-    blog = Blog.objects.get(id=post.blog.id)
+    # This isn't a generic view because I intend to fetch related posts later on
+    post = get_object_or_404(Post, created__year=year, created__month=month, slug=slug)
 
     context = {
         'post': post,
-        'blog': blog,
     }
     return render_to_response('blog/view_post.html', context, RequestContext(request))
 
 @login_required
 def edit_post(request, year, month, slug):
-    post = Post.objects.filter(created__year=year, created__month=month, slug=slug)
-    post = post[0]
-
-    blog = Blog.objects.get(id=post.blog.id)
+    post = get_object_or_404(Post, created__year=year, created__month=month, slug=slug)
 
     # Users are only allowed to edit their own blog posts
     if request.user.username != post.author.username:
@@ -143,17 +138,13 @@ def edit_post(request, year, month, slug):
     context = {
         'post': post,
         'post_form': form,
-        'blog': blog,
     }
     return render_to_response('blog/edit_post.html', context, RequestContext(request))
 
 @login_required
 def delete_post(request, year, month, slug):
     if request.method == 'POST':
-        post = Post.objects.filter(created__year=year, created__month=month, slug=slug)
-        post = post[0]
-
-        blog = Blog.objects.get(id=post.blog.id)
+        post = get_object_or_404(Post, created__year=year, created__month=month, slug=slug)
 
         # Users are only allowed to delete their own blog posts
         if request.user.username != post.author.username:
@@ -161,7 +152,7 @@ def delete_post(request, year, month, slug):
 
         post.delete()
 
-    return redirect('view_blog', blog.slug)
+    return redirect('view_blog', post.blog.slug)
 
 def pingback(request):
     pass

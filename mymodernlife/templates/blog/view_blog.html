@@ -14,7 +14,7 @@
 	{% endif %}
 
 	<ul>
-    {% for post in posts %}
+    {% for post in blog.posts.all %}
     <li><a href="{{ post.get_absolute_url }}">{{ post }}</a></li>
     {% empty %}
     <li>There don't appear to be any posts yet!</li>

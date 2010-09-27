@@ -11,7 +11,7 @@ try:
 except:
     pass
 
-PROJECT_ROOT = os.path.dirname(__file__)
+PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
 
 DEFAULT_FROM_EMAIL = 'webmaster@marcosmodernlife.com'
 
@@ -65,8 +65,17 @@ ADMIN_MEDIA_PREFIX = MEDIA_URL + 'admin/'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',
     'django.template.loaders.app_directories.load_template_source',
-#     'django.template.loaders.eggs.load_template_source',
+    # 'django.template.loaders.eggs.load_template_source',
 )
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.auth',
+    'django.core.context_processors.media',
+    'django.core.context_processors.request',
+)
+
+if USE_I18N:
+    TEMPLATE_CONTEXT_PROCESSORS += ('django.core.context_processors.i18n',)
 
 MIDDLEWARE_CLASSES = (
     # 'django.middleware.cache.UpdateCacheMiddleware', # Must be first
@@ -82,7 +91,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
     'django.middleware.doc.XViewMiddleware',
     # 'django.middleware.transaction.TransactionMiddleware',    # Needed?
-    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'mymodernlife.urls'
@@ -91,8 +99,15 @@ TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT, "templates"),
 )
 
+# Alternative:
+"""
+TEMPLATE_DIRS = ()
+for root, dirs, files in os.walk(PROJECT_PATH):
+    if 'templates' in dirs: TEMPLATE_DIRS += (os.path.join(root, 'templates'),)
+"""
+
 INSTALLED_APPS = (
-    # Included modules
+    # Included in Django
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.auth',
@@ -114,6 +129,8 @@ INSTALLED_APPS = (
     
     # Prometheus
     'blog',
+    
+    # Project-specific
 )
 
 # AUTH_PROFILE_MODULE = 'profiles.UserProfile'
@@ -144,6 +161,9 @@ if SERVER_TYPE == 'LOCAL':
     PREPEND_WWW = False
     USE_ETAGS = False
     CACHE_BACKEND = 'dummy:///'
+    # TEMPLATE_CONTEXT_PROCESSORS += ('django.core.context_processors.debug',)
+    # MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+    # INSTALLED_APPS += ('debug_toolbar',)
 else:
     DEBUG = TEMPLATE_DEBUG = False
     PREPEND_WWW = True

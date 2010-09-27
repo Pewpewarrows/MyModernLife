@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Blog Index | {% endblock %}
+
+{% block h1 %}List of Blogs{% endblock %}
+
+{% block content %}
+
+	<ul>
+    {% for blog in object_list %}
+    <li><a href="{{ blog.get_absolute_url }}">{{ blog }}</a></li>
+    {% empty %}
+    <li>There don't appear to be any blogs yet!</li>
+    {% endfor %}
+    </ul>
+    
+    <a href="{% url create_blog %}">Start a New Blog</a>
+
+{% endblock %}

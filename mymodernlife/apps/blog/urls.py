@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.conf.urls.defaults import *
 from django.views.generic.simple import direct_to_template
+from django.views.generic.list_detail import object_list
 from django.views.generic.create_update import delete_object
 from django.core.urlresolvers import reverse
 from django.utils.functional import lazy
@@ -11,14 +12,18 @@ from feeds import *
 # Fixes the circular dependency issue of using reverse in a urlconf
 reverse_lazy = lazy(reverse, str)
 
+blog_dict = {
+    'queryset': Blog.objects.all(),
+}
+
 """
 TODO:
     - generic date-based views
 """
 
 urlpatterns = patterns('blog.views',
-    url(r'^$', 'index', name='blog_list'),
-    (r'latest/feed/$', AllPostFeed(reverse_lazy('blog_list'))),
+    url(r'^$', object_list, blog_dict, name='blog_list'),
+    url(r'^latest/feed/$', AllPostFeed(reverse_lazy('blog_list'))),
     url(r'^xml-rpc/$', 'pingback', name='pingback'),
     url(r'^create/$', 'create_blog', name='create_blog'),
     url(r'^(?P<slug>[-\w]+)/$', 'view_blog', name='view_blog'),

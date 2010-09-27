@@ -45,13 +45,12 @@ Returns a dictionary of urls to their respective pingback url, if it exists.
 def get_ping_url(trackback_urls):
     PINGBACK = re.compile('<link rel="pingback" href="([^" ]+)"="" ?="">')
     ping_url = None
-    split_urls = trackback_urls.split(';')
     urls = []
     
-    if not split_urls:
+    if not trackback_urls:
         return None
         
-    for url in split_urls:
+    for url in trackback_urls:
         urls_dict = {}
         url = url.strip()
         if not url:

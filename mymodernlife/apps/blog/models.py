@@ -26,6 +26,7 @@ MICRO_TYPES = (
 )
 
 # The kinds of markup a post can have
+# textile?
 MARKUP_TYPES = (
     ('B', 'bbcode'),
     ('H', 'html'),
@@ -70,8 +71,9 @@ onto any model really.
 """
 class Post(models.Model):
     author = models.ForeignKey(User)
+    # UTC, local time, timezone?
     created = models.DateTimeField('date posted', default=datetime.datetime.now)
-    blog = models.ForeignKey(Blog)
+    blog = models.ForeignKey(Blog, related_name='posts')
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique_for_date='created')
     content = models.TextField()
@@ -79,7 +81,6 @@ class Post(models.Model):
     # I'd rather use disk space over CPU cycles for now...
     content_html = models.TextField()
     # ...but slicing is cheap, so I won't bother storing teasers.
-    trackback_urls = []
     
     class Meta:
         ordering = ('-created',)
@@ -97,20 +98,6 @@ class Post(models.Model):
             self.content_html = self.content
             
         super(Post, self).save()
-        
-        from xmlrpclib import ServerProxy
-        
-        if self.trackback_urls:
-            ping_urls = get_ping_url(self.trackback_urls)
-            
-            if ping_urls:
-                link = self.get_absolute_url()
-                for ping_url in ping_urls:
-                    try:
-                        proxy = ServerProxy(ping_url['ping_url'])
-                        proxy.pingback.ping(link, ping_url['url'])
-                    except:
-                        continue
     
     @models.permalink
     def get_absolute_url(self):
@@ -127,6 +114,33 @@ class Post(models.Model):
         # TODO: actually figure out how to give a teaser of the first paragraph
         # without breaking html tags or code blocks, etc
         return self.content_html
+        
+    def send_pingbacks(self):
+        from xmlrpclib import ServerProxy
+        from BeautifulSoup import BeautifulSoup, SoupStrainer
+        
+        trackback_urls = []
+        
+        # We use SoupStrainer to avoid having to parse the entire document
+        for link in BeautifulSoup(self.content_html, parseOnlyThese=SoupStrainer('a')):
+            if link.has_key('href'):
+                href = link['href'].strip()
+                # I suppose this is a naive approach to internal vs external links
+                # should eventually fix this up...
+                if href[0] != '/':
+                    trackback_urls.append(href)
+                
+        if trackback_urls:
+            ping_urls = get_ping_url(trackback_urls)
+            
+            if ping_urls:
+                link = post.get_absolute_url()
+                for ping_url in ping_urls:
+                    try:
+                        proxy = ServerProxy(ping_url['ping_url'])
+                        proxy.pingback.ping(link, ping_url['url'])
+                    except:
+                        continue
 
 """
 MicroBlogging basically entails just a link to a generic URL, Video, Image,

@@ -24,6 +24,6 @@
 	<div id="post-content">{{ post.content_html|sanitize|safe }}</div>
 	
 	<br/>
-	<a href="{{ blog.get_absolute_url }}">View more posts in '{{ blog }}'</a>
+	<a href="{{ post.blog.get_absolute_url }}">View more posts in '{{ post.blog }}'</a>
 
 {% endblock %}

@@ -19,6 +19,6 @@ class AllPostFeed(Feed):
     def item_description(self, item):
         return item.teaser()
 
-# TODO: blog-specific feeds
+# TODO: blog-specific feeds, and tag-specific feeds (possibly both together as well)
 class BlogPostFeed(Feed):
     pass
