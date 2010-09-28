@@ -1,12 +1,20 @@
 from django.conf import settings
 from django.conf.urls.defaults import *
 from django.views.generic.simple import direct_to_template
+from django.contrib.sitemaps import FlatPageSitemap
 
 # from mymodernlife.views import frontpage
+from apps.blog.sitemaps import *
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
+
+sitemaps = {
+    'flatpages': FlatPageSitemap,
+    'blog': BlogSitemap,
+    'post': PostSitemap,
+}
 
 urlpatterns = patterns('',
     # Included in Django
@@ -17,8 +25,12 @@ urlpatterns = patterns('',
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     (r'^admin/', include(admin.site.urls)),
     # (r'^comments/', include('django.contrib.comments.urls')),
-    # (r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap',
-    #     {'sitemaps': sitemaps})
+    (r'^sitemap\.xml$', 'django.contrib.sitemaps.views.index', {
+        'sitemaps': sitemaps
+    }),
+    (r'^sitemap-(?P<section>.+)\.xml$', 'django.contrib.sitemaps.views.sitemap', {
+        'sitemaps': sitemaps
+    }),
 
     # Third-Party
     (r'^linkback/', include('trackback.urls')),
