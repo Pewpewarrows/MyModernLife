@@ -5,12 +5,14 @@ from django.contrib.sitemaps import FlatPageSitemap
 
 # from mymodernlife.views import frontpage
 from apps.blog.sitemaps import *
+from sitemaps import *
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
 
 sitemaps = {
+    'pages': PagesSitemap,
     'flatpages': FlatPageSitemap,
     'blog': BlogSitemap,
     'post': PostSitemap,
@@ -18,41 +20,41 @@ sitemaps = {
 
 urlpatterns = patterns('',
     # Included in Django
-    (r'^accounts/logout/$', 'django.contrib.auth.views.logout', {
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {
         'template_name': 'registration/logout.html'
     }),
-    (r'^accounts/', include('django.contrib.auth.urls')),
-    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    (r'^admin/', include(admin.site.urls)),
-    # (r'^comments/', include('django.contrib.comments.urls')),
-    (r'^sitemap\.xml$', 'django.contrib.sitemaps.views.index', {
+    url(r'^accounts/', include('django.contrib.auth.urls')),
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    url(r'^admin/', include(admin.site.urls)),
+    # url(r'^comments/', include('django.contrib.comments.urls')),
+    url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.index', {
         'sitemaps': sitemaps
     }),
-    (r'^sitemap-(?P<section>.+)\.xml$', 'django.contrib.sitemaps.views.sitemap', {
+    url(r'^sitemap-(?P<section>.+)\.xml$', 'django.contrib.sitemaps.views.sitemap', {
         'sitemaps': sitemaps
     }),
 
     # Third-Party
-    (r'^linkback/', include('trackback.urls')),
-    # (r'^contact/', include('contact_form.urls')),
-    # (r'^profiles/', include('profiles.urls')),
-    # (r'^forum/', include('forum.urls')),
+    url(r'^linkback/', include('trackback.urls')),
+    # url(r'^contact/', include('contact_form.urls')),
+    # url(r'^profiles/', include('profiles.urls')),
+    # url(r'^forum/', include('forum.urls')),
     
     # Prometheus
-    (r'^blog/', include('apps.blog.urls')),
+    url(r'^blog/', include('apps.blog.urls')),
     
     # Project-specific
-    (r'^$', direct_to_template, {'template': 'homepage.html'}),
-    (r'^demo/$', direct_to_template, {'template': 'demo.html'}),
+    url(r'^$', direct_to_template, {'template': 'homepage.html'}, name='frontpage'),
+    url(r'^demo/$', direct_to_template, {'template': 'demo.html'}, name='demo'),
 
     # Flatpages for tools
-    # (r'^tools/sc2sim/', direct_to_template, {'template': 'tools/sc2sim.html'}),
+    # url(r'^tools/sc2sim/', direct_to_template, {'template': 'tools/sc2sim.html'}),
 )
 
 # If on the dev server, it will use Django's own media file server
 if settings.DEBUG:
     urlpatterns += patterns('django.views.static',
-        (r'^%s(?P<path>.*)$' % settings.MEDIA_URL[1:], 'serve', {
+        url(r'^%s(?P<path>.*)$' % settings.MEDIA_URL[1:], 'serve', {
             'document_root': settings.MEDIA_ROOT + settings.MEDIA_URL
         }),
     )
