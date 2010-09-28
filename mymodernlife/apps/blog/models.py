@@ -9,6 +9,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.html import escape
 from django.core.urlresolvers import reverse
 
+from taggit.managers import TaggableManager
+
 from utils import *
 
 """
@@ -80,8 +82,9 @@ class Post(models.Model):
     markup = models.CharField(max_length=1, choices=MARKUP_TYPES, default='P')
     content = models.TextField()
     # I'd rather use disk space over CPU cycles for now...
-    content_html = models.TextField()
+    content_html = models.TextField(editable=False)
     # ...but slicing is cheap, so I won't bother storing teasers.
+    tags = TaggableManager()
     
     class Meta:
         ordering = ('-created',)

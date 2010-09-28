@@ -72,6 +72,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.auth',
     'django.core.context_processors.media',
     'django.core.context_processors.request',
+    'django.core.context_processors.debug',
 )
 
 if USE_I18N:
@@ -129,6 +130,8 @@ INSTALLED_APPS = (
     
     # Third-Party
     'django_extensions',
+    'south',
+    'taggit',
     'trackback',
     
     # Prometheus
@@ -146,10 +149,17 @@ LOGIN_REDIRECT_URL = '/'
 
 # COMMENTS_APP = 'my_comment_app'
 
-#DEBUG_TOOLBAR_PANELS = (
-#    'debug_toolbar.panels.version.VersionDebugPanel',
-#    'debug_toolbar.panels.sql.SQLDebugPanel',
-#)
+DEBUG_TOOLBAR_PANELS = (
+    'debug_toolbar.panels.version.VersionDebugPanel',
+    'debug_toolbar.panels.timer.TimerDebugPanel',
+    'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
+    'debug_toolbar.panels.headers.HeaderDebugPanel',
+    'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
+    'debug_toolbar.panels.template.TemplateDebugPanel',
+    'debug_toolbar.panels.sql.SQLDebugPanel',
+    'debug_toolbar.panels.signals.SignalDebugPanel',
+    'debug_toolbar.panels.logger.LoggingPanel',
+)
 
 # Hostname lists for local/dev/staging/production machines
 SERVERS = (
@@ -158,7 +168,7 @@ SERVERS = (
     # ('baz', 'PROD'),
 )
 SERVER_TYPE = [v for k, v in SERVERS if socket.gethostname() == k]
-# Good idea to default to LOCAL, which exposes DEBUG info, rather than PROD?
+# Seems like bad idea to default to LOCAL, which exposes DEBUG info, rather than PROD?
 if not SERVER_TYPE:
     SERVER_TYPE = 'LOCAL'
 
@@ -167,9 +177,10 @@ if SERVER_TYPE == 'LOCAL':
     PREPEND_WWW = False
     USE_ETAGS = False
     CACHE_BACKEND = 'dummy:///'
-    # TEMPLATE_CONTEXT_PROCESSORS += ('django.core.context_processors.debug',)
-    # MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
-    # INSTALLED_APPS += ('debug_toolbar',)
+    # How much does this fuck up toolbar rendering? Might have to just hardcode
+    # where it needs to be in the middleware chain.
+    MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+    INSTALLED_APPS += ('debug_toolbar',)
 else:
     DEBUG = TEMPLATE_DEBUG = False
     PREPEND_WWW = True

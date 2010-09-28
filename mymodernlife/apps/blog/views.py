@@ -16,7 +16,7 @@ TODO:
     
     - Write tests for this shit
     - Received Trackbacks: check that our link is in it to reduce spam
-    - Template tags for meta-info (top posts, featured posts, latest comments, etc)
+    - Template tags for meta-info (top posts, featured posts, latest comments, etc) (django-taggit-templatetags)
     - Finish implementing the rest of the markup types
     - User-selectable default markup type for posts
     - Make this even more portable: stick templates as a parameter, etc
