@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Posts in {{ month|date:'F' }} | {% endblock %}
+
+{% block h1 %}Posts in {{ month|date:'F' }}{% endblock %}
+
+{% block content %}
+
+	<ul>
+    {% for day in date_list %}
+    <li><a href="{% url posts_by_day day|date:'Y' month|date:'m' day|date:'d' %}">{{ day|date:'d' }}</a></li>
+    {% endfor %}
+    </ul>
+    <br/>
+	<ul>
+    {% for post in object_list %}
+    <li><a href="{{ post.get_absolute_url }}">{{ post }}</a></li>
+    {% empty %}
+    <li>There don't appear to be any posts on this month!</li>
+    {% endfor %}
+    </ul>
+    
+{% endblock %}
+

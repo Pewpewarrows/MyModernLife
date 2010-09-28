@@ -12,28 +12,29 @@ from utils import *
 
 """
 TODO:
-    - Archive by day
-    - How to actually display a post url, and how unique should slugs be
     - Draft/Published status
     
     - Write tests for this shit
+    - Received Trackbacks: check that our link is in it to reduce spam
+    - Template tags for meta-info (top posts, featured posts, latest comments, etc)
+    - Finish implementing the rest of the markup types
+    - User-selectable default markup type for posts
+    - Make this even more portable: stick templates as a parameter, etc
+    - Next/Previous post names and links
+    - Paginate lists of blogs and posts?
+    - Liveblogging
+    - Get MicroPosts working
+    
     - Have the ability to restrict blog/post creation to a group with a setting
     - Even better: have contributors be a group instead of users list?
-    - Make this even more portable: stick templates as a parameter, etc
     - Pass blog ownership to a new user
     - Front-end for adding/removing contributors?
-    - User-selectable default markup type for posts
     - Import/export tools (probably just import) from Wordpress, Tumblr, etc
     - Publishing scheduler
     - Support MetaWeblog API
     - XML-RPC MT API? (Movable Type)
-    - Next/Previous post names and links
     - Author archive pages to see list of posts cross-blogs
     - Group-restricted viewing privileges on specific blogs?
-    - Paginate lists of blogs and posts?
-    - Liveblogging
-    - Template tags for meta-info (top posts, featured posts, latest comments, etc)
-    - Received Trackbacks: check that our link is in it to reduce spam
 """
 
 @login_required
@@ -160,6 +161,3 @@ def delete_post(request, year, month, slug):
         post.delete()
 
     return redirect('view_blog', post.blog.slug)
-
-def pingback(request):
-    pass

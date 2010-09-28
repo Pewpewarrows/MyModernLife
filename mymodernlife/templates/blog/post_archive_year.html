@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Posts in {{ year }} | {% endblock %}
+
+{% block h1 %}Posts in {{ year }}{% endblock %}
+
+{% block content %}
+
+	<ul>
+    {% for month in date_list %}
+    <li><a href="{% url posts_by_month year month|date:'m' %}">{{ month|date:'F' }}</a></li>
+    {% empty %}
+    <li>There don't appear to be any posts in this year!</li>
+    {% endfor %}
+    </ul>
+    
+{% endblock %}
+
