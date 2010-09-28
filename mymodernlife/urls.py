@@ -9,41 +9,38 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Example:
-    # (r'^mymodernlife/', include('mymodernlife.foo.urls')),
-    # (r'^$', frontpage),
-    (r'^$', direct_to_template, {'template': 'homepage.html'}),
-    (r'^demo/$', direct_to_template, {'template': 'demo.html'}),
-
-    # Apps
-    (r'^blog/', include('apps.blog.urls')),
-
-    # Flatpages for tools, this should eventually not be direct_to_template
-    # (r'^tools/sc2sim/', direct_to_template, {'template': 'tools/sc2sim.html'}),
-
-    # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
-    # to INSTALLED_APPS to enable admin documentation:
+    # Included in Django
+    (r'^accounts/logout/$', 'django.contrib.auth.views.logout', {
+        'template_name': 'registration/logout.html'
+    }),
+    (r'^accounts/', include('django.contrib.auth.urls')),
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
-
+    # (r'^comments/', include('django.contrib.comments.urls')),
     # (r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap',
     #     {'sitemaps': sitemaps})
 
-    # (r'^comments/', include('django.contrib.comments.urls')),
-
-    (r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'template_name': 'registration/logout.html'}),
-    (r'^accounts/', include('django.contrib.auth.urls')),
+    # Third-Party
+    (r'^linkback/', include('trackback.urls')),
     # (r'^contact/', include('contact_form.urls')),
     # (r'^profiles/', include('profiles.urls')),
     # (r'^forum/', include('forum.urls')),
+    
+    # Prometheus
+    (r'^blog/', include('apps.blog.urls')),
+    
+    # Project-specific
+    (r'^$', direct_to_template, {'template': 'homepage.html'}),
+    (r'^demo/$', direct_to_template, {'template': 'demo.html'}),
+
+    # Flatpages for tools
+    # (r'^tools/sc2sim/', direct_to_template, {'template': 'tools/sc2sim.html'}),
 )
 
 # If on the dev server, it will use Django's own media file server
 if settings.DEBUG:
     urlpatterns += patterns('django.views.static',
-        (r'^%s(?P<path>.*)$' % settings.MEDIA_URL[1:],
-         'serve',
-         {'document_root': settings.MEDIA_ROOT + settings.MEDIA_URL}),
+        (r'^%s(?P<path>.*)$' % settings.MEDIA_URL[1:], 'serve', {
+            'document_root': settings.MEDIA_ROOT + settings.MEDIA_URL
+        }),
     )

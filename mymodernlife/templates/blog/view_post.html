@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load rich_text %}
+{% load trackback_tags %}
 
 {% block title %}{{ post.title }} | {% endblock %}
 
@@ -8,9 +9,13 @@
 
 {% block content %}
 
+    {% get_trackback_rdf_for post %}
+
     By: <a href="/profile/{{ post.author.username }}/">{{ post.author.username }}</a>
     <br/>
     Posted On: {{ post.created|date:'F j, Y, g:i a' }}
+    <br/>
+    Last Updated On: {{ post.last_updated|date:'F j, Y, g:i a' }}
     {% if user.username == post.author.username %}
     <br/>
 	<a href="{% url edit_post post.created.year post.get_formatted_month post.slug %}">Edit this post</a>

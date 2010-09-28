@@ -1,5 +1,6 @@
 <!doctype html>
 {% load webdesign %}
+{% load trackback_tags %}
 <!-- Much of this was inspired by the HTML5 Boilerplate and HTML5 Reset projects -->
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
@@ -47,7 +48,8 @@
 	
 	<link rel="shortcut icon" href="/static/images/favicon.ico" />
 	<link rel="apple-touch-icon" href="/static/images/touch-icon.png" />
-	<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/blog/latest/feed/">
+	<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/blog/latest/feed/" />
+	<link rel="pingback" href="{% get_pingback_url %}" />
 	
 	<link rel="stylesheet" type="text/css" media="all" href="/static/css/mymodernlife.css" />
 	

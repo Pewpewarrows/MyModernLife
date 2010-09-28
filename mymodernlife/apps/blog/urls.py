@@ -23,8 +23,7 @@ TODO:
 
 urlpatterns = patterns('blog.views',
     url(r'^$', object_list, blog_dict, name='blog_list'),
-    url(r'^latest/feed/$', AllPostFeed(reverse_lazy('blog_list'))),
-    url(r'^xml-rpc/$', 'pingback', name='pingback'),
+    url(r'^latest/feed/$', AllPostFeed(reverse_lazy('blog_list')), name='latest_blog_feed'),
     url(r'^create/$', 'create_blog', name='create_blog'),
     url(r'^(?P<slug>[-\w]+)/$', 'view_blog', name='view_blog'),
     url(r'^(?P<slug>[-\w]+)/delete/$', 'delete_blog', name='delete_blog'),

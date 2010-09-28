@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
+from django.conf import settings
 
 from models import *
 from forms import *
@@ -11,25 +12,28 @@ from utils import *
 
 """
 TODO:
+    - Archive by day
+    - How to actually display a post url, and how unique should slugs be
+    - Draft/Published status
+    
+    - Write tests for this shit
     - Have the ability to restrict blog/post creation to a group with a setting
     - Even better: have contributors be a group instead of users list?
-    - Make this even more portable: stick templates as a parameter
+    - Make this even more portable: stick templates as a parameter, etc
     - Pass blog ownership to a new user
+    - Front-end for adding/removing contributors?
     - User-selectable default markup type for posts
-    - Linkbacks/Pingbacks/Trackbacks
-    - Import/export tools
-    - Draft/Published status
+    - Import/export tools (probably just import) from Wordpress, Tumblr, etc
     - Publishing scheduler
     - Support MetaWeblog API
-    - XML-RPC MT API (Movable Type)
-    - Discovery Pinging (Ping-o-matic, Google BlogSearch (in p-o-m))
-    - (looks like Technorati no longer accepts pings)
-    - Received Trackbacks: check that our link is in it to reduce spam
-    - Archive by day
+    - XML-RPC MT API? (Movable Type)
     - Next/Previous post names and links
     - Author archive pages to see list of posts cross-blogs
     - Group-restricted viewing privileges on specific blogs?
-    - Paginate lists?
+    - Paginate lists of blogs and posts?
+    - Liveblogging
+    - Template tags for meta-info (top posts, featured posts, latest comments, etc)
+    - Received Trackbacks: check that our link is in it to reduce spam
 """
 
 @login_required
@@ -97,8 +101,11 @@ def create_post(request, slug):
             post.blog = blog
             post.save()
             
-            # Uncomment once the linkback functionality is finished
-            # post.send_pingbacks()
+            # We don't want to start sending garbage requests while testing,
+            # and we only want to do this on the first save of a published post,
+            # not every update, otherwise we might get IP banned.
+            if not settings.DEBUG:
+                post.send_pingbacks()
 
             return redirect('view_post', post.created.year, post.get_formatted_month(), post.slug)
     else:

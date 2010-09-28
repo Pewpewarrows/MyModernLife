@@ -77,6 +77,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 if USE_I18N:
     TEMPLATE_CONTEXT_PROCESSORS += ('django.core.context_processors.i18n',)
 
+# DO NOT modify the order of these, they have to wrap in a specific order
 MIDDLEWARE_CLASSES = (
     # 'django.middleware.cache.UpdateCacheMiddleware', # Must be first
     'django.middleware.gzip.GZipMiddleware',
@@ -91,6 +92,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
     'django.middleware.doc.XViewMiddleware',
     # 'django.middleware.transaction.TransactionMiddleware',    # Needed?
+    'trackback.middleware.PingbackUrlInjectionMiddleware',
 )
 
 ROOT_URLCONF = 'mymodernlife.urls'
@@ -113,19 +115,21 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.comments',
     'django.contrib.contenttypes',
-    'django.contrib.databrowse',
+    # 'django.contrib.databrowse', # read-only version of the admin
     'django.contrib.flatpages',
     'django.contrib.humanize',
-    'django.contrib.markup',
+    'django.contrib.markup', # includes textile, markdown, ReST
     'django.contrib.messages',
-    'django.contrib.redirects',
+    'django.contrib.redirects', # db-level redirects, as opposed to urlconfs
     'django.contrib.sessions',
     'django.contrib.sitemaps',
     'django.contrib.sites',
     'django.contrib.syndication',
-    'django.contrib.webdesign',
+    'django.contrib.webdesign', # lorem ipsum generator
     
     # Third-Party
+    'django_extensions',
+    'trackback',
     
     # Prometheus
     'blog',
@@ -133,11 +137,12 @@ INSTALLED_APPS = (
     # Project-specific
 )
 
-# AUTH_PROFILE_MODULE = 'profiles.UserProfile'
+# Custom Application Settings
 
 LOGIN_REDIRECT_URL = '/'
-
 # ACCOUNT_ACTIVATION_DAYS = 7
+
+# AUTH_PROFILE_MODULE = 'profiles.UserProfile'
 
 # COMMENTS_APP = 'my_comment_app'
 
@@ -153,6 +158,7 @@ SERVERS = (
     # ('baz', 'PROD'),
 )
 SERVER_TYPE = [v for k, v in SERVERS if socket.gethostname() == k]
+# Good idea to default to LOCAL, which exposes DEBUG info, rather than PROD?
 if not SERVER_TYPE:
     SERVER_TYPE = 'LOCAL'
 

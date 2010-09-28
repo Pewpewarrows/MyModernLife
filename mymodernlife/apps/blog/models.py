@@ -7,6 +7,7 @@ from django.contrib.auth.models import *
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from django.utils.html import escape
+from django.core.urlresolvers import reverse
 
 from utils import *
 
@@ -26,14 +27,13 @@ MICRO_TYPES = (
 )
 
 # The kinds of markup a post can have
-# textile?
 MARKUP_TYPES = (
     ('B', 'bbcode'),
     ('H', 'html'),
     ('M', 'markdown'),
-    ('O', 'oembed'),
     ('P', 'plaintext'),
     ('R', 'ReST'),
+    ('T', 'textile'),
 )
 
 """
@@ -73,11 +73,12 @@ class Post(models.Model):
     author = models.ForeignKey(User)
     # UTC, local time, timezone?
     created = models.DateTimeField('date posted', default=datetime.datetime.now)
+    last_updated = models.DateTimeField('date updated', default=datetime.datetime.now)
     blog = models.ForeignKey(Blog, related_name='posts')
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique_for_date='created')
-    content = models.TextField()
     markup = models.CharField(max_length=1, choices=MARKUP_TYPES, default='P')
+    content = models.TextField()
     # I'd rather use disk space over CPU cycles for now...
     content_html = models.TextField()
     # ...but slicing is cheap, so I won't bother storing teasers.
@@ -88,6 +89,14 @@ class Post(models.Model):
     def __unicode__(self):
         return self.title
     
+    @models.permalink
+    def get_absolute_url(self):
+        return ('view_post', None, {
+            'year': self.created.year,
+            'month': '%02d' % self.created.month,
+            'slug': self.slug,
+        })
+    
     def save(self):
         if self.markup == 'M':
             # Should I have (force_linenos=True) ?
@@ -97,15 +106,9 @@ class Post(models.Model):
         else:
             self.content_html = self.content
             
+        self.last_updated = datetime.datetime.now()
+            
         super(Post, self).save()
-    
-    @models.permalink
-    def get_absolute_url(self):
-        return ('view_post', None, {
-            'year': self.created.year,
-            'month': '%02d' % self.created.month,
-            'slug': self.slug,
-        })
         
     def get_formatted_month(self):
         return '%02d' % self.created.month
@@ -116,31 +119,56 @@ class Post(models.Model):
         return self.content_html
         
     def send_pingbacks(self):
-        from xmlrpclib import ServerProxy
         from BeautifulSoup import BeautifulSoup, SoupStrainer
+        from django.contrib.sites.models import Site
+        from trackback.utils import send
         
-        trackback_urls = []
+        site = Site.objects.get_current()
+        blog_name = self.blog.slug
+        blog_url = reverse('view_blog', kwargs={
+            'slug': self.blog.slug
+        })
+        link = site.domain + self.get_absolute_url()
+        feed = reverse('latest_blog_feed')
+        urls = []
+        
+        # For the trackback
+        data = {
+            'url': link,
+            'title': self.title,
+            'blog_name': site.name,
+            'excerpt': self.content_html[:100], # self.teaser() once it's actually written
+        }
+        
+        # These are the "big 4" in terms of blog aggregate sites.
+        # Eventually we might want this to be a table with an interfacce for
+        # adding/removing services.
+        weblog_urls = [
+            'http://rpc.pingomatic.com',
+            'http://blogsearch.google.com/ping/RPC2',
+            'http://ping.feedburner.com',
+            'http://rpc.icerocket.com:10080/',
+        ]
+        for url in weblog_urls:
+            send.send_weblog_update(url, site.name, blog_url)
+        
+        # django-trackback has great utility functions, and handles incoming
+        # requests fine, but its signal handlers for outgoing are naive in 
+        # finding URLs, so we're doing that work ourselves here
         
         # We use SoupStrainer to avoid having to parse the entire document
         for link in BeautifulSoup(self.content_html, parseOnlyThese=SoupStrainer('a')):
             if link.has_key('href'):
                 href = link['href'].strip()
-                # I suppose this is a naive approach to internal vs external links
-                # should eventually fix this up...
+                # TODO: I suppose this is a naive approach to internal vs external
+                # links, should eventually fix this up...
                 if href[0] != '/':
-                    trackback_urls.append(href)
-                
-        if trackback_urls:
-            ping_urls = get_ping_url(trackback_urls)
-            
-            if ping_urls:
-                link = post.get_absolute_url()
-                for ping_url in ping_urls:
-                    try:
-                        proxy = ServerProxy(ping_url['ping_url'])
-                        proxy.pingback.ping(link, ping_url['url'])
-                    except:
-                        continue
+                    urls.append(href)
+        
+        # Thread this to prevent holding up the response to the user?
+        for url in urls:
+            send.send_pingback(self.get_absolute_url(), url)
+            send.send_trackback(url, data)
 
 """
 MicroBlogging basically entails just a link to a generic URL, Video, Image,
