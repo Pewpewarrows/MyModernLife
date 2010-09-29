@@ -131,9 +131,11 @@ INSTALLED_APPS = (
     
     # Third-Party
     'django_extensions',
+    'easy_thumbnails',
     'mediagenerator',
     'south',
     'taggit',
+    'taggit_templatetags',
     'trackback',
     
     # Prometheus
@@ -150,6 +152,8 @@ LOGIN_REDIRECT_URL = '/'
 # AUTH_PROFILE_MODULE = 'profiles.UserProfile'
 
 # COMMENTS_APP = 'my_comment_app'
+
+THUMBNAIL_SUBDIR = 'thumbs'
 
 DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.version.VersionDebugPanel',

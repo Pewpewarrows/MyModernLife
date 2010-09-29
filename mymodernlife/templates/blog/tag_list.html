@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% load taggit_extras %}
+
+{% block title %}Tag Index | {% endblock %}
+
+{% block h1 %}List of Tags{% endblock %}
+
+{% block content %}
+
+    {% get_taglist as tags for 'blog.post' %}
+	<ul>
+    {% for tag in tags %}
+    <li><a href="{% url view_tag tag.slug %}">{{ tag }} ({{ tag.num_times }})</a></li>
+    {% empty %}
+    <li>There don't appear to be any tags yet!</li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}

@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.conf import settings
 
+from taggit.models import *
+
 from models import *
 from forms import *
 from utils import *
@@ -161,3 +163,13 @@ def delete_post(request, year, month, slug):
         post.delete()
 
     return redirect('view_blog', post.blog.slug)
+    
+def view_tag(request, slug):
+    tag = get_object_or_404(Tag, slug=slug)
+    posts = Post.objects.filter(tags__id=tag.id)
+    
+    context = {
+        'tag': tag,
+        'posts': posts,
+    }
+    return render_to_response('blog/view_tag.html', context, RequestContext(request))

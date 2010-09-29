@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% load taggit_extras %}
+
+{% block title %}{{ tag }} | {% endblock %}
+
+{% block h1 %}List of Posts tagged {{ tag }}{% endblock %}
+
+{% block content %}
+
+	<ul>
+    {% for post in posts %}
+    <li><a href="{{ post.get_absolute_url }}">{{ post }}</a></li>
+    {% empty %}
+    <li>There don't appear to be any posts yet!</li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}
