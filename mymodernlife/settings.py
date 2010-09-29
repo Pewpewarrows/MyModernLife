@@ -205,6 +205,7 @@ if SERVER_TYPE == 'LOCAL':
     PREPEND_WWW = False
     USE_ETAGS = False
     CACHE_BACKEND = 'dummy:///'
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     # How much does this fuck up toolbar rendering? Might have to just hardcode
     # where it needs to be in the middleware chain.
     MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)

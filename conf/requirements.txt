@@ -4,11 +4,15 @@ Markdown==2.0.3
 PIL==1.1.7
 Pygments==1.3.1
 South==0.7.2
+Werkzeug==0.6.2
 distribute==0.6.14
 django-debug-toolbar==0.8.3
 django-extensions==0.5
+django-mediagenerator==1.1
 django-taggit==0.9.1
 -e svn+http://django-trackback.googlecode.com/svn/trunk@15#egg=django_trackback-0.1.0-py2.6-dev_r15
 egenix-mx-base==3.1.3
+ipdb==0.1
+ipython==0.10
 psycopg2==2.2.2
 wsgiref==0.1.2
