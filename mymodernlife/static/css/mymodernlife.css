@@ -1,7 +1,3 @@
-@import url('reset.css');
-@import url('scaffold.css');
-@import url('base_theme.css');
-
 /* Pygments */
 
 .codehilite pre { margin-left: 3em; overflow: auto; }

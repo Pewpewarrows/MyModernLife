@@ -80,12 +80,13 @@ if USE_I18N:
 
 # DO NOT modify the order of these, they have to wrap in a specific order
 MIDDLEWARE_CLASSES = (
-    # 'django.middleware.cache.UpdateCacheMiddleware', # Must be first
+    'django.middleware.cache.UpdateCacheMiddleware', # Must be first
     'django.middleware.gzip.GZipMiddleware',
+    'django.middleware.http.ConditionalGetMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     # 'django.middleware.locale.LocaleMiddleware',
-    # 'django.contrib.FetchFromCacheMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     'django.contrib.csrf.middleware.CsrfMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -130,6 +131,7 @@ INSTALLED_APPS = (
     
     # Third-Party
     'django_extensions',
+    'mediagenerator',
     'south',
     'taggit',
     'trackback',
@@ -161,16 +163,42 @@ DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.logger.LoggingPanel',
 )
 
+MEDIA_BUNDLES = (
+    ('main.css',
+        'css/reset.css',
+        'css/scaffold.css',
+        'css/base_theme.css',
+        'css/mymodernlife.css',
+    ),
+    ('main.js',
+        'js/modernizr-1.5.min.js',
+        'js/utils.js',
+        'js/mymodernlife.js',
+    ),
+)
+
+GLOBAL_MEDIA_DIRS = (os.path.join(MEDIA_ROOT, 'static'),)
+
+ROOT_MEDIA_FILTERS = {
+    'css': 'mediagenerator.filters.yuicompressor.YUICompressor',
+    'js': 'mediagenerator.filters.yuicompressor.YUICompressor',
+}
+
+YUICOMPRESSOR_PATH = os.path.join(MEDIA_ROOT, 'static', 'java', 'yuicompressor-2.4.2.jar')
+
 # Hostname lists for local/dev/staging/production machines
 SERVERS = (
     # ('foo', 'DEV'),
     # ('bar', 'STAGING'),
     # ('baz', 'PROD'),
 )
-SERVER_TYPE = [v for k, v in SERVERS if socket.gethostname() == k]
-# Seems like bad idea to default to LOCAL, which exposes DEBUG info, rather than PROD?
-if not SERVER_TYPE:
+
+if SERVERS:
+    (SERVER_TYPE,) = [v for k, v in SERVERS if socket.gethostname() == k]
+else:
     SERVER_TYPE = 'LOCAL'
+    
+# Seems like bad idea to default to LOCAL, which exposes DEBUG info, rather than PROD?
 
 if SERVER_TYPE == 'LOCAL':
     DEBUG = TEMPLATE_DEBUG = True
@@ -186,3 +214,6 @@ else:
     PREPEND_WWW = True
     USE_ETAGS = True
     # CACHE_BACKEND = "memcached://127.0.0.1:11211/"
+
+MEDIA_DEV_MODE = DEBUG
+PRODUCTION_MEDIA_URL = '/media/'

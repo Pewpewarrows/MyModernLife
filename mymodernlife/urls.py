@@ -52,9 +52,19 @@ urlpatterns = patterns('',
 )
 
 # If on the dev server, it will use Django's own media file server
-if settings.DEBUG:
+if settings.MEDIA_DEV_MODE:
+    from mediagenerator.urls import urlpatterns as mediaurls
+    urlpatterns += mediaurls
+elif settings.DEBUG:
     urlpatterns += patterns('django.views.static',
-        url(r'^%s(?P<path>.*)$' % settings.MEDIA_URL[1:], 'serve', {
-            'document_root': settings.MEDIA_ROOT + settings.MEDIA_URL
+        url(r'^%s(?P<path>.*)$' % settings.PRODUCTION_MEDIA_URL[1:], 'serve', {
+            'document_root': settings.MEDIA_ROOT + '/_generated_media/',
         }),
     )
+    
+    urlpatterns += patterns('django.views.static',
+        url(r'^%s(?P<path>.*)$' % settings.MEDIA_URL[1:], 'serve', {
+            'document_root': settings.MEDIA_ROOT + settings.MEDIA_URL,
+        }),
+    )
+    
