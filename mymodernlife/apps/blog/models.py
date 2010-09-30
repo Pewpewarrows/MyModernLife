@@ -8,6 +8,7 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from django.utils.html import escape
 from django.core.urlresolvers import reverse
+from django.utils.text import truncate_html_words
 
 from taggit.managers import TaggableManager
 
@@ -117,9 +118,7 @@ class Post(models.Model):
         return '%02d' % self.created.month
         
     def teaser(self):
-        # TODO: actually figure out how to give a teaser of the first paragraph
-        # without breaking html tags or code blocks, etc
-        return self.content_html
+        return truncate_html_words(self.content_html, 100)
         
     def send_pingbacks(self):
         from BeautifulSoup import BeautifulSoup, SoupStrainer
