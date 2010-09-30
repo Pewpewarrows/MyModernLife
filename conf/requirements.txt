@@ -9,6 +9,7 @@ distribute==0.6.14
 django-debug-toolbar==0.8.3
 django-extensions==0.5
 django-mediagenerator==1.1
+django-oembed==0.1.3
 django-taggit==0.9.1
 django-taggit-templatetags==0.4.5dev
 django-templatetag-sugar==0.1
@@ -23,3 +24,4 @@ psycopg2==2.2.2
 pylint==0.21.3
 unittest2==0.5.1
 wsgiref==0.1.2
+-e git://github.com/paulosman/django-xframeoptions@4147688d094b2d57e46620b636c01e78219ffd8c#egg=xframeoptions-0.1dev-py2.6-dev

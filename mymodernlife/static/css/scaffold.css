@@ -252,6 +252,8 @@ input[type="text"]:not(:focus):hover, input[type="password"]:not(:focus):hover, 
  
 .left { float: left; }
 .right { float: right; }
+.center { margin: 0 auto; text-align: center; }
+.block { display: block; }
 .clear { clear: both; }
 .hidden { display: none; visibility:hidden; }
 

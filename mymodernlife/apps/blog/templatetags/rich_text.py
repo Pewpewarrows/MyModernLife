@@ -14,7 +14,7 @@ TODO:
 
 register = template.Library()
 
-def sanitize(value, allowed_tags='div:class span:class p i strong b u a:href h1 h2 h3 blockquote pre code img:src:width:height br ul ol li'):
+def sanitize(value, allowed_tags='div:class span:class hr p i em strong b u a:href h1 h2 h3 blockquote pre code img:src:width:height:alt:title:class:style br ul ol li object:classid:width:height:id param:name:value embed:src:width:height:type:name:allowfullscreen'):
     """
     Argument should be in form 'tag1:attr1:attr2 tag2:attr1 tag3', where tags
     are allowed HTML tags, and attrs are the allowed attributes for that tag.

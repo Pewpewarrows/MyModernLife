@@ -80,9 +80,9 @@ if USE_I18N:
 
 # DO NOT modify the order of these, they have to wrap in a specific order
 MIDDLEWARE_CLASSES = (
-    'django.middleware.cache.UpdateCacheMiddleware', # Must be first
+    # 'django.middleware.cache.UpdateCacheMiddleware', # Must be first
     'django.middleware.gzip.GZipMiddleware',
-    'django.middleware.http.ConditionalGetMiddleware',
+    # 'django.middleware.http.ConditionalGetMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     # 'django.middleware.locale.LocaleMiddleware',
@@ -95,6 +95,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.doc.XViewMiddleware',
     # 'django.middleware.transaction.TransactionMiddleware',    # Needed?
     'trackback.middleware.PingbackUrlInjectionMiddleware',
+    'xframeoptions.middleware.Header',
 )
 
 ROOT_URLCONF = 'mymodernlife.urls'
@@ -133,10 +134,12 @@ INSTALLED_APPS = (
     'django_extensions',
     'easy_thumbnails',
     'mediagenerator',
+    'oembed',
     'south',
     'taggit',
     'taggit_templatetags',
     'trackback',
+    'xframeoptions',
     
     # Prometheus
     'blog',
@@ -154,6 +157,8 @@ LOGIN_REDIRECT_URL = '/'
 # COMMENTS_APP = 'my_comment_app'
 
 THUMBNAIL_SUBDIR = 'thumbs'
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.version.VersionDebugPanel',

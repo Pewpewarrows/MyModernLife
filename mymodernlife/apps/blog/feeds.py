@@ -1,6 +1,7 @@
 from django.contrib.syndication.views import Feed
 
 from models import *
+from templatetags.rich_text import sanitize
 
 class AllPostFeed(Feed):
     title = 'Marco\'s Modern Life Latest Posts'
@@ -17,7 +18,7 @@ class AllPostFeed(Feed):
         return item.title
         
     def item_description(self, item):
-        return item.teaser()
+        return sanitize(item.teaser())
 
 # TODO: blog-specific feeds, and tag-specific feeds (possibly both together as well)
 class BlogPostFeed(Feed):

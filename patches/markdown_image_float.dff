@@ -1,0 +1,6 @@
+288c288,290
+<             el.set('title', dequote(" ".join(src_parts[1:])))
+---
+>             el.set('title', dequote(src_parts[1]))
+>         if len(src_parts) > 2:
+>             el.set('style', 'float: %s;' % dequote(src_parts[2]))

@@ -47,7 +47,7 @@
 	
 	<meta name="google-site-verification" content="" />
 	
-	<link rel="shortcut icon" href="{{ MEDIA_URL }}images/favicon.ico" />
+	<link rel="shortcut icon" href="{% media_url 'images/favicon.ico' %}" />
 	<link rel="apple-touch-icon" href="{{ MEDIA_URL }}images/touch-icon.png" />
 	<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="{% url latest_blog_feed %}" />
 	<link rel="pingback" href="{% get_pingback_url %}" />

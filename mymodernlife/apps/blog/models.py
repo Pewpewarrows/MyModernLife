@@ -11,6 +11,7 @@ from django.core.urlresolvers import reverse
 from django.utils.text import truncate_html_words
 
 from taggit.managers import TaggableManager
+from oembed.core import replace as oembedify
 
 from utils import *
 
@@ -102,10 +103,12 @@ class Post(models.Model):
         })
     
     def save(self):
-        if self.markup == 'M':
+        if self.markup == 'M': # markdown
             # Should I have (force_linenos=True) ?
-            self.content_html = markdown(self.content, ['codehilite'], 'escape')
-        elif self.markup == 'P':
+            # safe_mode='replace' or 'escape' or 'remove' or none ?
+            content = oembedify(self.content)
+            self.content_html = markdown(content, ['codehilite', 'footnotes'])
+        elif self.markup == 'P': # plaintext
             self.content_html = escape(self.content)
         else:
             self.content_html = self.content

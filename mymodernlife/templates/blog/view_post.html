@@ -27,7 +27,11 @@
 	{% endif %}
     <br/>
 
-	<div id="post-content">{{ post.content_html|sanitize|safe }}</div>
+	<div id="post-content">
+	    {{ post.content_html|sanitize|safe }}
+    </div>
+    
+    <div class="clearfix"></div>
 	
 	{% if post.tags %}
 	<br/>
