@@ -1,14 +1,14 @@
-{% extends "base.html" %}
+{% extends "blog_base.html" %}
 
 {% load taggit_extras %}
 
 {% block title %}{{ tag }} | {% endblock %}
 
-{% block h1 %}List of Posts tagged {{ tag }}{% endblock %}
+{% block h1 %}Posts tagged '{{ tag }}'{% endblock %}
 
-{% block content %}
+{% block main %}
 
-	<ul>
+	<ul class="blog-post-list">
     {% for post in posts %}
     <li><a href="{{ post.get_absolute_url }}">{{ post }}</a></li>
     {% empty %}

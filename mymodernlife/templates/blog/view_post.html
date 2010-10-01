@@ -1,31 +1,29 @@
-{% extends "base.html" %}
+{% extends "blog_base.html" %}
 
 {% load rich_text %}
-{% load truncate %}
 {% load trackback_tags %}
 
 {% block title %}{{ post.title }} | {% endblock %}
 
 {% block h1 %}<a href="{{ post.get_absolute_url }}">{{ post }}</a>{% endblock %}
 
-{% block content %}
-
+{% block main %}
+<article class="blog-post">
     {% get_trackback_rdf_for post %}
 
+	{% comment %}
     By: <a href="/profile/{{ post.author.username }}/">{{ post.author.username }}</a>
     <br/>
-    Posted On: {{ post.created|date:'F j, Y, g:i a' }}
-    <br/>
-    Last Updated On: {{ post.last_updated|date:'F j, Y, g:i a' }}
+	{% endcomment %}
+    <small>Posted On: {{ post.created|date:'M j, Y, g:i a' }}</small>
+    <small>Last Updated On: {{ post.last_updated|date:'M j, Y, g:i a' }}</small>
     {% if user.username == post.author.username %}
     <br/>
-	<a href="{% url edit_post post.created.year post.get_formatted_month post.slug %}">Edit this post</a>
-	<br/>
-    <form action="{% url delete_post post.created.year post.get_formatted_month post.slug %}" method="post">
+	<a href="{% url edit_post post.created.year post.get_formatted_month post.slug %}"><button>Edit</button></a>
+    <form style="display: inline;" action="{% url delete_post post.created.year post.get_formatted_month post.slug %}" method="post">
 	    <input type="submit" id="delete-post" value="Delete"/>
 	</form>
 	{% endif %}
-    <br/>
 
 	<div id="post-content">
 	    {{ post.content_html|sanitize|safe }}
@@ -34,15 +32,29 @@
     <div class="clearfix"></div>
 	
 	{% if post.tags %}
-	<br/>
 	<p>Tags:</p>
-	<ul>
+	<ul class="tag-list">
 	{% for tag in post.tags.all %}
 	<li><a href="{% url view_tag tag.slug %}">{{ tag }}</a></li>
 	{% endfor %}
 	</ul>
 	{% endif %}
 	<br/>
+	{% comment %}
 	<a href="{{ post.blog.get_absolute_url }}">View more posts in '{{ post.blog }}'</a>
+	{% endcomment %}
+	
+	<!-- AddThis Button BEGIN -->
+    <div class="addthis_toolbox addthis_default_style">
+        <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+        <a class="addthis_button_tweet"></a>
+        <a class="addthis_counter addthis_pill_style"></a>
+    </div>
+    <!-- AddThis Button END -->
+</article>
+{% endblock %}
 
+{% block extrascript %}
+<script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=pewpewarrows"></script>
 {% endblock %}

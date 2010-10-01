@@ -121,7 +121,7 @@ class Post(models.Model):
         return '%02d' % self.created.month
         
     def teaser(self):
-        return truncate_html_words(self.content_html, 100)
+        return truncate_html_words(self.content_html, 50)
         
     def send_pingbacks(self):
         from BeautifulSoup import BeautifulSoup, SoupStrainer

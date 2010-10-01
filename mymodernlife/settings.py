@@ -133,8 +133,12 @@ INSTALLED_APPS = (
     # Third-Party
     'django_extensions',
     'easy_thumbnails',
+    'indexer',
     'mediagenerator',
     'oembed',
+    'paging',
+    'sentry',
+    'sentry.client',
     'south',
     'taggit',
     'taggit_templatetags',
@@ -176,7 +180,7 @@ MEDIA_BUNDLES = (
     ('main.css',
         'css/reset.css',
         'css/scaffold.css',
-        'css/base_theme.css',
+        # 'css/base_theme.css',
         'css/mymodernlife.css',
     ),
     ('main.js',
@@ -210,8 +214,7 @@ else:
 # Seems like bad idea to default to LOCAL, which exposes DEBUG info, rather than PROD?
 
 if SERVER_TYPE == 'LOCAL':
-    DEBUG = TEMPLATE_DEBUG = True
-    PREPEND_WWW = False
+    DEBUG = True
     USE_ETAGS = False
     CACHE_BACKEND = 'dummy:///'
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -220,10 +223,11 @@ if SERVER_TYPE == 'LOCAL':
     MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
     INSTALLED_APPS += ('debug_toolbar',)
 else:
-    DEBUG = TEMPLATE_DEBUG = False
-    PREPEND_WWW = True
+    DEBUG = False
     USE_ETAGS = True
     # CACHE_BACKEND = "memcached://127.0.0.1:11211/"
 
+PREPEND_WWW = False
+TEMPLATE_DEBUG = True # Now that we have sentry, we always want that debug info
 MEDIA_DEV_MODE = DEBUG
 PRODUCTION_MEDIA_URL = '/media/'

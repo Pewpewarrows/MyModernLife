@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "blog_base.html" %}
 
 {% load taggit_extras %}
 
@@ -6,7 +6,7 @@
 
 {% block h1 %}List of Tags{% endblock %}
 
-{% block content %}
+{% block main %}
 
     {% get_taglist as tags for 'blog.post' %}
 	<ul>

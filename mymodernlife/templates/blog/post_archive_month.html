@@ -1,10 +1,10 @@
-{% extends "base.html" %}
+{% extends "blog_base.html" %}
 
 {% block title %}Posts in {{ month|date:'F' }} | {% endblock %}
 
 {% block h1 %}Posts in {{ month|date:'F' }}{% endblock %}
 
-{% block content %}
+{% block main %}
 
 	<ul>
     {% for day in date_list %}

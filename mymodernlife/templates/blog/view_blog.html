@@ -1,19 +1,26 @@
-{% extends "base.html" %}
+{% extends "blog_base.html" %}
 
-{% block title %}{{ blog.title }} | {% endblock %}
+{% comment %} multi-blog had {{ blog.title }} {% endcomment %}
+{% block title %}Blog | {% endblock %}
 
-{% block h1 %}{{ blog.title }}{% endblock %}
+{% comment %} multi-blog had {{ blog.title }} {% endcomment %}
+{% block h1 %}{% endblock %}
 
-{% block content %}
+{% block main %}
 
+    {% comment %}
     {% if user.username == blog.owner.username %}
     <form action="{% url delete_blog blog.slug %}" method="post">
 	    <input type="submit" id="delete-blog" value="Delete"/>
 	</form>
 	<br/>
 	{% endif %}
+    {% endcomment %}
+    
+    {% comment %} traditional multi-blog has blog.slug as arg here {% endcomment %}
+    <a href="{% url create_post %}"><button>Create a New Post</button></a>
 
-	<ul>
+	<ul class="blog-post-list">
     {% for post in blog.posts.all %}
     <li><a href="{{ post.get_absolute_url }}">{{ post }}</a></li>
     {% empty %}
@@ -21,9 +28,10 @@
     {% endfor %}
     </ul>
     
-    <a href="{% url create_post blog.slug %}">Create a New Post</a>
+    {% comment %}
 	<br/>
 	<a href="{% url blog_list %}">View other blogs</a>
+    {% endcomment %}
 
 {% endblock %}
 
