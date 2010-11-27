@@ -1,6 +1,6 @@
 from django.contrib.syndication.views import Feed
 
-from models import *
+from models import Post
 from templatetags.rich_text import sanitize
 
 class AllPostFeed(Feed):

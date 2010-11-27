@@ -1,6 +1,7 @@
 {% extends "blog_base.html" %}
 
 {% load rich_text %}
+{% load dump_context %}
 {% load trackback_tags %}
 
 {% block title %}{{ post.title }} | {% endblock %}
@@ -43,7 +44,7 @@
 	{% comment %}
 	<a href="{{ post.blog.get_absolute_url }}">View more posts in '{{ post.blog }}'</a>
 	{% endcomment %}
-	
+
 	<!-- AddThis Button BEGIN -->
     <div class="addthis_toolbox addthis_default_style">
         <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>

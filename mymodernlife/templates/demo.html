@@ -1,19 +1,19 @@
 {% extends 'blog_base.html' %}
 
-{% block h1 %}HTML Demo{% endblock %}
+{% block h1 %}HTML Demo (h1){% endblock %}
 
 {% block main %}
 <article>
-	<h2>Second</h2>
-	<h3>Third</h3>
-	<h4>Fourth</h4>
-	<h5>Fifth</h5>
-	<h6>Sixth</h6>
-	
+    <p>This is a demo of all the different HTML tags and elements. It should like as close to identical across all Browsers, Versions, and Operating Systems as possible.</p>
+
+	<h2>Paragraphs (h2)</h2>
+
 	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi quis fringilla lacus. Nulla facilisi. Nulla facilisi. Donec tellus ligula, pellentesque ut eleifend tincidunt, aliquam id elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed ultrices convallis enim, in sollicitudin magna vehicula ac. Mauris luctus ullamcorper odio vitae sagittis. Sed nec lacus at lorem tempor porttitor at id ante. Vestibulum ac diam massa, sed commodo dui. Sed vel urna nec ligula mollis vehicula pretium vitae quam. Nulla enim justo, tempor et faucibus id, tincidunt sit amet ligula. Integer facilisis ornare orci in ultricies. In ac ante quis sapien vulputate interdum. Sed ornare viverra venenatis. Sed lobortis erat odio, quis tempor massa.</p>
 	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi quis fringilla lacus. Nulla facilisi. Nulla facilisi. Donec tellus ligula, pellentesque ut eleifend tincidunt, aliquam id elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed ultrices convallis enim, in sollicitudin magna vehicula ac. Mauris luctus ullamcorper odio vitae sagittis. Sed nec lacus at lorem tempor porttitor at id ante. Vestibulum ac diam massa, sed commodo dui. Sed vel urna nec ligula mollis vehicula pretium vitae quam. Nulla enim justo, tempor et faucibus id, tincidunt sit amet ligula. Integer facilisis ornare orci in ultricies. In ac ante quis sapien vulputate interdum. Sed ornare viverra venenatis. Sed lobortis erat odio, quis tempor massa.</p>
 	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi quis fringilla lacus. Nulla facilisi. Nulla facilisi. Donec tellus ligula, pellentesque ut eleifend tincidunt, aliquam id elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed ultrices convallis enim, in sollicitudin magna vehicula ac. Mauris luctus ullamcorper odio vitae sagittis. Sed nec lacus at lorem tempor porttitor at id ante. Vestibulum ac diam massa, sed commodo dui. Sed vel urna nec ligula mollis vehicula pretium vitae quam. Nulla enim justo, tempor et faucibus id, tincidunt sit amet ligula. Integer facilisis ornare orci in ultricies. In ac ante quis sapien vulputate interdum. Sed ornare viverra venenatis. Sed lobortis erat odio, quis tempor massa.</p>
 	
+	<h3>In-line text styles (h3)</h3>
+
 	<p>
 	I am <a href="http://devkick.com/lab/tripoli/sample.php?abc123">the a tag</a> example<br>
 	
@@ -52,14 +52,16 @@
 	I am <var>the var tag</var> example<br>
 	
 	I am <u>the u tag</u> example
+
+	<address>Address: somewhere, World</address>
 	</p>
 	
+	<h4>Blocked text styles (h4)</h4>
+
 	<blockquote>
-	I am not one who was born in the possession of knowledge; I am one who is fond of antiquity, and earnest in seeking it there.
+    <p>I am not one who was born in the possession of knowledge; I am one who is fond of antiquity, and earnest in seeking it there.</p>
 	</blockquote>
-	
-	<address>Address: somewhere, World</address>
-	
+
 	<ol>
 		<li>List item 01</li>
 		<li>List item 02</li>
@@ -104,18 +106,16 @@ body {
         body { 
 	        font:0.8125em/1.618 Arial, sans-serif; 
 	        background-color:#fff;  
-	        color:#111;
         }
 	</code>
 	
 	<pre>
-		<code>
+        <code>
 body { 
     font:0.8125em/1.618 Arial, sans-serif; 
     background-color:#fff;  
     color:#111;
-}
-		</code>
+}</code>
 	</pre>
 	
 	<dl>
@@ -128,6 +128,8 @@ body {
 		aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
 		commodo consequat.</dd>
 	</dl>
+
+	<h5>Tables (h5)</h5>
 	
 	<table>
 	  		<caption>Jimi Hendrix - albums</caption>
@@ -169,14 +171,15 @@ body {
 		<tbody>
     </table>
 	
-	<hr/>
+	<h6>Forms (h6)</h6>
+
     <form action="#">
       <fieldset>
         <legend>Form legend</legend>
 
         <div><label for="f1">Text input:</label><input type="text" id="f1" value="input text" /></div>
         <div><label for="pw">Password input:</label><input type="password" id="pw" value="password" /></div>
-        <div><label for="fill1">Full Text input:</label><input type="text" id="fill1" class="fill" value="input text" /></div>
+        <div><label for="fill1">Full Text input:</label><input type="text" id="fill1" class="fill" placeholder="Placeholder text"/></div>
 		
         <div><label for="f2">Radio input:</label><input type="radio" id="f2" /></div>
         <div><label for="f3">Checkbox input:</label><input type="checkbox" id="f3" /></div>

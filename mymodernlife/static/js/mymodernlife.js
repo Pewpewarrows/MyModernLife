@@ -4,8 +4,45 @@ var MML = window.MML || {};
 /* Create a closure to maintain scope of the '$'
    and remain compatible with other frameworks.  */
 (function($) {
+
+    /*
+     * http://www.viget.com/inspire/extending-paul-irishs-comprehensive-dom-ready-execution/
+     *
+     * Essentially, just add 'data-controller' and 'data-action' attributes to the 'body' tag
+     * and define those as functions within objects here to get page-specific 'document.ready'
+     * code to fire. Big thanks to Paul Irish and Jason Garber.
+     *
+     * TODO: push the 'exec' and 'init' functions back to a UTIL object that the global site
+     *      var can just use as a template above instead of a blank '{}'
+     */
+    MML = {
+        common: {
+            init: function() {
+            }
+        },
+
+        exec: function(controller, action) {
+            action = (action === undefined) ? 'init' : action;
+
+            if ((controller !== '') && this[controller] && (typeof this[controller][action] == 'function')) {
+                this[controller][action]();
+            }
+        },
+
+        init: function() {
+            var body = document.body,
+            controller = body.getAttribute('data-controller'),
+            action = body.getAttribute('data-action');
+
+            this.exec('common');
+            this.exec(controller);
+            this.exec(controller, action);
+        }
+    };
 	
 	$(function() {
+        MML.init();
+
 	    $('#nav-blog').hover(function() {
 	        $('img', this).attr('src', '/static/images/blog.png');
 	        $('span', this).removeClass('ir');

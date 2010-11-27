@@ -1,3 +1,16 @@
+/*
+ * Site-Specific CSS Changes
+ *
+ * Table of Contents:
+ *      1. Page Structure
+ *      2. Headings
+ *      3. Text Styles
+ *      4. Navigation
+ *      5. Tables
+ *      6. Forms
+ *      7. Sections
+ *      8. Third-Party
+ */
 
 /* -----------------------------------
   			Page Structure
@@ -45,16 +58,14 @@ footer a {
   			   Headings
  ----------------------------------- */
  
-h1 { font-size: 200%; }
 h1 a { text-decoration: none; border: 0; }
 h1 a:visited { color: inherit; }
 h1 a:hover { color: #036; }
 
-h2 { font-size: 180%; }
-h3 { font-size: 160%; }
-h4 { font-size: 140%; }
-h5 { font-size: 120%; }
-h6 { font-size: 100%; }
+aside.widget h2 {
+    margin: 0 0 0.2em;
+    font-size: 1.3em;
+}
 
 
 /* -----------------------------------
@@ -68,51 +79,10 @@ a {
 a:visited { color: #607890; }
 a:hover { color: #036; }
 
-blockquote {
-    float: right;
-    width: 250px;
-    margin: 10px 0;
-    padding: 20px 20px 10px 30px;
-    border-top: 1px solid #CCC;
-    border-bottom: 1px solid #CCC;
-    background: transparent url(images/open-quote.png) no-repeat 0 0;
-    font-style: italic;
-    font-size: 1.1em;
-}
-
 pre, code {
     font-size: 11px;
 }
 
-code {
-    padding: 0 4px;
-    background-color: #FAFAFA;
-    border: 1px solid #CACACA;
-    -o-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-}
-
-pre code {
-    background-color: transparent;
-    border: none;
-    -o-border-radius: none;
-    -moz-border-radius: none;
-    -webkit-border-radius: none;
-    border-radius: none;
-}
-
-.codehilite {
-    margin-left: 20px;
-    padding: 5px;
-    background-color: #FAFAFA;
-    border: 1px solid #CACACA;
-    -o-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-}
 
 /* -----------------------------------
   			  Navigation
@@ -154,6 +124,13 @@ nav li a img {
     height: 50px;
 }
 
+/* -----------------------------------
+  			    Tables
+ ----------------------------------- */
+
+/* -----------------------------------
+  			    Forms
+ ----------------------------------- */
 
 /* -----------------------------------
   			   Sections
@@ -195,14 +172,6 @@ nav li a img {
     margin: 0 0 5px;
 }
 
-.blog-post {}
-
-.blog-post img {
-    margin: 5px;
-    padding: 5px;
-    border: 1px solid #CCC;
-}
-
 ul.tag-list, ul.blog-post-list {
     margin-left: 0;
     list-style-type: none;
@@ -216,6 +185,10 @@ ul.tag-list li {
     margin: 20px 0;
 }
 
+
+/* -----------------------------------
+  			Third-Party
+ ----------------------------------- */
 
 /* AddThis */
 

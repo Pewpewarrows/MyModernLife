@@ -1,6 +1,24 @@
-*.pyc
+# Generic
+*.log
+
+# Operating System
+.DS_Store
+.cache
+thumbs.db
+
+# Editor
+*~
+*.swo
+*.swp
 .project
 .pydevproject
+
+# Language
+*.pyc
+
+# Project
 settings_auth.py
+pylint.html
+tags
 _generated_media_names.py
 mymodernlife/_generated_media

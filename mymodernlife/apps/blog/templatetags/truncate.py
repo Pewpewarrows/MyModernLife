@@ -34,7 +34,8 @@ def truncate(value, args='10'):
     else:
         in_middle = False
 
-    val_len = len(value)
+    # I thought I needed the len of the original string at some point...
+    # val_len = len(value)
     str_len = len(str)
     trunc_val_len = final_len - str_len
 

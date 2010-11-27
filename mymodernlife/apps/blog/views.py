@@ -1,16 +1,13 @@
-import datetime
-
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
 from django.conf import settings
 
-from taggit.models import *
+from taggit.models import Tag
 
-from models import *
-from forms import *
-from utils import *
+from blog.models import Blog, Post
+from blog.forms import BlogForm, PostForm
+from blog.utils import get_unique_slug, generate_slug
 
 """
 TODO:
@@ -26,6 +23,8 @@ TODO:
     - Paginate lists of blogs and posts?
     - Liveblogging
     - Get MicroPosts working
+    - Use built-in SlugField
+    - Blog Series
     
     - Have the ability to restrict blog/post creation to a group with a setting
     - Even better: have contributors be a group instead of users list?
@@ -83,7 +82,7 @@ def delete_blog(request, slug):
 
         blog.delete()
 
-    return redirect(index)
+    return redirect('index')
 
 @login_required
 def create_post(request, slug):

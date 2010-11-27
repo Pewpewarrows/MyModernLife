@@ -1,17 +1,15 @@
-from django.conf import settings
-from django.conf.urls.defaults import *
-from django.views.generic.simple import direct_to_template, redirect_to
-from django.views.generic.list_detail import object_list
+from django.conf.urls.defaults import patterns, url
+from django.views.generic.simple import direct_to_template
 from django.views.generic.date_based import archive_year, archive_month, archive_day
 from django.core.urlresolvers import reverse
 from django.utils.functional import lazy
 
-from models import *
-from feeds import *
-from taggit.models import *
+from blog.models import Blog, Post
+from blog.feeds import AllPostFeed
 
 # Fixes the circular dependency issue of using reverse in a urlconf
-reverse_lazy = lazy(reverse, str)
+def reverse_lazy(str):
+    return lazy(reverse, str)
 
 blog_dict = {
     'queryset': Blog.objects.all(),

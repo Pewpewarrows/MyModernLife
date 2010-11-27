@@ -4,13 +4,15 @@
 
 /*
  * Scope reference:
+ *
+ * var foo; // Global
+ * bar; // Global
+ *
+ * function () {
+ *     var baz; // Local
+ *     waldo; // Global
+ * }
  * 
- * Global:
- * 		- var or no var outside of any function
- * 		- no var inside a function
- * 
- * Local:
- * 		- var inside a function
  */
 
 /*

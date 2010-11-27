@@ -1,10 +1,8 @@
 import datetime
-import re
 from markdown import markdown
 
 from django.db import models
-from django.contrib.auth.models import *
-from django.contrib import admin
+from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.utils.html import escape
 from django.core.urlresolvers import reverse
@@ -12,15 +10,6 @@ from django.utils.text import truncate_html_words
 
 from taggit.managers import TaggableManager
 from oembed.core import replace as oembedify
-
-from utils import *
-
-"""
-TODO:
-    - 'from datetime import datetime' wasn't allowing me to just use datetime.now
-      as a default below in the model fields definitions, I'd like to eventually
-      figure out why 
-"""
 
 # The types of microblog posts that can exist
 MICRO_TYPES = (
@@ -53,7 +42,7 @@ class Blog(models.Model):
     slug = models.SlugField(unique=True)
     owner = models.ForeignKey(User, related_name='blogs_owned')
     contributors = models.ManyToManyField(User, related_name='active_blogs')
-    created = models.DateTimeField('date created', default=datetime.datetime.now)
+    created = models.DateTimeField(_('date created'), default=datetime.datetime.now)
     
     # TODO: Meta ordering by number of readers or something
     
@@ -128,13 +117,15 @@ class Post(models.Model):
         from django.contrib.sites.models import Site
         from trackback.utils import send
         
+        # blog_name and feed would be if you were constructing your own
+        # response to sent to the Google BlogSearch
         site = Site.objects.get_current()
-        blog_name = self.blog.slug
+        # blog_name = self.blog.slug
         blog_url = reverse('view_blog', kwargs={
             'slug': self.blog.slug
         })
         link = site.domain + self.get_absolute_url()
-        feed = reverse('latest_blog_feed')
+        # feed = reverse('latest_blog_feed')
         urls = []
         
         # For the trackback
@@ -142,7 +133,7 @@ class Post(models.Model):
             'url': link,
             'title': self.title,
             'blog_name': site.name,
-            'excerpt': self.content_html[:100], # self.teaser() once it's actually written
+            'excerpt': self.teaser(),
         }
         
         # These are the "big 4" in terms of blog aggregate sites.

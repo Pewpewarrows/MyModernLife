@@ -46,7 +46,7 @@ urlpatterns = patterns('',
     
     # Project-specific
     url(r'^$', direct_to_template, {'template': 'homepage.html'}, name='frontpage'),
-    # url(r'^demo/$', direct_to_template, {'template': 'demo.html'}, name='demo'),
+    url(r'^demo/$', direct_to_template, {'template': 'demo.html'}, name='demo'),
 
     # Flatpages for tools
     # url(r'^tools/sc2sim/', direct_to_template, {'template': 'tools/sc2sim.html'}),

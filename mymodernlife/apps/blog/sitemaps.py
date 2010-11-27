@@ -1,6 +1,6 @@
 from django.contrib.sitemaps import Sitemap
 
-from models import *
+from models import Blog, Post
 
 # from django.contrib.sitemaps import ping_google
 # python manage.py ping_google [/sitemap.xml]
