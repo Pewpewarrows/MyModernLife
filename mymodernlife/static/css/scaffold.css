@@ -37,7 +37,10 @@
  *      12. TV
  *
  * Colors:
- *      Grey: #CCC
+ *      Light Grey: #F1F1F1
+ *      Grey: #EFEFEF
+ *      Dark Grey: #CCC
+ *      Very Dark Grey: #777
  */
 
 
@@ -396,6 +399,9 @@ img.right { margin: 0 0 1em 1em; !important }
 	position: relative;
 }
 
+.js #jsnotice { display: none; }
+.no-js #jsnotice { display: block; }
+
 /* self-clearing fix */
 .clearfix:after {
 	content: ".";
@@ -441,19 +447,21 @@ img.right { margin: 0 0 1em 1em; !important }
  ----------------------------------- */
 
 @media print {
-	* { background: transparent !important; color: #444 !important; text-shadow: none; }
+	* { background: transparent !important; color: black !important; text-shadow: none !important; }
 	
 	a, a:visited { color: #444 !important; text-decoration: underline; }
 	
-	a:after { content: " (" attr(href) ")"; } 
+	a[href]:after { content: " (" attr(href) ")"; } 
 	
-	abbr:after { content: " (" attr(title) ")"; }
+	abbr[title]:after { content: " (" attr(title) ")"; }
 	
-	.ir a:after { content: ""; }  /* Don't show links for images */
+	.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }  /* Don't show links for images */
 	
 	pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
+
+    thead { display: table-header-group; } /* css-discuss.incutio.com/wiki/Printing_Tables */ 
 	
-	img { page-break-inside: avoid; }
+	tr, img { page-break-inside: avoid; }
 	
 	@page { margin: 0.5cm; }
 	

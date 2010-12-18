@@ -1,4 +1,4 @@
-{% extends "blog_base.html" %}
+{% extends 'blog_base.html' %}
 
 {% load taggit_extras %}
 
@@ -6,7 +6,7 @@
 
 {% block h1 %}Posts tagged '{{ tag }}'{% endblock %}
 
-{% block main %}
+{% block content %}
 
 	<ul class="blog-post-list">
     {% for post in posts %}

@@ -1,10 +1,10 @@
-{% extends "blog_base.html" %}
+{% extends 'blog_base.html' %}
 
 {% block title %}Blog Index | {% endblock %}
 
 {% block h1 %}List of Blogs{% endblock %}
 
-{% block main %}
+{% block content %}
 
 	<ul>
     {% for blog in object_list %}

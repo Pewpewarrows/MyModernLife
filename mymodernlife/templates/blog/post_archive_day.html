@@ -1,10 +1,10 @@
-{% extends "blog_base.html" %}
+{% extends 'blog_base.html' %}
 
 {% block title %}Posts on the {{ day|date:'jS' }} | {% endblock %}
 
 {% block h1 %}Posts on the {{ day|date:'jS' }}{% endblock %}
 
-{% block main %}
+{% block content %}
 
 	<ul>
     {% for post in object_list %}

@@ -1,0 +1,93 @@
+{% extends 'fixed_960_width.html' %}
+
+{% load media %}
+
+{% block header %}
+    <a href="{% url frontpage %}" class="logo">
+        <img src="{% media_url 'images/logo.png' %}" />
+    </a>
+    <span class="ir">Marco's Modern Life</span>
+    {% comment %}
+    <div id="user-account">
+        {% if user.is_authenticated %}
+        <a href="/profiles/{{ user.username }}/">{{ user.username }}</a>
+        <a href="/admin/">| Admin</a>
+        <a href="/accounts/logout/">| Logout</a>
+        {% else %}
+        <a href="/accounts/login/">Login</a>
+        <a href="/accounts/register/">| Register</a>
+        {% endif %}
+    </div>
+    {% endcomment %}
+    <nav>
+        <ul>
+            <li>
+                <a id="nav-blog" href="{% url blog_list %}">
+                    <img src="{% media_url 'images/blog-grey.png' %}" />
+                    <span class="ir">Blog</span>
+                </a>
+            </li>
+            <li>
+                <a id="nav-portfolio" href="/portfolio/">
+                    <img src="{% media_url 'images/portfolio-grey.png' %}" />
+                    <span class="ir">Portfolio</span>
+                </a>
+            </li>
+            <li class="spacer-right">
+                <a id="nav-activity" href="/activity/">
+                    <img src="{% media_url 'images/activity-grey.png' %}" />
+                    <span class="ir">Activity</span>
+                </a>
+            </li>
+            <li>
+                <a id="nav-resume" href="/resume/">
+                    <img src="{% media_url 'images/resume-grey.png' %}" />
+                    <span class="ir">Resume</span>
+                </a>
+            </li>
+            <li>
+                <a id="nav-contact" href="/contact/">
+                    <img src="{% media_url 'images/contact-grey.png' %}" />
+                    <span class="ir">Contact</span>
+                </a>
+            </li>
+            <li>
+                <a id="nav-about" href="/about/">
+                    <img src="{% media_url 'images/about-me-grey.png' %}" />
+                    <span class="ir">About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block main %}
+    <section id="breadcrumbs">
+        {% block breadcrumbs %}{% endblock %}
+    </section> <!-- end of #breadcrumbs -->
+    {% block core %}
+        {% block content %}{% endblock %}
+    {% endblock %}
+    <div class="clearfix"></div>
+{% endblock %}
+
+{% block footer %}
+    <hr/>
+    <small>
+        &copy; Copyright Marco's Modern Life 2010. All Rights Reserved.
+        <a href="//github.com/Pewpewarrows/MyModernLife">This Site is Open-Source</a>
+    </small>
+    <div class="right">
+        <small>
+            <ul id="footer-nav">
+                <li class="first"><a href="{% url frontpage %}">Home</a></li>
+                <li><a href="{% url blog_list %}">Blog</a></li>
+                <li><a href="/portfolio/">Portfolio</a></li>
+                <li><a href="/activity/">Activity</a></li>
+                <li><a href="/resume/">Resume</a></li>
+                <li><a href="/contact/">Contact</a></li>
+                <li><a href="/about/">About Me</a></li>
+            </ul>
+        </small>
+    </div>
+{% endblock %}

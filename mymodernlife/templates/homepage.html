@@ -1,8 +1,7 @@
-{% extends "blog_base.html" %}
+{% extends 'mymodernlife.html' %}
 
-{% block h1 %}{% endblock %}
-
-{% block main %}
-<!-- Three latest blog posts -->
-<!-- Ten latest items from my activity feed -->
+{% block core %}
+    {% include 'sidebar.inc.html' %}
+    <!-- Three latest blog posts -->
+    <!-- Ten latest items from my activity feed -->
 {% endblock %}

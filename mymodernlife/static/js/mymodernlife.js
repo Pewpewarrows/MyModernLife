@@ -5,92 +5,81 @@ var MML = window.MML || {};
    and remain compatible with other frameworks.  */
 (function($) {
 
-    /*
-     * http://www.viget.com/inspire/extending-paul-irishs-comprehensive-dom-ready-execution/
-     *
-     * Essentially, just add 'data-controller' and 'data-action' attributes to the 'body' tag
-     * and define those as functions within objects here to get page-specific 'document.ready'
-     * code to fire. Big thanks to Paul Irish and Jason Garber.
-     *
-     * TODO: push the 'exec' and 'init' functions back to a UTIL object that the global site
-     *      var can just use as a template above instead of a blank '{}'
-     */
-    MML = {
+    // Since we're in a closure we don't interfere with window.self
+    var self = $(this);
+
+    MML = Site.extend({
         common: {
+            // This function will fire on every page first
             init: function() {
+                $('#nav-blog').hover(function() {
+                    $('img', this).attr('src', '/static/images/blog.png');
+                    $('span', this).removeClass('ir');
+                }, function() {
+                    $('img', this).attr('src', '/static/images/blog-grey.png');
+                    $('span', this).addClass('ir');
+                });
+                
+                $('#nav-portfolio').hover(function() {
+                    $('img', this).attr('src', '/static/images/portfolio.png');
+                    $('span', this).removeClass('ir');
+                }, function() {
+                    $('img', this).attr('src', '/static/images/portfolio-grey.png');
+                    $('span', this).addClass('ir');
+                });
+                
+                $('#nav-activity').hover(function() {
+                    $('img', this).attr('src', '/static/images/activity.png');
+                    $('span', this).removeClass('ir');
+                }, function() {
+                    $('img', this).attr('src', '/static/images/activity-grey.png');
+                    $('span', this).addClass('ir');
+                });
+                
+                $('#nav-resume').hover(function() {
+                    $('img', this).attr('src', '/static/images/resume.png');
+                    $('span', this).removeClass('ir');
+                }, function() {
+                    $('img', this).attr('src', '/static/images/resume-grey.png');
+                    $('span', this).addClass('ir');
+                });
+                
+                $('#nav-contact').hover(function() {
+                    $('img', this).attr('src', '/static/images/contact.png');
+                    $('span', this).removeClass('ir');
+                }, function() {
+                    $('img', this).attr('src', '/static/images/contact-grey.png');
+                    $('span', this).addClass('ir');
+                });
+                
+                $('#nav-about').hover(function() {
+                    $('img', this).attr('src', '/static/images/about-me.png');
+                    $('span', this).removeClass('ir');
+                }, function() {
+                    $('img', this).attr('src', '/static/images/about-me-grey.png');
+                    $('span', this).addClass('ir');
+                });
             }
         },
 
-        exec: function(controller, action) {
-            action = (action === undefined) ? 'init' : action;
+        blog: {
+            init: function() {
+            },
+            view_post: function() {
+                window.addthis_config = {
+                    username: 'pewpewarrows',
+                    data_track_clickback: true
+                };
 
-            if ((controller !== '') && this[controller] && (typeof this[controller][action] == 'function')) {
-                this[controller][action]();
+                $.getScript('http://s7.addthis.com/js/250/addthis_widget.js?domready=1');
             }
-        },
-
-        init: function() {
-            var body = document.body,
-            controller = body.getAttribute('data-controller'),
-            action = body.getAttribute('data-action');
-
-            this.exec('common');
-            this.exec(controller);
-            this.exec(controller, action);
         }
-    };
+    });
 	
+    /* DOM Ready */
 	$(function() {
         MML.init();
 
-	    $('#nav-blog').hover(function() {
-	        $('img', this).attr('src', '/static/images/blog.png');
-	        $('span', this).removeClass('ir');
-	    }, function() {
-	        $('img', this).attr('src', '/static/images/blog-grey.png');
-	        $('span', this).addClass('ir');
-	    });
-	    
-	    $('#nav-portfolio').hover(function() {
-	        $('img', this).attr('src', '/static/images/portfolio.png');
-	        $('span', this).removeClass('ir');
-	    }, function() {
-	        $('img', this).attr('src', '/static/images/portfolio-grey.png');
-	        $('span', this).addClass('ir');
-	    });
-	    
-	    $('#nav-activity').hover(function() {
-	        $('img', this).attr('src', '/static/images/activity.png');
-	        $('span', this).removeClass('ir');
-	    }, function() {
-	        $('img', this).attr('src', '/static/images/activity-grey.png');
-	        $('span', this).addClass('ir');
-	    });
-	    
-	    $('#nav-resume').hover(function() {
-	        $('img', this).attr('src', '/static/images/resume.png');
-	        $('span', this).removeClass('ir');
-	    }, function() {
-	        $('img', this).attr('src', '/static/images/resume-grey.png');
-	        $('span', this).addClass('ir');
-	    });
-	    
-	    $('#nav-contact').hover(function() {
-	        $('img', this).attr('src', '/static/images/contact.png');
-	        $('span', this).removeClass('ir');
-	    }, function() {
-	        $('img', this).attr('src', '/static/images/contact-grey.png');
-	        $('span', this).addClass('ir');
-	    });
-	    
-	    $('#nav-about').hover(function() {
-	        $('img', this).attr('src', '/static/images/about-me.png');
-	        $('span', this).removeClass('ir');
-	    }, function() {
-	        $('img', this).attr('src', '/static/images/about-me-grey.png');
-	        $('span', this).addClass('ir');
-	    });
-	
 	    $('#delete-blog').click(function() {
 		    if (confirm('Are you sure you want to delete this blog?')) {
 			    return true;
@@ -108,6 +97,7 @@ var MML = window.MML || {};
 	    });
 	});
 
+    /* Window Ready */
 	$(window).bind("load", function() {
 	});
 	

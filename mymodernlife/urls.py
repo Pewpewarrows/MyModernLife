@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.conf.urls.defaults import *
-from django.views.generic.simple import direct_to_template
+from django.views.generic.simple import direct_to_template, redirect_to
 from django.contrib.sitemaps import FlatPageSitemap
 
 # from mymodernlife.views import frontpage
@@ -19,6 +19,9 @@ sitemaps = {
 }
 
 urlpatterns = patterns('',
+    # Browsers like to look for favicons at the root of a site
+    url(r'^favicon\.ico$', redirect_to, {'url': '/static/images/favicon.ico'}),
+
     # Included in Django
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {
         'template_name': 'registration/logout.html'

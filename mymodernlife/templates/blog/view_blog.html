@@ -1,4 +1,4 @@
-{% extends "blog_base.html" %}
+{% extends 'blog_base.html' %}
 
 {% comment %} multi-blog had {{ blog.title }} {% endcomment %}
 {% block title %}Blog | {% endblock %}
@@ -6,7 +6,7 @@
 {% comment %} multi-blog had {{ blog.title }} {% endcomment %}
 {% block h1 %}{% endblock %}
 
-{% block main %}
+{% block content %}
 
     {% comment %}
     {% if user.username == blog.owner.username %}

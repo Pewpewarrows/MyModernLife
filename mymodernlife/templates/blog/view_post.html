@@ -1,4 +1,4 @@
-{% extends "blog_base.html" %}
+{% extends 'blog_base.html' %}
 
 {% load rich_text %}
 {% load dump_context %}
@@ -6,9 +6,11 @@
 
 {% block title %}{{ post.title }} | {% endblock %}
 
+{% block data-action %}view_post{% endblock %}
+
 {% block h1 %}<a href="{{ post.get_absolute_url }}">{{ post }}</a>{% endblock %}
 
-{% block main %}
+{% block content %}
 <article class="blog-post">
     {% get_trackback_rdf_for post %}
 
@@ -53,9 +55,4 @@
     </div>
     <!-- AddThis Button END -->
 </article>
-{% endblock %}
-
-{% block extrascript %}
-<script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
-<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=pewpewarrows"></script>
 {% endblock %}

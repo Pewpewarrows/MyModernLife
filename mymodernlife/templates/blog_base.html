@@ -1,101 +1,19 @@
-{% extends "base.html" %}
+{% extends 'mymodernlife.html' %}
 
 {% load webdesign %}
-{% load taggit_extras %}
+
+{% block data-controller %}blog{% endblock %}
 
 {% block breadcrumbs %}<a href="{% url frontpage %}">Home</a> &raquo; <a href="{% url blog_list %}">Blog</a> {% endblock %}
 
-{% block content %}
-<section id="sidebar">
-    <aside id="about" class="widget">
-        <h2>Hello, There!</h2>
-        <hr/>
-        <p>
-            I'm <strong><a href="/about/">Marco Chomut</a></strong>, a computer scientist extraordinaire living
-            in the greater Washington, DC metro area.
-        </p>
-        <p>
-            I specialize in web and mobile development, and love working
-            with <strong><a href="http://djangoproject.com">Django</a></strong>, 
-            <strong><a href="http://jquery.com">jQuery</a></strong>, 
-            and <strong><a href="http://android.com">Android</a></strong>.
-        </p>
-    </aside>
-    <aside id="subscribe" class="widget">
-        <h2>Subscribe</h2>
-        <hr/>
-        <img src="/static/images/rss.png"/>
-        <img src="/static/images/twitter.png"/>
-        <img src="/static/images/e-mail.png"/>
-    </aside>
-    <aside id="latest-posts" class="widget">
-        <h2>Latest Posts</h2>
-        <hr/>
-        <ul class="blog-post-list">
-            <li>Foo</li>
-            <li>Bar</li>
-            <li>Baz</li>
-        </ul>
-    </aside>
-    <aside id="search" class="widget">
-        <h2>Search</h2>
-        <hr/>
-		<input type="text" size="22" />
-		<input type="submit" value="Search" />
-    </aside>
-    <aside id="popular-posts" class="widget">
-        <h2>Popular Posts</h2>
-        <hr/>
-        <ul class="blog-post-list">
-            <li>Foo</li>
-            <li>Bar</li>
-            <li>Baz</li>
-        </ul>
-    </aside>
-    <aside id="site-stats" class="widget">
-        <h2>Site Statistics</h2>
-        <hr/>
-    </aside>
-    <aside id="featured-posts" class="widget">
-        <h2>Featured Posts</h2>
-        <hr/>
-        <ul class="blog-post-list">
-            <li>Foo</li>
-            <li>Bar</li>
-            <li>Baz</li>
-        </ul>
-    </aside>
-    <aside id="categories" class="widget">
-        <h2>Categories</h2>
-        <hr/>
-        {% get_taglist as tags for 'blog.post' %}
-	    <ul>
-        {% for tag in tags %}
-        <li><a href="{% url view_tag tag.slug %}">{{ tag }} ({{ tag.num_times }})</a></li>
-        {% empty %}
-        <li>There don't appear to be any tags yet!</li>
-        {% endfor %}
-        </ul>
-    </aside>
-    <aside id="browse-posts" class="widget">
-        <h2>Browse Posts</h2>
-        <hr/>
-        <select></select>
-        <br/>
-        <select></select>
-        <br/>
-        <select></select>
-        <br/>
-        <input type="submit" value="Go"/>
-    </aside>
-</section> <!-- end of #sidebar -->
-<section id="blog">
-	<section id="title">
-		<h1>{% block h1 %}Page Title{% endblock %}</h1>
-	</section>
-	<section id="main">
-	    {% block main %}{% lorem %}{% endblock %}
-	    {% if debug %}{% endif %}
-	</section> <!-- end of #main -->
-</section> <!-- end of #blog -->
+{% block core %}
+    {% include 'sidebar.inc.html' %}
+    <section id="blog">
+        <section id="title">
+            <h1>{% block h1 %}Page Title{% endblock %}</h1>
+        </section>
+        <section id="content">
+            {% block content %}{% lorem %}{% endblock %}
+        </section> <!-- end of #content -->
+    </section> <!-- end of #blog -->
 {% endblock %}

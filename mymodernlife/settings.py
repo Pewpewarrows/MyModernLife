@@ -61,6 +61,10 @@ MEDIA_URL = '/static/'
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = MEDIA_URL + 'admin/'
 
+# Quick hack to get HttpOnly cookies until changeset 14707 is in the next release,
+# adding the SESSION_COOKIE_HTTPONLY variable.
+SESSION_COOKIE_PATH = '/;HttpOnly'
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -101,7 +105,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'mymodernlife.urls'
 
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_ROOT, "templates"),
+    os.path.join(PROJECT_ROOT, 'templates'),
 )
 
 # Alternative:
@@ -190,6 +194,9 @@ MEDIA_BUNDLES = (
         'js/utils.js',
         'js/mymodernlife.js',
     ),
+    ('belatedpng.js',
+        'js/lib/dd_belatedpng.js',
+    ),
 )
 
 GLOBAL_MEDIA_DIRS = (os.path.join(MEDIA_ROOT, 'static'),)
@@ -227,7 +234,7 @@ if SERVER_TYPE == 'LOCAL':
 else:
     DEBUG = False
     USE_ETAGS = True
-    # CACHE_BACKEND = "memcached://127.0.0.1:11211/"
+    # CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
 
 PREPEND_WWW = False
 TEMPLATE_DEBUG = True # Now that we have sentry, we always want that debug info

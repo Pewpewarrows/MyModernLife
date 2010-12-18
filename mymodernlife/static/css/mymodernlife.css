@@ -124,6 +124,23 @@ nav li a img {
     height: 50px;
 }
 
+#footer-nav {
+    list-style: none;
+    display: inline;
+}
+
+#footer-nav li {
+    display: inline;
+}
+
+#footer-nav li:before {
+    content: '| ';
+}
+
+#footer-nav li.first:before {
+    content: '';
+}
+
 /* -----------------------------------
   			    Tables
  ----------------------------------- */
@@ -138,7 +155,6 @@ nav li a img {
  
 #breadcrumbs {
     float: left;
-    width: 580px;
     margin-bottom: 10px;
 }
 

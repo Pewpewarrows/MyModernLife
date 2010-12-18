@@ -1,5 +1,5 @@
 /*
- * Utility functions, jQuery additions, and Javascript prototype extensions.
+ * Utility objects and functions, jQuery additions, and Javascript prototype extensions.
  */
 
 /*
@@ -43,24 +43,43 @@
  * Extensions to default Javascript prototypes, objects, and types
  */
 
-if (!String.prototype.startsWith) {
-    String.prototype.startsWith = function(str) {
-        return !this.indexOf(str);
-    };
-}
-
-if (!String.prototype.endsWith) {
-	String.prototype.endsWith = function(str) {
-		var lastIndex = this.lastIndexOf(str);
-		return (lastIndex != -1) && (lastIndex + str.length == this.length);
-	};
-}
-
 
 /*
- * Utility functions
+ * Utility functions and objects
+ *
+ * I would wrap these in an anonymous function to utilize jQuery,
+ * but I'd rather keep them library-agnostic as much as possible.
  */
 
+/*
+ * http://www.viget.com/inspire/extending-paul-irishs-comprehensive-dom-ready-execution/
+ *
+ * Essentially, just add 'data-controller' and 'data-action' attributes to the 'body' tag
+ * and define those as functions within objects here to get page-specific 'document.ready'
+ * code to fire. Big thanks to Paul Irish and Jason Garber.
+ */
+var Site = {
+    exec: function(controller, action) {
+        action = (action === undefined) ? 'init' : action;
+
+        if ((controller !== '') && this[controller] && (typeof this[controller][action] === 'function')) {
+            this[controller][action]();
+        }
+    },
+
+    init: function() {
+        var body = document.body,
+        controller = body.getAttribute('data-controller'),
+        action = body.getAttribute('data-action');
+
+        this.exec('common');
+        this.exec(controller);
+        this.exec(controller, action);
+        this.exec('common', 'finalize');
+    }
+};
+
+/*
 var g_condition;
 var g_callback;
 
@@ -73,13 +92,10 @@ function when(condition, callback) {
 		callback();
 	}
 }
+*/
 
 function compare(a, b) {
 	return ((a < b) ? -1 : ((a > b) ? 1 : 0));
-}
-
-function isFunction(x) { 
-    return Object.prototype.toString.call(x) === "[object Function]";
 }
 
 function isInt(x) {
@@ -100,134 +116,6 @@ window.log = function() {
 		console.log(Array.prototype.slice.call(arguments));
 	}
 };
-
-/*
- * Javascript sprintf
- * http://www.webtoolkit.info/
- * http://www.webtoolkit.info/javascript-sprintf.html
- */
-sprintfWrapper = {
- 
-	init : function () {
- 
-		if (typeof arguments == "undefined") { return null; }
-		if (arguments.length < 1) { return null; }
-		if (typeof arguments[0] != "string") { return null; }
-		if (typeof RegExp == "undefined") { return null; }
- 
-		var string = arguments[0];
-		var exp = new RegExp(/(%([%]|(\-)?(\+|\x20)?(0)?(\d+)?(\.(\d)?)?([bcdfosxX])))/g);
-		var matches = new Array();
-		var strings = new Array();
-		var convCount = 0;
-		var stringPosStart = 0;
-		var stringPosEnd = 0;
-		var matchPosEnd = 0;
-		var newString = '';
-		var match = null;
- 
-		while (match = exp.exec(string)) {
-			if (match[9]) { convCount += 1; }
- 
-			stringPosStart = matchPosEnd;
-			stringPosEnd = exp.lastIndex - match[0].length;
-			strings[strings.length] = string.substring(stringPosStart, stringPosEnd);
- 
-			matchPosEnd = exp.lastIndex;
-			matches[matches.length] = {
-				match: match[0],
-				left: match[3] ? true : false,
-				sign: match[4] || '',
-				pad: match[5] || ' ',
-				min: match[6] || 0,
-				precision: match[8],
-				code: match[9] || '%',
-				negative: parseInt(arguments[convCount]) < 0 ? true : false,
-				argument: String(arguments[convCount])
-			};
-		}
-		strings[strings.length] = string.substring(matchPosEnd);
- 
-		if (matches.length == 0) { return string; }
-		if ((arguments.length - 1) < convCount) { return null; }
- 
-		var code = null;
-		var match = null;
-		var i = null;
- 
-		for (i=0; i<matches.length; i++) {
- 
-			if (matches[i].code == '%') { substitution = '%'; }
-			else if (matches[i].code == 'b') {
-				matches[i].argument = String(Math.abs(parseInt(matches[i].argument)).toString(2));
-				substitution = sprintfWrapper.convert(matches[i], true);
-			}
-			else if (matches[i].code == 'c') {
-				matches[i].argument = String(String.fromCharCode(parseInt(Math.abs(parseInt(matches[i].argument)))));
-				substitution = sprintfWrapper.convert(matches[i], true);
-			}
-			else if (matches[i].code == 'd') {
-				matches[i].argument = String(Math.abs(parseInt(matches[i].argument)));
-				substitution = sprintfWrapper.convert(matches[i]);
-			}
-			else if (matches[i].code == 'f') {
-				matches[i].argument = String(Math.abs(parseFloat(matches[i].argument)).toFixed(matches[i].precision ? matches[i].precision : 6));
-				substitution = sprintfWrapper.convert(matches[i]);
-			}
-			else if (matches[i].code == 'o') {
-				matches[i].argument = String(Math.abs(parseInt(matches[i].argument)).toString(8));
-				substitution = sprintfWrapper.convert(matches[i]);
-			}
-			else if (matches[i].code == 's') {
-				matches[i].argument = matches[i].argument.substring(0, matches[i].precision ? matches[i].precision : matches[i].argument.length);
-				substitution = sprintfWrapper.convert(matches[i], true);
-			}
-			else if (matches[i].code == 'x') {
-				matches[i].argument = String(Math.abs(parseInt(matches[i].argument)).toString(16));
-				substitution = sprintfWrapper.convert(matches[i]);
-			}
-			else if (matches[i].code == 'X') {
-				matches[i].argument = String(Math.abs(parseInt(matches[i].argument)).toString(16));
-				substitution = sprintfWrapper.convert(matches[i]).toUpperCase();
-			}
-			else {
-				substitution = matches[i].match;
-			}
- 
-			newString += strings[i];
-			newString += substitution;
- 
-		}
-		newString += strings[i];
- 
-		return newString;
- 
-	},
- 
-	convert : function(match, nosign){
-		if (nosign) {
-			match.sign = '';
-		} else {
-			match.sign = match.negative ? '-' : match.sign;
-		}
-		var l = match.min - match.argument.length + 1 - match.sign.length;
-		var pad = new Array(l < 0 ? 0 : l).join(match.pad);
-		if (!match.left) {
-			if (match.pad == "0" || nosign) {
-				return match.sign + pad + match.argument;
-			} else {
-				return pad + match.sign + match.argument;
-			}
-		} else {
-			if (match.pad == "0" || nosign) {
-				return match.sign + match.argument + pad.replace(/0/g, ' ');
-			} else {
-				return match.sign + match.argument + pad;
-			}
-		}
-	}
-};
-sprintf = sprintfWrapper.init;
 
 
 /*

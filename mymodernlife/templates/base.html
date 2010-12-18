@@ -1,7 +1,7 @@
-<!doctype html ✰>
+<!doctype html>
+<!-- ✰ -->
 {% load trackback_tags %}
 {% load media %}
-<!-- Many of the static files were inspired by the HTML5 Boilerplate and HTML5 Reset projects -->
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
 <!--[if lt IE 7]>
@@ -20,18 +20,18 @@
 <html lang="en" class="no-js">
 <!--<![endif]-->
 <head>
-	<meta charset="utf-8" />
+	<meta charset="utf-8" /> <!-- Needs to be within the first 512 bytes -->
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta http-equiv="Content-Language" content="en" />
 	
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
 	
-	<!-- Give the browser the title before we start making more requests -->
 	<title>{% block title %}{% endblock %}Marco's Modern Life</title>
 	
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
 	<meta name="author" content="" />
+
+    <!-- Many of this site's static files were inspired by the HTML5 Boilerplate and HTML5 Reset projects -->
 	
 	<!--  Mobile Viewport Fix
 	    j.mp/mobileviewport & davidbcalhoun.com/2010/viewport-metatag 
@@ -39,30 +39,66 @@
 	initial-scale = 1.0 retains dimensions instead of zooming out if page height > device height
 	maximum-scale = 1.0 retains dimensions instead of zooming in if page width < device width
 	-->
-	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <!-- Suppress IE6's pop-up-on-mouseover toolbar for images -->
+    <meta http-equiv="imagetoolbar" content="false" />
 	
+    <!-- Be sure to fill this in after registering with Google Webmaster Tools -->
 	<meta name="google-site-verification" content="" />
 	
 	<link rel="shortcut icon" href="{% media_url 'images/favicon.ico' %}" />
-	<link rel="apple-touch-icon" href="{{ MEDIA_URL }}images/touch-icon.png" />
-	<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="{% url latest_blog_feed %}" />
+    <!-- TODO: actually make the touch icon
+    <link rel="apple-touch-icon" href="{{ MEDIA_URL }}images/touch-icon.png" />
+    -->
+	<link rel="alternate" type="application/rss+xml" title="RSS Posts Feed" href="{% url latest_blog_feed %}" />
 	<link rel="pingback" href="{% get_pingback_url %}" />
 	
 	{% include_media 'main.css' %}
 	
+    <!-- Additional stylesheets -->
 	{% block extrastyle %}{% endblock %}
 	
+    <!-- Whatever else subpages might want to throw in the <head> -->
 	{% block extrahead %}{% endblock %}
+</head>
+<!-- http://www.viget.com/inspire/extending-paul-irishs-comprehensive-dom-ready-execution/ -->
+<body data-controller="{% block data-controller %}{% endblock %}" data-action="{% block data-action %}{% endblock %}">
+    {% block layout %}{% endblock %}
 	
+    <!-- 
+        <noscript> tags are handled awkwardly by different browsers, this standardizes it.
+        The entire page is wrapped in a no-js class by default, that is replaced by Modernizr
+        with a js class if javascript can execute. So jsnotice is only visible if it's within no-js.
+    -->
+    <p id="jsnotice">
+        Javascript is currently disabled. This site requires Javascript to function correctly.
+        Please <a href="http://enable-javascript.com/">enable Javascript in your browser</a>!
+    </p>
+
+    <!-- Javascript is only allowed past this point -->
+
+	<!-- Grab Google CDN's jQuery. fall back to local if necessary -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+	<script type="text/javascript">!window.jQuery && document.write(unescape('%3Cscript src="{{ MEDIA_URL }}js/lib/jquery-1.4.2.min.js"%3E%3C/script%3E'))</script>
+	
+    <!-- IE6 users with Javascript disabled are < 0.05% of total visitors, they'll just have to deal with it -->
+	<!--[if lt IE 7 ]>
+    <script type="text/javascript"> //fix any <img> or .png_bg background-images
+        $.getScript('{% media_url "belatedpng.js" %}',function(){ DD_belatedPNG.fix('img, .png_bg'); });
+    </script>
+	<![endif]-->
+
 	<!--[if lt IE 9]>
 	<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
 	<![endif]-->
-	
+
+	{% include_media 'main.js' %}
+
 	<!-- Google Analytics Async Tracker -->
 	<!-- http://mathiasbynens.be/notes/async-analytics-snippet -->
 	<script type="text/javascript">
-	//<![CDATA[
-//		var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']];
+//      var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']];
 //		(function(d, t) {
 //			var g = d.createElement(t),
 //			    s = d.getElementsByTagName(t)[0];
@@ -70,121 +106,7 @@
 //          g.src = ('https:' == location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 //			s.parentNode.insertBefore(g, s);
 //		})(document, 'script');
-	//]]
 	</script>
-</head>
-<body>
-	<div id="wrapper">
-		<header>
-		    <a href="{% url frontpage %}" class="logo">
-                <img src="{% media_url 'images/logo.png' %}" />
-	        </a>
-	        <span class="ir">Marco's Modern Life</span>
-			{% comment %}
-			<div id="user-account">
-				{% if user.is_authenticated %}
-				<a href="/profiles/{{ user.username }}/">{{ user.username }}</a>
-				<a href="/admin/">| Admin</a>
-				<a href="/accounts/logout/">| Logout</a>
-				{% else %}
-				<a href="/accounts/login/">Login</a>
-				<a href="/accounts/register/">| Register</a>
-				{% endif %}
-			</div>
-			<div id="searchbar">
-				<input type="text" size="25" />
-				<input type="submit" value="Search" />
-			</div>
-			{% endcomment %}
-			<nav>
-				<ul>
-					<li>
-					    <a id="nav-blog" href="{% url blog_list %}">
-			                <img src="{% media_url 'images/blog-grey.png' %}" />
-					        <span class="ir">Blog</span>
-					    </a>
-				    </li>
-					<li>
-					    <a id="nav-portfolio" href="/portfolio/">
-			                <img src="{% media_url 'images/portfolio-grey.png' %}" />
-					        <span class="ir">Portfolio</span>
-					    </a>
-				    </li>
-					<li class="spacer-right">
-					    <a id="nav-activity" href="/activity/">
-			                <img src="{% media_url 'images/activity-grey.png' %}" />
-					        <span class="ir">Activity</span>
-					    </a>
-				    </li>
-					<li>
-					    <a id="nav-resume" href="/resume/">
-			                <img src="{% media_url 'images/resume-grey.png' %}" />
-					        <span class="ir">Resume</span>
-					    </a>
-				    </li>
-					<li>
-					    <a id="nav-contact" href="/contact/">
-			                <img src="{% media_url 'images/contact-grey.png' %}" />
-					        <span class="ir">Contact</span>
-					    </a>
-				    </li>
-					<li>
-					    <a id="nav-about" href="/about/">
-			                <img src="{% media_url 'images/about-me-grey.png' %}" />
-					        <span class="ir">About</span>
-					    </a>
-				    </li>
-				</ul>
-			</nav>
-		</header>
-		<section id="content">
-		    <section id="breadcrumbs">
-	            {% block breadcrumbs %}{% endblock %}
-	        </section>
-		    {% block content %}
-		        {% block main %}{% endblock %}
-		    {% endblock %}
-		    <div class="clearfix"></div>
-		</section> <!-- end of #content -->
-	    <footer>
-		    <hr/>
-		    <small>
-		        &copy; Copyright Marco's Modern Life 2010. All Rights Reserved.
-		        <a href="//github.com/Pewpewarrows/MyModernLife">This Site is Open-Source</a>
-		    </small>
-		    <div class="right">
-		        <small>
-				    <a href="{% url frontpage %}">Home</a>
-		            |
-		            <a href="{% url blog_list %}">Blog</a>
-		            |
-		            <a href="/portfolio/">Portfolio</a>
-		            |
-		            <a href="/activity/">Activity</a>
-		            |
-		            <a href="/resume/">Resume</a>
-		            |
-		            <a href="/contact/">Contact</a>
-		            |
-		            <a href="/about/">About Me</a>
-		        </small>
-		    </div>
-	    </footer> <!-- end of #footer -->
-	</div> <!-- end of #wrapper -->
-	
-	<noscript></noscript>
-
-	<!-- Grab Google CDN's jQuery. fall back to local if necessary -->
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-	<script>!window.jQuery && document.write(unescape('%3Cscript src="{{ MEDIA_URL }}js/lib/jquery-1.4.2.min.js"%3E%3C/script%3E'))</script>
-	
-	{% include_media 'main.js' %}
-	
-	<!--[if lt IE 7 ]>
-    <script> //fix any <img> or .png_bg background-images
-        $.getScript('{{ MEDIA_URL }}js/lib/dd_belatedpng.js',function(){ DD_belatedPNG.fix('img, .png_bg'); });
-    </script>
-	<![endif]-->
 	
 	{% block extrascript %}{% endblock %}
 </body>
