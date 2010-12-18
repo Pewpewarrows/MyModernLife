@@ -57,6 +57,8 @@
  * Essentially, just add 'data-controller' and 'data-action' attributes to the 'body' tag
  * and define those as functions within objects here to get page-specific 'document.ready'
  * code to fire. Big thanks to Paul Irish and Jason Garber.
+ *
+ * Dependant on: underscore.js for prototype extending
  */
 var Site = {
     exec: function(controller, action) {
@@ -76,6 +78,10 @@ var Site = {
         this.exec(controller);
         this.exec(controller, action);
         this.exec('common', 'finalize');
+    },
+
+    extend: function(props) {
+        return _.extend(this, props);
     }
 };
 

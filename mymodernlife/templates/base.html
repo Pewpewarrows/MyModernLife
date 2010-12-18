@@ -20,52 +20,54 @@
 <html lang="en" class="no-js">
 <!--<![endif]-->
 <head>
-	<meta charset="utf-8" /> <!-- Needs to be within the first 512 bytes -->
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	
-	<meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-	
-	<title>{% block title %}{% endblock %}Marco's Modern Life</title>
-	
-	<meta name="description" content="" />
-	<meta name="keywords" content="" />
-	<meta name="author" content="" />
+    <meta charset="utf-8" /> <!-- Needs to be within the first 512 bytes -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+
+    <title>{% block title %}{% endblock %}Marco's Modern Life</title>
+
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="" />
 
     <!-- Many of this site's static files were inspired by the HTML5 Boilerplate and HTML5 Reset projects -->
-	
-	<!--  Mobile Viewport Fix
-	    j.mp/mobileviewport & davidbcalhoun.com/2010/viewport-metatag 
-	device-width : Occupy full width of the screen in its current orientation
-	initial-scale = 1.0 retains dimensions instead of zooming out if page height > device height
-	maximum-scale = 1.0 retains dimensions instead of zooming in if page width < device width
-	-->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <!--  Mobile Viewport Fix
+        j.mp/mobileviewport & davidbcalhoun.com/2010/viewport-metatag 
+    device-width : Occupy full width of the screen in its current orientation
+    initial-scale = 1.0 retains dimensions instead of zooming out if page height > device height
+    maximum-scale = 1.0 retains dimensions instead of zooming in if page width < device width
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
     <!-- Suppress IE6's pop-up-on-mouseover toolbar for images -->
     <meta http-equiv="imagetoolbar" content="false" />
-	
+
     <!-- Be sure to fill this in after registering with Google Webmaster Tools -->
-	<meta name="google-site-verification" content="" />
-	
-	<link rel="shortcut icon" href="{% media_url 'images/favicon.ico' %}" />
+    <meta name="google-site-verification" content="" />
+
+    <link rel="shortcut icon" href="{% media_url 'images/favicon.ico' %}" />
     <!-- TODO: actually make the touch icon
     <link rel="apple-touch-icon" href="{{ MEDIA_URL }}images/touch-icon.png" />
     -->
-	<link rel="alternate" type="application/rss+xml" title="RSS Posts Feed" href="{% url latest_blog_feed %}" />
-	<link rel="pingback" href="{% get_pingback_url %}" />
-	
-	{% include_media 'main.css' %}
-	
+    <link rel="alternate" type="application/rss+xml" title="RSS Posts Feed" href="{% url latest_blog_feed %}" />
+    <link rel="pingback" href="{% get_pingback_url %}" />
+
+    {% include_media 'main.css' %}
+
     <!-- Additional stylesheets -->
-	{% block extrastyle %}{% endblock %}
-	
+    {% block extrastyle %}{% endblock %}
+
     <!-- Whatever else subpages might want to throw in the <head> -->
-	{% block extrahead %}{% endblock %}
+    {% block extrahead %}{% endblock %}
+
+    <script src="{% media_url 'modernizr.js' %}"></script>
 </head>
 <!-- http://www.viget.com/inspire/extending-paul-irishs-comprehensive-dom-ready-execution/ -->
 <body data-controller="{% block data-controller %}{% endblock %}" data-action="{% block data-action %}{% endblock %}">
     {% block layout %}{% endblock %}
-	
+    
     <!-- 
         <noscript> tags are handled awkwardly by different browsers, this standardizes it.
         The entire page is wrapped in a no-js class by default, that is replaced by Modernizr
@@ -78,36 +80,47 @@
 
     <!-- Javascript is only allowed past this point -->
 
-	<!-- Grab Google CDN's jQuery. fall back to local if necessary -->
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
-	<script type="text/javascript">!window.jQuery && document.write(unescape('%3Cscript src="{{ MEDIA_URL }}js/lib/jquery-1.4.2.min.js"%3E%3C/script%3E'))</script>
-	
+    <!-- Grab Google CDN's jQuery. fall back to local if necessary -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+    <script type="text/javascript">!window.jQuery && document.write(unescape('%3Cscript src="{% media_url "jquery.js" %}%3E%3C/script%3E'))</script>
+    
     <!-- IE6 users with Javascript disabled are < 0.05% of total visitors, they'll just have to deal with it -->
-	<!--[if lt IE 7 ]>
+    <!--[if lt IE 7 ]>
     <script type="text/javascript"> //fix any <img> or .png_bg background-images
         $.getScript('{% media_url "belatedpng.js" %}',function(){ DD_belatedPNG.fix('img, .png_bg'); });
     </script>
-	<![endif]-->
+    <![endif]-->
 
-	<!--[if lt IE 9]>
-	<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
-	<![endif]-->
+    <!--[if lt IE 9]>
+    <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+    <![endif]-->
 
-	{% include_media 'main.js' %}
+    {% if debug %}
+    {% include_media 'main.js' %}
+    {% else %}
+    <script type="text/javascript">
+        var media_urls = {% media_url 'main.js' %};
+        for (url in media_urls) {
+            $.getScript(media_urls[url]);
+        }
+    </script>
+    {% endif %}
 
-	<!-- Google Analytics Async Tracker -->
-	<!-- http://mathiasbynens.be/notes/async-analytics-snippet -->
-	<script type="text/javascript">
-//      var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']];
-//		(function(d, t) {
-//			var g = d.createElement(t),
-//			    s = d.getElementsByTagName(t)[0];
-//			g.async = true;
-//          g.src = ('https:' == location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-//			s.parentNode.insertBefore(g, s);
-//		})(document, 'script');
-	</script>
-	
-	{% block extrascript %}{% endblock %}
+    <!-- Google Analytics Async Tracker -->
+    <!-- http://mathiasbynens.be/notes/async-analytics-snippet -->
+    <script type="text/javascript">
+        /*
+        var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']];
+        (function(d, t) {
+            var g = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+            g.async = true;
+            g.src = ('https:' == location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g, s);
+        })(document, 'script');
+        */
+    </script>
+    
+    {% block extrascript %}{% endblock %}
 </body>
 </html>
