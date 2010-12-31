@@ -15,4 +15,4 @@ class BlogForm(ModelForm):
 class PostForm(ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'markup', 'content', 'tags')
+        fields = ('title', 'slug', 'markup', 'content', 'tags')

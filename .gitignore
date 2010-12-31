@@ -45,3 +45,4 @@ settings_auth.py
 pylint.html
 _generated_media_names.py
 mymodernlife/_generated_media
+mml # vim session file

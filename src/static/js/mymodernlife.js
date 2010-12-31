@@ -1,6 +1,3 @@
-/* Declare a namespace for the site */
-var MML = window.MML || {};
-
 /* Create a closure to maintain scope of the '$'
    and remain compatible with other frameworks.  */
 (function($) {
@@ -8,7 +5,7 @@ var MML = window.MML || {};
     // Since we're in a closure we don't interfere with window.self
     var self = $(this);
 
-    MML = Site.extend({
+    var MML = Site.extend({
         common: {
             // This function will fire on every page first
             init: function() {
@@ -78,7 +75,7 @@ var MML = window.MML || {};
 	
     /* DOM Ready */
 	$(function() {
-        MML.init();
+        window.MML = new MML();
 
 	    $('#delete-blog').click(function() {
 		    if (confirm('Are you sure you want to delete this blog?')) {

@@ -25,7 +25,7 @@
 
     <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
 
-    <title>{% block title %}{% endblock %}Marco's Modern Life</title>
+    <title>{% block title %}Marco's Modern Life{% endblock %}</title>
 
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -62,10 +62,15 @@
     <!-- Whatever else subpages might want to throw in the <head> -->
     {% block extrahead %}{% endblock %}
 
+    <!--
+    All scripts at the bottom, except for Modernizr, which enables feature
+    detection as well as basic HTML5 element support in legacy browsers.
+    -->
     <script src="{% media_url 'modernizr.js' %}"></script>
 </head>
 <!-- http://www.viget.com/inspire/extending-paul-irishs-comprehensive-dom-ready-execution/ -->
 <body data-controller="{% block data-controller %}{% endblock %}" data-action="{% block data-action %}{% endblock %}">
+    {% block overlay %}{% endblock %}
     {% block layout %}{% endblock %}
     
     <!-- 
@@ -74,15 +79,19 @@
         with a js class if javascript can execute. So jsnotice is only visible if it's within no-js.
     -->
     <p id="jsnotice">
-        Javascript is currently disabled. This site requires Javascript to function correctly.
-        Please <a href="http://enable-javascript.com/">enable Javascript in your browser</a>!
+        We notice that you currently have Javascript disabled. While this site is fully accessible
+        without it, you're still missing out on some pretty neat features. We work tirelessly
+        to ensure that our scripts are small, unobtrusive, and do not harm your user experience.
+        Please add us to your whitelist, or <a href="//enable-javascript.com/">enable Javascript in your browser</a>!
     </p>
+
+    <!-- Legacy Browser Upgrade Notification should go here -->
 
     <!-- Javascript is only allowed past this point -->
 
     <!-- Grab Google CDN's jQuery. fall back to local if necessary -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
-    <script type="text/javascript">!window.jQuery && document.write(unescape('%3Cscript src="{% media_url "jquery.js" %}%3E%3C/script%3E'))</script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+    <script type="text/javascript">!window.jQuery && document.write(unescape('%3Cscript src="{% media_url "jquery.js" %}"%3E%3C/script%3E'))</script>
     
     <!-- IE6 users with Javascript disabled are < 0.05% of total visitors, they'll just have to deal with it -->
     <!--[if lt IE 7 ]>
@@ -99,6 +108,7 @@
     {% include_media 'main.js' %}
     {% else %}
     <script type="text/javascript">
+        // Grab our scripts async
         var media_urls = {% media_url 'main.js' %};
         for (url in media_urls) {
             $.getScript(media_urls[url]);

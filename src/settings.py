@@ -85,8 +85,9 @@ if USE_I18N:
 # DO NOT modify the order of these, they have to wrap in a specific order
 MIDDLEWARE_CLASSES = (
     # 'django.middleware.cache.UpdateCacheMiddleware', # Must be first
+    'mediagenerator.middleware.MediaMiddleware',
     'django.middleware.gzip.GZipMiddleware',
-    # 'django.middleware.http.ConditionalGetMiddleware',
+    'django.middleware.http.ConditionalGetMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     # 'django.middleware.locale.LocaleMiddleware',
@@ -233,7 +234,6 @@ else:
 
 if SERVER_TYPE == 'LOCAL':
     DEBUG = True
-    USE_ETAGS = False
     CACHE_BACKEND = 'dummy:///'
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     # How much does this fuck up toolbar rendering? Might have to just hardcode
@@ -242,10 +242,10 @@ if SERVER_TYPE == 'LOCAL':
     INSTALLED_APPS += ('debug_toolbar',)
 else:
     DEBUG = False
-    USE_ETAGS = True
     # CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
 
+USE_ETAGS = False
 PREPEND_WWW = False
 TEMPLATE_DEBUG = True # Now that we have sentry, we always want that debug info
 MEDIA_DEV_MODE = DEBUG
-PRODUCTION_MEDIA_URL = '/media/'
+PRODUCTION_MEDIA_URL = '/static/'

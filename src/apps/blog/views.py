@@ -11,7 +11,8 @@ from blog.utils import get_unique_slug, generate_slug
 
 """
 TODO:
-    - Draft/Published status
+    - Draft/Pending Review/Published status
+    - Public/Password-protected/Private visibility
     
     - Write tests for this shit
     - Received Trackbacks: check that our link is in it to reduce spam
@@ -25,6 +26,14 @@ TODO:
     - Get MicroPosts working
     - Use built-in SlugField
     - Blog Series
+    - Make "posted on:" dates into links
+    - Gracefully transition url-wise from single blog to multiple and back automagically
+    - After adding versioning, provide a short reason field for edits, along with "make reason public" checkbox
+    - Add field to allow post to be editable by anyone with posting priviledges to that blog
+    - After adding comments, provide an auto-checked field to allow comments on the post
+    - Need a way to upload media mid-writing and then embed that content in the post
+    - Wrap generic views to get amounts inside each blog/year/month/day
+    - Autosaving mid-draft
     
     - Have the ability to restrict blog/post creation to a group with a setting
     - Even better: have contributors be a group instead of users list?
@@ -36,6 +45,7 @@ TODO:
     - XML-RPC MT API? (Movable Type)
     - Author archive pages to see list of posts cross-blogs
     - Group-restricted viewing privileges on specific blogs?
+    - Broadcast some signals for other apps to tie in
 """
 
 @login_required

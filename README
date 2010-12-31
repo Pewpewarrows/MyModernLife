@@ -1,7 +1,7 @@
 My personal blog, with the intention of making it into a generic and custom 
 django CMS that I can use as a foundation for any new projects
 
-Usual spiel, see conf/requirements.txt for the pip file.
+Usual spiel, see conf/requirements.pip.txt for the pip file.
 
 TODO:
 0. Keep this list for internal reminders.  Big-ticket stuff on GitHub.
