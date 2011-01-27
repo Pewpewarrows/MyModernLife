@@ -74,9 +74,10 @@ TEMPLATE_LOADERS = (
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.core.context_processors.request',
-    'django.core.context_processors.debug',
 )
 
 if USE_I18N:
@@ -103,7 +104,7 @@ MIDDLEWARE_CLASSES = (
     'xframeoptions.middleware.Header',
 )
 
-ROOT_URLCONF = 'mymodernlife.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT, 'templates'),
@@ -150,6 +151,7 @@ INSTALLED_APPS = (
     'taggit',
     'taggit_templatetags',
     'trackback',
+    'uni_form',
     'xframeoptions',
     
     # Prometheus
@@ -185,6 +187,8 @@ DEBUG_TOOLBAR_PANELS = (
 
 MEDIA_BUNDLES = (
     ('main.css',
+        'css/lib/uni-form-generic.css',
+        'css/lib/uni-form.css',
         'css/reset.css',
         'css/scaffold.css',
         # 'css/base_theme.css',
@@ -195,6 +199,7 @@ MEDIA_BUNDLES = (
         'js/lib/underscore.js',
         'js/lib/underscore.strings.js',
         'js/lib/backbone.js',
+        'js/lib/uni-form.jquery.js',
         'js/utils.js',
         'js/mymodernlife.js',
     ),
@@ -203,6 +208,9 @@ MEDIA_BUNDLES = (
     ),
     ('belatedpng.js',
         'js/lib/dd_belatedpng.js',
+    ),
+    ('IE.js',
+        'js/lib/IE9.js',
     ),
     ('modernizr.js',
         'js/lib/modernizr-1.5.min.js',
@@ -213,10 +221,11 @@ GLOBAL_MEDIA_DIRS = (os.path.join(MEDIA_ROOT, 'static'),)
 
 ROOT_MEDIA_FILTERS = {
     'css': 'mediagenerator.filters.yuicompressor.YUICompressor',
-    'js': 'mediagenerator.filters.yuicompressor.YUICompressor',
+    'js': 'mediagenerator.filters.closure.Closure',
 }
 
-YUICOMPRESSOR_PATH = os.path.join(MEDIA_ROOT, 'static', 'java', 'yuicompressor-2.4.2.jar')
+YUICOMPRESSOR_PATH = os.path.join(MEDIA_ROOT, 'static/java/yuicompressor-2.4.2.jar')
+CLOSURE_COMPILER_PATH = os.path.join(MEDIA_ROOT, 'static/java/closure-compiler.jar')
 
 # Hostname lists for local/dev/staging/production machines
 SERVERS = (

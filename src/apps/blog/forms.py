@@ -2,11 +2,6 @@ from django.forms import ModelForm
 
 from models import Blog, Post
 
-"""
-TODO:
-    - cleaning and user-friendly error messages
-"""
-
 class BlogForm(ModelForm):
     class Meta:
         model = Blog
@@ -15,4 +10,4 @@ class BlogForm(ModelForm):
 class PostForm(ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'slug', 'markup', 'content', 'tags')
+        fields = ('title', 'markup', 'content', 'tags')

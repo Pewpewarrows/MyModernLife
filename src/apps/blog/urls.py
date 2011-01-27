@@ -22,7 +22,7 @@ post_dict = {
 
 urlpatterns = patterns('blog.views',
     # url(r'^$', object_list, blog_dict, name='blog_list'),
-    url(r'^$', 'view_blog', { 'slug': 'my-modern-life', }, name='blog_list'),
+    url(r'^(page/(?P<page>\d+)/)?$', 'view_blog', { 'slug': 'my-modern-life', }, name='blog_list'),
     url(r'^latest/feed/$', AllPostFeed(reverse_lazy('blog_list')), name='latest_blog_feed'),
     url(r'^create/$', 'create_blog', name='create_blog'),
     url(r'^tags/$', direct_to_template, {
@@ -36,7 +36,7 @@ urlpatterns = patterns('blog.views',
     url(r'^(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{2})/$', archive_day, dict(post_dict,
         month_format='%m',
     ), name='posts_by_day'),
-    # url(r'^(?P<slug>[-\w]+)/$', 'view_blog', name='view_blog'),
+    # url(r'^(?P<slug>[-\w]+)/(page/(?P<page>\d+)/)?$', 'view_blog', name='view_blog'),
     # url(r'^(?P<slug>[-\w]+)/delete/$', 'delete_blog', name='delete_blog'),
     # url(r'^(?P<slug>[-\w]+)/add/$', 'create_post', name='create_post'),
     url(r'^add/$', 'create_post', { 'slug': 'my-modern-life', }, name='create_post'),

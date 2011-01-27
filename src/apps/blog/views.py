@@ -2,6 +2,7 @@ from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
 from taggit.models import Tag
 
@@ -25,7 +26,8 @@ TODO:
     - Liveblogging
     - Get MicroPosts working
     - Use built-in SlugField
-    - Blog Series
+    - Editable SlugField?
+    - Series of posts within a Blog, special category?
     - Make "posted on:" dates into links
     - Gracefully transition url-wise from single blog to multiple and back automagically
     - After adding versioning, provide a short reason field for edits, along with "make reason public" checkbox
@@ -47,6 +49,9 @@ TODO:
     - Group-restricted viewing privileges on specific blogs?
     - Broadcast some signals for other apps to tie in
 """
+
+def blog_list(request):
+    pass
 
 @login_required
 def create_blog(request):
@@ -73,14 +78,25 @@ def create_blog(request):
     }
     return render_to_response('blog/create_blog.html', context, RequestContext(request))
 
-def view_blog(request, slug):
+def view_blog(request, slug, page):
     blog = get_object_or_404(Blog, slug=slug)
+    post_list = blog.posts.all().order_by('-created')
+    paginator = Paginator(post_list, 5)
 
-    context = {
-        'blog': blog,
-    }
-    return render_to_response('blog/view_blog.html', context, RequestContext(request))
+    if not page:
+        page = 1
 
+    try:
+        posts = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        posts = paginator.page(paginator.num_pages)
+
+    return render_to_response('blog/view_blog.html', {
+            'blog': blog,
+            'posts': posts,
+        }, context_instance=RequestContext(request)
+    )
+    
 @login_required
 def delete_blog(request, slug):
     if request.method == 'POST':
@@ -131,7 +147,7 @@ def create_post(request, slug):
 
 def view_post(request, year, month, slug):
     # This isn't a generic view because I intend to fetch related posts later on
-    post = get_object_or_404(Post, created__year=year, created__month=month, slug=slug)
+    post = get_object_or_404(Post.objects.select_related(), created__year=year, created__month=month, slug=slug)
 
     context = {
         'post': post,

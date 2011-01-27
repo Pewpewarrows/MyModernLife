@@ -95,13 +95,15 @@
     
     <!-- IE6 users with Javascript disabled are < 0.05% of total visitors, they'll just have to deal with it -->
     <!--[if lt IE 7 ]>
-    <script type="text/javascript"> //fix any <img> or .png_bg background-images
+    <script type="text/javascript"> // Fix any <img> or .png_bg background-images
         $.getScript('{% media_url "belatedpng.js" %}',function(){ DD_belatedPNG.fix('img, .png_bg'); });
     </script>
     <![endif]-->
 
     <!--[if lt IE 9]>
-    <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+    <script type="text/javascript"> // Generic IE fixes. We prefer DD's PNG fix, so disable this one's
+        $.getScript('{% media_url "IE.js" %}',function(){ IE7_PNG_SUFFIX = ':'; });
+    </script>
     <![endif]-->
 
     {% if debug %}

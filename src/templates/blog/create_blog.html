@@ -1,20 +1,19 @@
 {% extends 'blog_base.html' %}
 
+{% load uni_form_tags %}
+
 {% block title %}New Blog | {% endblock %}
 
 {% block h1 %}Create a New Blog{% endblock %}
 
 {% block content %}
 
-	<form action="." method="POST">
-	    <table>
-	        {{ blog_form.as_table }}
-	        <td></td>
-	        <td>
-	        	<input type="submit" value="Create">
-			<a href="{% url blog_list %}">Cancel</a>
-	        </td>
-	    </table>
-	</form>
+    <form class="uniForm" action="." method="POST">
+        {{ blog_form|as_uni_form }}
+        <div class="padd">
+            <input type="submit" value="Create">
+            <a href="{% url blog_list %}">Cancel</a>
+        </div>
+    </form>
 
 {% endblock %}

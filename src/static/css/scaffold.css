@@ -138,7 +138,7 @@ a:hover { color: #036; }
 /*  j.mp/webkit-tap-highlight-color */
 a:link { -webkit-tap-highlight-color: #FF5E99; } 
 
-small { font-size: 85%; }
+small { font-size: smaller; }
 strong, th { font-weight: bold }
 
 sub { vertical-align: sub; font-size: smaller; }
@@ -317,6 +317,9 @@ input.fill { display: block; width: 98%; }
  */
 button { width: auto; overflow: visible; }
 
+/*
+ * Some nice default form styles
+ */
 button, input[type="button"], input[type="submit"] {
 	display: inline-block;
 	height: 25px;
@@ -362,6 +365,8 @@ input:invalid, textarea:invalid {
     box-shadow: 0px 0px 5px red;
 }
 
+select { padding: 2px 3px; }
+
 
 /* -----------------------------------
   			Utility Classes
@@ -373,6 +378,7 @@ input:invalid, textarea:invalid {
 .block { display: block; }
 .clear { clear: both; }
 .hidden { display: none; visibility:hidden; }
+.padd { padding: 5px; }
 
 img.left { margin: 0 1em 1em 0; }
 img.right { margin: 0 0 1em 1em; !important }

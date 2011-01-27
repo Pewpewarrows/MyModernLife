@@ -34,7 +34,7 @@
     
     <div class="clearfix"></div>
 	
-	{% if post.tags %}
+    {% if post.tags.count > 0 %}
 	<p>Tags:</p>
 	<ul class="tag-list">
 	{% for tag in post.tags.all %}

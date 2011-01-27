@@ -1,5 +1,7 @@
 {% extends 'blog_base.html' %}
 
+{% load rich_text %}
+
 {% comment %} multi-blog had {{ blog.title }} {% endcomment %}
 {% block title %}Blog | {% endblock %}
 
@@ -20,18 +22,38 @@
     {% comment %} traditional multi-blog has blog.slug as arg here {% endcomment %}
     <a href="{% url create_post %}"><button>Create a New Post</button></a>
 
-	<ul class="blog-post-list">
-    {% for post in blog.posts.all %}
-    <li><a href="{{ post.get_absolute_url }}">{{ post }}</a></li>
+    {% for post in posts.object_list %}
+        <div class="blog-post">
+            <h2><a href="{{ post.get_absolute_url }}">{{ post }}</a></h2>
+            <div class="post-teaser">{{ post.teaser|sanitize|safe }}</div>
+        </div>
     {% empty %}
-    <li>There don't appear to be any posts yet!</li>
+        <span>There don't appear to be any posts yet!</span>
     {% endfor %}
-    </ul>
     
     {% comment %}
 	<br/>
 	<a href="{% url blog_list %}">View other blogs</a>
     {% endcomment %}
+
+    <!-- Pagination -->
+    {% if posts.object_list and posts.paginator.num_pages > 1 %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if posts.has_previous %}
+                <a href="{% url blog_list %}page/{{ posts.previous_page_number }}/">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ posts.number }} of {{ posts.paginator.num_pages }}
+            </span>
+
+            {% if posts.has_next %}
+                <a href="{% url blog_list %}page/{{ posts.next_page_number }}/">next</a>
+            {% endif %}
+        </span>
+    </div>
+    {% endif %}
 
 {% endblock %}
 

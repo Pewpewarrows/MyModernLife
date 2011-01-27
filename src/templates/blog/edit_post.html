@@ -1,20 +1,19 @@
 {% extends 'blog_base.html' %}
 
+{% load uni_form_tags %}
+
 {% block title %}Edit Post | {% endblock %}
 
 {% block h1 %}Editing: {{ post }}{% endblock %}
 
 {% block content %}
 
-    <form action="." method="POST">
-        <table>
-            {{ post_form.as_table }}
-            <td></td>
-            <td>
-            	<input type="submit" value="Save">
-  				<a href="{{ post.get_absolute_url }}">Cancel</a>
-            </td>
-        </table>
+    <form class="uniForm" action="." method="POST">
+        {{ post_form|as_uni_form }}
+        <div class="padd">
+            <input type="submit" value="Save">
+            <a href="{{ post.get_absolute_url }}">Cancel</a>
+        </div>
     </form>
 
 {% endblock %}

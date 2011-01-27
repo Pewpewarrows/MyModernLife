@@ -1,4 +1,3 @@
-import datetime
 from markdown import markdown
 
 from django.db import models
@@ -42,7 +41,7 @@ class Blog(models.Model):
     slug = models.SlugField(unique=True)
     owner = models.ForeignKey(User, related_name='blogs_owned')
     contributors = models.ManyToManyField(User, related_name='active_blogs')
-    created = models.DateTimeField(_('date created'), default=datetime.datetime.now)
+    created = models.DateTimeField(_('date created'), auto_now_add=True)
     
     # TODO: Meta ordering by number of readers or something
     
@@ -65,11 +64,11 @@ onto any model really.
 class Post(models.Model):
     author = models.ForeignKey(User)
     # UTC, local time, timezone?
-    created = models.DateTimeField('date posted', default=datetime.datetime.now)
-    last_updated = models.DateTimeField('date updated', default=datetime.datetime.now)
+    created = models.DateTimeField('date posted', auto_now_add=True)
+    last_updated = models.DateTimeField('date updated', auto_now=True)
     blog = models.ForeignKey(Blog, related_name='posts')
     title = models.CharField(max_length=255)
-    slug = models.SlugField(unique_for_date='created')
+    slug = models.SlugField(unique_for_month='created')
     markup = models.CharField(max_length=1, choices=MARKUP_TYPES, default='P')
     content = models.TextField()
     # I'd rather use disk space over CPU cycles for now...
@@ -101,8 +100,6 @@ class Post(models.Model):
             self.content_html = escape(self.content)
         else:
             self.content_html = self.content
-            
-        self.last_updated = datetime.datetime.now()
             
         super(Post, self).save()
         
@@ -161,7 +158,7 @@ class Post(models.Model):
                 if href[0] != '/':
                     urls.append(href)
         
-        # Thread this to prevent holding up the response to the user?
+        # TODO: Thread this to prevent holding up the response to the user?
         for url in urls:
             send.send_pingback(self.get_absolute_url(), url)
             send.send_trackback(url, data)
