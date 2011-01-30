@@ -1,6 +1,7 @@
-/* Create a closure to maintain scope of the '$'
+/* Create a closure to maintain scope of the '$',
+   ensure that our global variables haven't been messed with,
    and remain compatible with other frameworks.  */
-(function($) {
+(function(window, document, $, undefined) {
 
     // Since we're in a closure we don't interfere with window.self
     var self = $(this);
@@ -102,4 +103,4 @@
 	$(window).bind("load", function() {
 	});
 	
-})(jQuery);
+})(this, this.document, jQuery);

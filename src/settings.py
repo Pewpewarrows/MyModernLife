@@ -1,5 +1,6 @@
 # Django settings for mymodernlife project.
 
+import sys
 import os.path
 import socket
 
@@ -258,3 +259,5 @@ PREPEND_WWW = False
 TEMPLATE_DEBUG = True # Now that we have sentry, we always want that debug info
 MEDIA_DEV_MODE = DEBUG
 PRODUCTION_MEDIA_URL = '/static/'
+
+sys.path.insert(0, os.path.join(PROJECT_ROOT, "apps"))
