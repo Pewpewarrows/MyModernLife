@@ -1,18 +1,26 @@
 # Django settings for mymodernlife project.
 
+# TODO: organize this file as such:
+#   environment sys paths and media paths
+#   authors, admins, managers, etc
+#   debug vars
+#   logging
+#   cache
+#   email
+#   testing, coverage
+#   database
+#   sessions
+#   middleware
+#   templates
+#   apps
+#   third-party settings...
+
 import sys
 import os.path
-import socket
 
-# The only settings that ever need to be in a separate file are passwords
-# and Secret Key info. All other local/dev/staging/production logic can just
-# stay in this file.
-try:
-    from settings_auth import *
-except:
-    pass
+PROJECT_ROOT = os.path.join(os.path.realpath(os.path.dirname(__file__)), '..', '..')
 
-PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
+sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 
 DEFAULT_FROM_EMAIL = 'webmaster@marcosmodernlife.com'
 
@@ -24,8 +32,6 @@ MANAGERS = ADMINS
 
 # Note that sensitive information, such as username/password/secretkey,
 # are all stored in a separate settings file that is not tracked in git
-# Replace with DATABASES dictionary in 1.2
-DATABASE_ENGINE = 'postgresql_psycopg2'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -61,6 +67,12 @@ MEDIA_URL = '/static/'
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = MEDIA_URL + 'admin/'
+
+USE_ETAGS = False
+PREPEND_WWW = False
+DEBUG = False
+MEDIA_DEV_MODE = DEBUG
+TEMPLATE_DEBUG = True # Now that we have sentry, we always want that debug info
 
 # Quick hack to get HttpOnly cookies until changeset 14707 is in the next release,
 # adding the SESSION_COOKIE_HTTPONLY variable.
@@ -118,6 +130,11 @@ for root, dirs, files in os.walk(PROJECT_PATH):
     if 'templates' in dirs: TEMPLATE_DIRS += (os.path.join(root, 'templates'),)
 """
 
+CACHE_TIMEOUT = 3600
+MAX_CACHE_ENTRIES = 10000
+CACHE_MIDDLEWARE_SECONDS = 3600
+CACHE_MIDDLEWARE_KEY_PREFIX = ''
+
 INSTALLED_APPS = (
     # Included in Django
     'django.contrib.admin',
@@ -136,7 +153,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.syndication',
     'django.contrib.webdesign', # lorem ipsum generator
-    
+
     # Third-Party
     'django_extensions',
     'easy_thumbnails',
@@ -154,10 +171,10 @@ INSTALLED_APPS = (
     'trackback',
     'uni_form',
     'xframeoptions',
-    
+
     # Prometheus
     'blog',
-    
+
     # Project-specific
 )
 
@@ -210,9 +227,6 @@ MEDIA_BUNDLES = (
     ('belatedpng.js',
         'js/lib/dd_belatedpng.js',
     ),
-    ('IE.js',
-        'js/lib/IE9.js',
-    ),
     ('modernizr.js',
         'js/lib/modernizr-1.5.min.js',
     ),
@@ -228,36 +242,74 @@ ROOT_MEDIA_FILTERS = {
 YUICOMPRESSOR_PATH = os.path.join(MEDIA_ROOT, 'static/java/yuicompressor-2.4.2.jar')
 CLOSURE_COMPILER_PATH = os.path.join(MEDIA_ROOT, 'static/java/closure-compiler.jar')
 
-# Hostname lists for local/dev/staging/production machines
-SERVERS = (
-    # ('foo', 'DEV'),
-    # ('bar', 'STAGING'),
-    # ('baz', 'PROD'),
-)
-
-if SERVERS:
-    (SERVER_TYPE,) = [v for k, v in SERVERS if socket.gethostname() == k]
-else:
-    SERVER_TYPE = 'LOCAL'
-    
-# Seems like bad idea to default to LOCAL, which exposes DEBUG info, rather than PROD?
-
-if SERVER_TYPE == 'LOCAL':
-    DEBUG = True
-    CACHE_BACKEND = 'dummy:///'
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    # How much does this fuck up toolbar rendering? Might have to just hardcode
-    # where it needs to be in the middleware chain.
-    MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
-    INSTALLED_APPS += ('debug_toolbar',)
-else:
-    DEBUG = False
-    # CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
-
-USE_ETAGS = False
-PREPEND_WWW = False
-TEMPLATE_DEBUG = True # Now that we have sentry, we always want that debug info
-MEDIA_DEV_MODE = DEBUG
 PRODUCTION_MEDIA_URL = '/static/'
 
-sys.path.insert(0, os.path.join(PROJECT_ROOT, "apps"))
+# Testing & Coverage
+
+# Use nosetests instead of unittest
+"""
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+COVERAGE_REPORT_HTML_OUTPUT_DIR = 'coverage'
+COVERAGE_MODULE_EXCLUDES = ['tests$', 'settings$', 'urls$', 'vendor$',
+        '__init__', 'migrations', 'templates', 'django', 'debug_toolbar',
+        'core\.fixtures', 'users\.fixtures',]
+
+try:
+    import multiprocessing
+    cpu_count = multiprocessing.cpu_count()
+except ImportError:
+    cpu_count = 1
+
+NOSE_ARGS = ['--logging-clear-handlers', '--processes=%s' % cpu_count]
+
+if is_solo():
+    try:
+        os.mkdir(COVERAGE_REPORT_HTML_OUTPUT_DIR)
+    except OSError:
+        pass
+"""
+
+# Message Broker (for Celery)
+"""
+BROKER_HOST = "localhost"
+BROKER_PORT = 5672
+BROKER_USER = "boilerplate"
+BROKER_PASSWORD = "boilerplate"
+BROKER_VHOST = "boilerplate"
+CELERY_RESULT_BACKEND = "amqp"
+
+# Run tasks eagerly in development, so developers don't have to keep a celeryd
+# processing running.
+CELERY_ALWAYS_EAGER = is_solo()
+CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
+
+# South
+
+# Speed up testing when you have lots of migrations.
+SOUTH_TESTS_MIGRATE = False
+SKIP_SOUTH_TESTS = True
+
+# Logging
+
+SYSLOG_FACILITY = logging.handlers.SysLogHandler.LOG_LOCAL0
+SYSLOG_TAG = "boilerplate"
+
+# See PEP 391 and logconfig.py for formatting help.  Each section of LOGGING
+# will get merged into the corresponding section of log_settings.py.
+# Handlers and log levels are set up automatically based on LOG_LEVEL and DEBUG
+# unless you set them here.  Messages will not propagate through a logger
+# unless propagate: True is set.
+LOGGERS = {
+    'loggers': {
+        'boilerplate': {},
+    },
+}
+
+logconfig.initialize_logging(SYSLOG_TAG, SYSLOG_FACILITY, LOGGERS, LOG_LEVEL,
+        USE_SYSLOG)
+"""
+
+# Sessions
+
+#SESSION_ENGINE = "django.contrib.sessions.backends.cache"

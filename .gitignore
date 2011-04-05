@@ -41,8 +41,7 @@ develop-eggs
 .installed.cfg
 
 # Project
-settings_auth.py
+local_settings.py
 pylint.html
 _generated_media_names.py
 mymodernlife/_generated_media
-mml # vim session file

@@ -23,18 +23,15 @@
  *		7. font & text
  *
  * Table of Contents:
- *      1. Header
- *      2. Page Structure
- *      3. Headings
- *      4. Text Styles
- *      5. Navigation
- *      6. Tables
- *      7. Forms
- *      8. Utilities
- *      9. Browser Hacks
- *      10. Print
- *      11. Mobile
- *      12. TV
+ *      1. Page Structure
+ *      2. Headings
+ *      3. Text Styles
+ *      4. Navigation
+ *      5. Tables
+ *      6. Forms
+ *      7. Utilities
+ *      8. Browser Hacks
+ *      9. Media Queries
  *
  * Colors:
  *      Light Grey: #F1F1F1
@@ -43,28 +40,22 @@
  *      Very Dark Grey: #777
  */
 
-
-/* -----------------------------------
-  			    Header
- ----------------------------------- */
-
-
 /* -----------------------------------
   			Page Structure
  ----------------------------------- */
- 
-/* maxvoltar.com/archive/-webkit-font-smoothing */
+
 html {
+    overflow-y: scroll;
 	width: 100%;
 	height: 100%;
-	-webkit-font-smoothing: antialiased;
+    font-size: 100.01%;
 }
 
 body {
 	height: 100%;
 	margin: 0;
 	background-color: #FFF;
-	
+
 	/*
 	 * Sans-serif is the most legible font family on screen.
 	 * We just really need to decide which specific font stack to go with.
@@ -74,15 +65,15 @@ body {
     /* font-family: Tahoma, Geneva, Verdana, sans-serif; /**/
     /* font-family: 'Trebuchet MS"' 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; /**/
     /* font-family: Verdana, Geneva, Tahoma, sans-serif; /**/
-	
+
 	/*
 	 * By setting the font to 62.5% of the browser default 16px,
 	 * all further fonts specified in em can be divided by 10 to see in px.
-	 * 
+	 *
 	 * Example: 1.2em == 12px
 	 */
 	font-size: 62.5%;
-	
+
 	/* http://meyerweb.com/eric/thoughts/2006/02/08/unitless-line-heights/ */
 	line-height: 1.6;
 	/* http://twitter.com/H_FJ/statuses/11800719859 */
@@ -122,7 +113,7 @@ h6 { font-size: 1.1em; }
   			  Text Styles
  ----------------------------------- */
 
-p { 
+p {
     margin-bottom: 0.8em;
 }
 
@@ -132,11 +123,23 @@ pre, code, kbd, samp, tt, var {
 
 a:hover, a:active { outline: none; }
 a:link, a:active { color: #607890; }
-a:visited { color: grey; }
+a:visited { color: gray; }
 a:hover { color: #036; }
 
 /*  j.mp/webkit-tap-highlight-color */
-a:link { -webkit-tap-highlight-color: #FF5E99; } 
+a:link { -webkit-tap-highlight-color: #FF5E99; }
+
+a.img:link,
+a.img:visited,
+a.img:hover,
+a.img:focus,
+a.img:active {
+    border: none;
+    text-decoration: none;
+}
+a.img img {
+    vertical-align: baseline;
+}
 
 small { font-size: smaller; }
 strong, th { font-weight: bold }
@@ -152,7 +155,7 @@ q:before, q:after {
 
 abbr, time {
 	border-bottom: 1px dotted #999;
-	cursor: help; 
+	cursor: help;
 }
 
 dl { padding: 1em; }
@@ -170,18 +173,19 @@ nav ul { margin: 0; }
 
 /*
  * Prevent horizontal scrollbars in pre blocks
- * 
+ *
  * http://www.pathf.com/blogs/2008/05/formatting-quoted-code-in-blog-posts-css21-white-space-pre-wrap/
  */
 pre {
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
 	white-space: pre; /* CSS2 */
 	white-space: -moz-pre-wrap; /* Mozilla, but let's make this comment really, really, really, really, really, really long to prove our point*/
 	white-space: -hp-pre-wrap; /* HP printers */
 	white-space: -o-pre-wrap; /* Opera 7 */
 	white-space: -pre-wrap; /* Opera 4-6 */
 	white-space: pre-wrap; /* CSS 2.1 */
-	/* Causes Webkit browsers to totally trash whitespace */
-	/* white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
 	word-wrap: break-word; /* IE */
 }
 
@@ -195,6 +199,7 @@ code, var, .codehilite {
     -webkit-border-radius: 5px;
     border-radius: 5px;
     font-style: normal;
+    word-wrap: break-word;
 }
 
 pre code {
@@ -218,12 +223,12 @@ blockquote {
     font-size: 1.1em;
 }
 
-/* 
+/*
  * These selection declarations have to be separate.
- * No text-shadow: twitter.com/miketaylr/status/12228805301 
+ * No text-shadow: twitter.com/miketaylr/status/12228805301
  */
 ::-moz-selection { background: #3399ff; color:#fff; text-shadow: none; }
-::selection { background: #3399ff; color:#fff; text-shadow: none; } 
+::selection { background: #3399ff; color:#fff; text-shadow: none; }
 
 /* http://forrst.com/posts/Gradient_Horizontal_Rules-yZ4 */
 hr.fancy {
@@ -231,7 +236,7 @@ hr.fancy {
 	background: -moz-linear-gradient(left center, rgb(255,255,255) 0%, rgb(187, 187, 187) 25%, rgb(187, 187, 187) 75%, rgb(255,255,255) 100%);
 	background: -webkit-gradient(linear, left top, right top, color-stop(0, rgb(255,255,255)), color-stop(0.25, rgb(187, 187, 187)), color-stop(0.75, rgb(187, 187, 187)), color-stop(1, rgb(255,255,255)));
 	border: 0;
-	height: 1px; 
+	height: 1px;
 }
 
 
@@ -290,9 +295,9 @@ legend {
     font-weight: bold;
 }
 
-/* 
+/*
  * align checkboxes, radios, text inputs, etc with their label
- * 
+ *
  * tjkdesign.com/ez-css/css/base.css
  */
 input[type="radio"] { vertical-align: text-bottom; }
@@ -303,19 +308,29 @@ button { vertical-align: baseline; }
 /* hand cursor on clickable input elements */
 label, input[type=button], input[type=submit], button { cursor: pointer; }
 
-/* 
+/*
  * stylish full-width input
- * 
+ *
  * note that the width % will have to be adjusted based on padding of container
  */
 input.fill { display: block; width: 98%; }
 
-/* 
+/*
  * make buttons play nice in IE
- * 
- * www.viget.com/inspire/styling-the-button-element-in-internet-explorer/ 
+ *
+ * www.viget.com/inspire/styling-the-button-element-in-internet-explorer/
  */
 button { width: auto; overflow: visible; }
+
+/*
+ * remove default styling of buttons from firefox
+ *
+ * www.aheadcreative.com/removing-unwanted-button-padding-in-firefox/
+ */
+button::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
 
 /*
  * Some nice default form styles
@@ -358,10 +373,10 @@ input[type="text"]:not(:focus):hover, input[type="password"]:not(:focus):hover, 
 	border: 1px solid #3c7fb1;
 }
 
-input:invalid, textarea:invalid { 
+input:invalid, textarea:invalid {
     border-radius: 1px;
-    -webkit-box-shadow: 0px 0px 5px red; 
-    -moz-box-shadow: 0px 0px 5px red; 
+    -webkit-box-shadow: 0px 0px 5px red;
+    -moz-box-shadow: 0px 0px 5px red;
     box-shadow: 0px 0px 5px red;
 }
 
@@ -371,7 +386,7 @@ select { padding: 2px 3px; }
 /* -----------------------------------
   			Utility Classes
  ----------------------------------- */
- 
+
 .left { float: left; }
 .right { float: right; }
 .center { margin: 0 auto; text-align: center; }
@@ -389,14 +404,14 @@ img.right { margin: 0 0 1em 1em; !important }
 
 .error {
 	background: #FFEEEE;
-	border: 1px solid #C98F8F; 
+	border: 1px solid #C98F8F;
 	color: #543434;
 }
- 
+
 .success {
 	background: #EEFFEE;
 	border: 1px solid #8FC98F;
-	color: #1C301C; 
+	color: #1C301C;
 }
 
 .push {
@@ -447,62 +462,47 @@ img.right { margin: 0 0 1em 1em; !important }
 .ie6 input { vertical-align: text-bottom; }
 .ie8 input[type="radio"] { vertical-align: bottom; }
 
+.ie7 button, .ie7 input[type="button"], .ie7 input[type="submit"], .ie8 button, .ie8 input[type="button"], .ie8 input[type="submit"] {
+    behavior: url('/static/css/lib/PIE.htc');
+}
+
 
 /* -----------------------------------
-  			   Printing
+  			Media Queries
  ----------------------------------- */
 
 @media print {
-	* { background: transparent !important; color: black !important; text-shadow: none !important; }
-	
-	a, a:visited { color: #444 !important; text-decoration: underline; }
-	
-	a[href]:after { content: " (" attr(href) ")"; } 
-	
-	abbr[title]:after { content: " (" attr(title) ")"; }
-	
-	.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }  /* Don't show links for images */
-	
-	pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
-
-    thead { display: table-header-group; } /* css-discuss.incutio.com/wiki/Printing_Tables */ 
-	
-	tr, img { page-break-inside: avoid; }
-	
-	@page { margin: 0.5cm; }
-	
-	p, h2, h3 { orphans: 3; widows: 3; }
-	
-	h2, h3 { page-break-after: avoid; }
+    * { background: transparent !important; color: black !important; text-shadow: none !important; filter:none !important;
+    -ms-filter: none !important; } /* Black prints faster: sanbeiji.com/archives/953 */
+    a, a:visited { color: #444 !important; text-decoration: underline; }
+    a[href]:after { content: " (" attr(href) ")"; }
+    abbr[title]:after { content: " (" attr(title) ")"; }
+    .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }  /* Don't show links for images, or javascript/internal links */
+    pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
+    thead { display: table-header-group; } /* css-discuss.incutio.com/wiki/Printing_Tables */
+    tr, img { page-break-inside: avoid; }
+    @page { margin: 0.5cm; }
+    p, h2, h3 { orphans: 3; widows: 3; }
+    h2, h3{ page-break-after: avoid; }
 }
 
-
-/* -----------------------------------
-  			    Mobile
- ----------------------------------- */
-
-@media all and (orientation:portrait) { 
+@media all and (orientation:portrait) {
 	/* Style adjustments for portrait mode goes here */
 }
 
-@media all and (orientation:landscape) { 
+@media all and (orientation:landscape) {
 	/* Style adjustments for landscape mode goes here */
 }
 
-/* 
+/*
  * Grade-A Mobile Browsers (Opera Mobile, iPhone Safari, Android Chrome)
- * 
+ *
  * www.cloudfour.com/css-media-query-for-mobile-is-fools-gold/
- */ 
+ */
 @media screen and (max-device-width: 480px) {
 	/* Prevent iOS, WinMobile from adjusting font size */
-	html { -webkit-text-size-adjust:none; -ms-text-size-adjust:none; } 
+	html { -webkit-text-size-adjust:none; -ms-text-size-adjust:none; }
 }
-
-
-/* -----------------------------------
-  			      TV
- ----------------------------------- */
 
 @media tv {
 }

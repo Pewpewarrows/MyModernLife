@@ -14,7 +14,7 @@ from blog.utils import get_unique_slug, generate_slug
 TODO:
     - Draft/Pending Review/Published status
     - Public/Password-protected/Private visibility
-    
+
     - Write tests for this shit
     - Received Trackbacks: check that our link is in it to reduce spam
     - Template tags for meta-info (top posts, featured posts, latest comments, etc) (django-taggit-templatetags)
@@ -36,7 +36,7 @@ TODO:
     - Need a way to upload media mid-writing and then embed that content in the post
     - Wrap generic views to get amounts inside each blog/year/month/day
     - Autosaving mid-draft
-    
+
     - Have the ability to restrict blog/post creation to a group with a setting
     - Even better: have contributors be a group instead of users list?
     - Pass blog ownership to a new user
@@ -96,7 +96,7 @@ def view_blog(request, slug, page):
             'posts': posts,
         }, context_instance=RequestContext(request)
     )
-    
+
 @login_required
 def delete_blog(request, slug):
     if request.method == 'POST':
@@ -128,7 +128,7 @@ def create_post(request, slug):
             post.author = request.user
             post.blog = blog
             post.save()
-            
+
             # We don't want to start sending garbage requests while testing,
             # and we only want to do this on the first save of a published post,
             # not every update, otherwise we might get IP banned.
@@ -188,11 +188,11 @@ def delete_post(request, year, month, slug):
         post.delete()
 
     return redirect('view_blog', post.blog.slug)
-    
+
 def view_tag(request, slug):
     tag = get_object_or_404(Tag, slug=slug)
     posts = Post.objects.filter(tags__id=tag.id)
-    
+
     context = {
         'tag': tag,
         'posts': posts,

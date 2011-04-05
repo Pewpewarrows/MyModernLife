@@ -12,15 +12,15 @@
  *     var baz; // Local
  *     waldo; // Global
  * }
- * 
+ *
  */
 
 /*
  * JSDoc reference:
- * 
+ *
  * This is a generic description, with a link to a class: {@link ClassName},
  * and a link to a method: {@link ClassName#methodName}.
- * 
+ *
  * @author name
  * @version number
  * @deprecated
@@ -57,7 +57,7 @@
  */
 // Inspired by base2 and Prototype
 (function(){
-    var initializing = false, 
+    var initializing = false,
     fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
     // The base Class implementation (does nothing)
     this.Class = function(){};
@@ -86,7 +86,7 @@
 
                         // The method only need to be bound temporarily, so we
                         // remove it when we're done executing
-                        var ret = fn.apply(this, arguments);        
+                        var ret = fn.apply(this, arguments);
                         this._super = tmp;
 
                         return ret;
@@ -153,32 +153,54 @@ var Site = {
     }
 };
 
-/*
-var g_condition;
-var g_callback;
+function str_pad (input, pad_length, pad_string, pad_type) {
+    // Returns input string padded on the left or right to specified length with pad_string
+    //
+    // version: 1101.3117
+    // discuss at: http://phpjs.org/functions/str_pad
+    // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // + namespaced by: Michael White (http://getsprink.com)
+    // +      input by: Marco van Oort
+    // +   bugfixed by: Brett Zamir (http://brett-zamir.me)
+    // *     example 1: str_pad('Kevin van Zonneveld', 30, '-=', 'STR_PAD_LEFT');
+    // *     returns 1: '-=-=-=-=-=-Kevin van Zonneveld'
+    // *     example 2: str_pad('Kevin van Zonneveld', 30, '-', 'STR_PAD_BOTH');
+    // *     returns 2: '------Kevin van Zonneveld-----'
+    var half = '', pad_to_go;
 
-function when(condition, callback) {
-	if (!condition()) {
-		g_condition = condition;
-		g_callback = callback;
-		setTimeout('when(g_condition, g_callback)', 100);
-	} else {
-		callback();
-	}
+    var str_pad_repeater = function (s, len) {
+        var collect = '', i;
+
+        while (collect.length < len) {collect += s;}
+        collect = collect.substr(0,len);
+
+        return collect;
+    };
+
+    input += '';
+    pad_string = pad_string !== undefined ? pad_string : ' ';
+
+    if (pad_type != 'STR_PAD_LEFT' && pad_type != 'STR_PAD_RIGHT' && pad_type != 'STR_PAD_BOTH') { pad_type = 'STR_PAD_RIGHT'; }
+    if ((pad_to_go = pad_length - input.length) > 0) {
+        if (pad_type == 'STR_PAD_LEFT') { input = str_pad_repeater(pad_string, pad_to_go) + input; }
+        else if (pad_type == 'STR_PAD_RIGHT') { input = input + str_pad_repeater(pad_string, pad_to_go); }
+        else if (pad_type == 'STR_PAD_BOTH') {
+            half = str_pad_repeater(pad_string, Math.ceil(pad_to_go/2));
+            input = half + input + half;
+            input = input.substr(0, pad_length);
+        }
+    }
+
+    return input;
 }
-*/
-
-window.compare = function(a, b) {
-	return ((a < b) ? -1 : ((a > b) ? 1 : 0));
-};
 
 window.isInt = function(x) {
 	var y = parseInt(x, 10);
-	
+
 	if (isNaN(y)) {
         return false;
     }
-	
+
 	return (x == y) && (x.toString() == y.toString());
 };
 
@@ -187,7 +209,8 @@ window.isInt = function(x) {
 window.log = function() {
 	log.history = log.history || [];   // store logs to an array for reference
 	log.history.push(arguments);
-	
+    arguments.callee = arguments.callee.caller;
+
 	if (this.console) {
 		console.log(Array.prototype.slice.call(arguments));
 	}
@@ -200,7 +223,7 @@ window.log = function() {
 
 /*
  * Quick .data() wrapper
- * 
+ *
  * http://yehudakatz.com/2009/04/20/evented-programming-with-jquery/
  */
 var $$ = function(param) {

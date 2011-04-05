@@ -1,8 +1,8 @@
-/* 
+/*
 html5doctor.com Reset Stylesheet
-v1.5.1
-Last Updated: 2010-08-14
-Author: Richard Clark - http://richclarkdesign.com 
+v1.6.1
+Last Updated: 2010-09-17
+Author: Richard Clark - http://richclarkdesign.com
 Twitter: @rich_clark
 */
 
@@ -15,7 +15,7 @@ b, i,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, figcaption, figure, 
+article, aside, canvas, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section, summary,
 time, mark, audio, video {
     margin:0;
@@ -31,9 +31,9 @@ body {
     line-height:1;
 }
 
-article,aside,canvas,details,figcaption,figure,
-footer,header,hgroup,menu,nav,section,summary { 
-	display:block;
+article,aside,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section {
+    display:block;
 }
 
 nav ul {
@@ -58,15 +58,17 @@ a {
     background:transparent;
 }
 
+/* change colours to suit your needs */
 ins {
     background-color:#ff9;
     color:#000;
     text-decoration:none;
 }
 
+/* change colours to suit your needs */
 mark {
     background-color:#ff9;
-    color:#000; 
+    color:#000;
     font-style:italic;
     font-weight:bold;
 }
@@ -76,7 +78,7 @@ del {
 }
 
 abbr[title], dfn[title] {
-    border-bottom:1px dotted #000;
+    border-bottom:1px dotted;
     cursor:help;
 }
 
@@ -85,10 +87,11 @@ table {
     border-spacing:0;
 }
 
+/* change border colour to suit your needs */
 hr {
     display:block;
     height:1px;
-    border:0;   
+    border:0;
     border-top:1px solid #cccccc;
     margin:1em 0;
     padding:0;

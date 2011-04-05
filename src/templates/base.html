@@ -34,7 +34,7 @@
     <!-- Many of this site's static files were inspired by the HTML5 Boilerplate and HTML5 Reset projects -->
 
     <!--  Mobile Viewport Fix
-        j.mp/mobileviewport & davidbcalhoun.com/2010/viewport-metatag 
+        j.mp/mobileviewport & davidbcalhoun.com/2010/viewport-metatag
     device-width : Occupy full width of the screen in its current orientation
     initial-scale = 1.0 retains dimensions instead of zooming out if page height > device height
     maximum-scale = 1.0 retains dimensions instead of zooming in if page width < device width
@@ -69,11 +69,11 @@
     <script src="{% media_url 'modernizr.js' %}"></script>
 </head>
 <!-- http://www.viget.com/inspire/extending-paul-irishs-comprehensive-dom-ready-execution/ -->
-<body data-controller="{% block data-controller %}{% endblock %}" data-action="{% block data-action %}{% endblock %}">
+<body id="{% block body-id %}{% endblock %}" data-controller="{% block data-controller %}{% endblock %}" data-action="{% block data-action %}{% endblock %}">
     {% block overlay %}{% endblock %}
     {% block layout %}{% endblock %}
-    
-    <!-- 
+
+    <!--
         <noscript> tags are handled awkwardly by different browsers, this standardizes it.
         The entire page is wrapped in a no-js class by default, that is replaced by Modernizr
         with a js class if javascript can execute. So jsnotice is only visible if it's within no-js.
@@ -92,17 +92,11 @@
     <!-- Grab Google CDN's jQuery. fall back to local if necessary -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
     <script type="text/javascript">!window.jQuery && document.write(unescape('%3Cscript src="{% media_url "jquery.js" %}"%3E%3C/script%3E'))</script>
-    
+
     <!-- IE6 users with Javascript disabled are < 0.05% of total visitors, they'll just have to deal with it -->
     <!--[if lt IE 7 ]>
     <script type="text/javascript"> // Fix any <img> or .png_bg background-images
         $.getScript('{% media_url "belatedpng.js" %}',function(){ DD_belatedPNG.fix('img, .png_bg'); });
-    </script>
-    <![endif]-->
-
-    <!--[if lt IE 9]>
-    <script type="text/javascript"> // Generic IE fixes. We prefer DD's PNG fix, so disable this one's
-        $.getScript('{% media_url "IE.js" %}',function(){ IE7_PNG_SUFFIX = ':'; });
     </script>
     <![endif]-->
 
@@ -132,7 +126,7 @@
         })(document, 'script');
         */
     </script>
-    
+
     {% block extrascript %}{% endblock %}
 </body>
 </html>
