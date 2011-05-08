@@ -1,3 +1,5 @@
+from __future__ import with_statement
+
 from fabric.api import *
 from fabric.contrib.files import exists
 
@@ -43,8 +45,24 @@ def setup(server_type='full'):
 def server_update():
     sudo('apt-get update')
 
-def setup_web():
+@runs_once
+def setup_general():
     server_update()
+
+    # Remove the crap that comes pre-installed
+    sudo('apt-get remove -y apache2 apache2-mpm-prefork apache2-utils')
+
+    # Python & pip
+    sudo('apt-get install -y build-essential python-dev python-setuptools')
+    sudo('easy_install -U pip')
+
+    # Process Management with supervisord
+    sudo('pip install supervisor')
+    sudo('echo; if [ ! -f /etc/supervisord.conf ]; then echo_supervisord_conf > /etc/supervisord.conf; fi', pty=True)
+    sudo('echo; if [ ! -d /etc/supervisor ]; then mkdir /etc/supervisor; fi', pty=True)
+
+def setup_web():
+    setup_general()
 
     # Webserver
     sudo('apt-get install nginx')
@@ -53,10 +71,7 @@ def setup_web():
 
     sudo('/etc/init.d/nginx start')
 
-    # Python and virtualenvs
-    sudo('apt-get install -y build-essential python-dev libpq-dev')
-    sudo('apt-get install -y python-setuptools')
-    sudo('easy_install -U pip')
+    # virtualenvs
     sudo('pip install virtualenv')
     sudo('pip install virtualenvwrapper')
     sudo('mkdir -p /var/www/.virtualenvs')
@@ -69,10 +84,10 @@ def setup_web():
     sudo('mkvirtualenv --no-site-packages %(project_name)s' % env)
 
 def setup_db():
-    server_update()
+    setup_general()
 
     # Database
-    sudo('apt-get install postgresql')
+    sudo('apt-get install -y postgresql libpq-dev')
 
     # TODO: setup database
 
@@ -85,6 +100,9 @@ def setup_new_project():
 
     if not exists('%(path)s/releases' % env):
         sudo('cd %(path)s; mkdir releases' % env)
+
+    if not exists('%(path)s/logs' % env):
+        sudo('cd %(path)s; mkdir logs' % env)
 
 def deploy():
     import time
