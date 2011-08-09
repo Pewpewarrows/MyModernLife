@@ -73,3 +73,8 @@ nav ul.sub-menu {
 footer {
 	height: 50px;
 }
+
+body article img {
+    margin: 0 1em 1em 0;
+    border: 5px solid #EEE;
+}
