@@ -1,5 +1,4 @@
-<!doctype html>
-<!-- ✰ -->
+<!doctype html public "✰">
 {% load trackback_tags %}
 {% load media %}
 
@@ -23,6 +22,9 @@
     <meta charset="utf-8" /> <!-- Needs to be within the first 512 bytes -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
+    <link rel="dns-prefetch" href="//ajax.googleapis.com" />
+
+    <!-- TODO: ensure this is in server header -->
     <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
 
     <title>{% block title %}Marco's Modern Life{% endblock %}</title>
@@ -53,6 +55,11 @@
     -->
     <link rel="alternate" type="application/rss+xml" title="RSS Posts Feed" href="{% url latest_blog_feed %}" />
     <link rel="pingback" href="{% get_pingback_url %}" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+
+    <!-- TODO: opensearch plugin -->
+    <!-- TODO: IE9 pinned site -->
+    <!-- TODO: facebook opengraph -->
 
     {% include_media 'main.css' %}
 

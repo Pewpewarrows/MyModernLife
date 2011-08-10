@@ -49,6 +49,9 @@ html {
 	width: 100%;
 	height: 100%;
     font-size: 100.01%;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
 }
 
 body {
@@ -78,11 +81,6 @@ body {
 	line-height: 1.6;
 	/* http://twitter.com/H_FJ/statuses/11800719859 */
 	color: #444;
-}
-
-body article img {
-    margin: 0 1em 1em 0;
-    border: 5px solid #EEE;
 }
 
 /* http://unstoppablerobotninja.com/entry/fluid-images/ */
@@ -121,10 +119,12 @@ pre, code, kbd, samp, tt, var {
 	font-family: Consolas, Menlo, Monaco, 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace, serif;
 }
 
-a:hover, a:active { outline: none; }
+a:hover, a:active { outline: 0; }
 a:link, a:active { color: #607890; }
 a:visited { color: gray; }
 a:hover { color: #036; }
+
+a:focus { outline: thin dotted; }
 
 /*  j.mp/webkit-tap-highlight-color */
 a:link { -webkit-tap-highlight-color: #FF5E99; }
@@ -144,8 +144,20 @@ a.img img {
 small { font-size: smaller; }
 strong, th { font-weight: bold }
 
-sub { vertical-align: sub; font-size: smaller; }
-sup { vertical-align: super; font-size: smaller; }
+sub, sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+
+sup {
+    top: -0.5em;
+}
+
+sub {
+    bottom: -0.25em;
+}
 
 caption { font-style: italic; }
 
@@ -170,6 +182,8 @@ ul { list-style-type: disc; }
 ol { list-style-type: decimal; }
 
 nav ul { margin: 0; }
+
+nav ul, nav ol { list-style: none; }
 
 /*
  * Prevent horizontal scrollbars in pre blocks
@@ -281,7 +295,7 @@ select, input, textarea, button {
 /*
  * www.sitepoint.com/blogs/2010/08/20/ie-remove-textarea-scrollbars/
  */
-textarea { overflow: auto; }
+textarea { overflow: auto; vertical-align: top; }
 
 fieldset {
 	display: inline-block;
@@ -306,7 +320,7 @@ input[type="button"], input[type="submit"] { vertical-align: baseline; }
 button { vertical-align: baseline; }
 
 /* hand cursor on clickable input elements */
-label, input[type=button], input[type=submit], button { cursor: pointer; }
+label, input[type=reset], input[type=button], input[type=submit], button { cursor: pointer; }
 
 /*
  * stylish full-width input
@@ -320,14 +334,45 @@ input.fill { display: block; width: 98%; }
  *
  * www.viget.com/inspire/styling-the-button-element-in-internet-explorer/
  */
-button { width: auto; overflow: visible; }
+button, input[type=reset], input[type="button"], input[type="submit"] { 
+    width: auto; 
+    overflow: visible;
+    cursor: pointer;
+    -webkit-appearance: button;
+}
+
+/*
+ * Define box sizing
+ * Addresses box sizing set to content-box in IE8/9
+ */
+
+input[type="checkbox"], input[type="radio"] {
+    box-sizing: border-box;
+}
+
+/*
+ * Define box sizing and appearance
+ */
+input[type="search"] {
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+/*
+ * Remove WebKit search decoration
+ */
+input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
 
 /*
  * remove default styling of buttons from firefox
  *
  * www.aheadcreative.com/removing-unwanted-button-padding-in-firefox/
  */
-button::-moz-focus-inner {
+button::-moz-focus-inner, input[type="button"]::-moz-focus-inner, input[type="submit"]::-moz-focus-inner {
     border: 0;
     padding: 0;
 }
@@ -335,7 +380,7 @@ button::-moz-focus-inner {
 /*
  * Some nice default form styles
  */
-button, input[type="button"], input[type="submit"] {
+button, input[type=reset], input[type="button"], input[type="submit"] {
 	display: inline-block;
 	height: 25px;
 	margin: 0;
@@ -350,14 +395,14 @@ button, input[type="button"], input[type="submit"] {
     background: -moz-linear-gradient(top, #f4f4f4, #ececec);
 }
 
-button:hover, input[type="button"]:hover, input[type="submit"]:hover {
+button:hover, input[type=reset]:hover, input[type="button"]:hover, input[type="submit"]:hover {
 	border: 1px solid #3c7fb1;
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e8f6fd', endColorstr='#afdef8'); /* for IE */
 	background: -webkit-gradient(linear, left top, left bottom, from(#e8f6fd), to(#afdef8)); /* for webkit browsers */
 	background: -moz-linear-gradient(top,  #e8f6fd,  #afdef8); /* for firefox 3.6+ */
 }
 
-button:active, input[type="button"]:active, input[type="submit"]:active {
+button:active, input[type=reset]:active, input[type="button"]:active, input[type="submit"]:active {
 	border: 1px solid #3366cc;
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#afdef8', endColorstr='#e8f6fd'); /* for IE */
 	background: -webkit-gradient(linear, left top, left bottom, from(#afdef8), to(#e8f6fd)); /* for webkit browsers */
@@ -381,6 +426,26 @@ input:invalid, textarea:invalid {
 }
 
 select { padding: 2px 3px; }
+
+/*
+legend {
+    *margin-left: -7px;
+}
+
+button,
+input,
+select,
+textarea {
+    vertical-align: baseline;
+    *vertical-align: middle;
+}
+
+button,
+input {
+    line-height: normal;
+    *overflow: visible;
+}
+*/
 
 
 /* -----------------------------------
@@ -424,20 +489,23 @@ img.right { margin: 0 0 1em 1em; !important }
 .no-js #jsnotice { display: block; }
 
 /* self-clearing fix */
-.clearfix:after {
-	content: ".";
-	display: block;
-	height: 0;
-	clear: both;
-	visibility: hidden;
+/* nicolasgallagher.com/micro-clearfix-hack/ */
+/* For modern browsers */
+.cf:before,
+.cf:after {
+    content: '';
+    display: table;
+    overflow: hidden;
 }
 
-.clearfix {
-	display: inline-block;
+.cf:after {
+    clear: both;
 }
 
-* html .clearfix { height: 1%; } /* Hides from IE-mac \*/
-.clearfix { display: block; }
+/* For IE 6/7 (trigger hasLayout) */
+.cf {
+    zoom: 1;
+}
 
 /* for image replacement */
 .ir {
@@ -446,6 +514,7 @@ img.right { margin: 0 0 1em 1em; !important }
 	overflow: hidden;
 	background-repeat: no-repeat;
 }
+.ir br { display: none; }
 
 
 /* -----------------------------------
@@ -481,6 +550,7 @@ img.right { margin: 0 0 1em 1em; !important }
     pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
     thead { display: table-header-group; } /* css-discuss.incutio.com/wiki/Printing_Tables */
     tr, img { page-break-inside: avoid; }
+    img { max-width: 100% !important; }
     @page { margin: 0.5cm; }
     p, h2, h3 { orphans: 3; widows: 3; }
     h2, h3{ page-break-after: avoid; }
